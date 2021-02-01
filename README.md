@@ -6,4 +6,4 @@
 
 # Metamodel
 
-<img src="https://raw.githubusercontent.com/david-istvan/collabserver-modeling/main/mindmap/mindmapMM.png?raw=true" width="800"/>
+<img src="https://raw.githubusercontent.com/david-istvan/collabserver-modeling/main/mindmap/mindmapMM.png?raw=true"/>
