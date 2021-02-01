@@ -10,4 +10,7 @@ import uuid
 class Node:
     
     def __init__(self):
-        self.id = uuid.uuid1()
+        self.__id = uuid.uuid1()
+        
+    def getId(self):
+        return self.__id
