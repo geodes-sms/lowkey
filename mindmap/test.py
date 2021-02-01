@@ -6,37 +6,48 @@ from metamodel.entities.Marker import Marker
 
 
 def printMindMap(mindmap):
-    print(mindmap.name)
-    centralTopic = mindmap.topic
+    print(mindmap.getTitle())
+    centralTopic = mindmap.getTopic()
     printTopic(0, centralTopic)
-    for mainTopic in centralTopic.mainTopics:
+    for mainTopic in centralTopic.getMainTopics():
         printTopic(1, mainTopic)
-        for subTopic in mainTopic.subTopics:
+        for subTopic in mainTopic.getSubTopics():
             printTopic(2, subTopic)
             
 def printTopic(depth, topic):
-    print(depth*2*' ' + '|_{}'.format(topic.name) + (' [x]' if topic.marker!=None else ''))
+    line = depth*2*' ' + '|_{}'.format(topic.getName())
+    marker = topic.getMarker()
+    if(marker !=None):
+        line+=(' [' + marker.getSymbol() + ']')
+    print(line)
 
+    
+#Create MindMap
 mindmap = MindMap('improvePublicationRecord')
 
+#Create CentralTopic and add to the MindMap
 c = CentralTopic('publishPaper')
-mindmap.topic = c
+mindmap.setTopic(c)
 
+#Create two MainTopics and add them to the CentralTopic
 mt1 = MainTopic('experiment')
-c.mainTopics.append(mt1)
-mt2 = MainTopic('writePaper')
-c.mainTopics.append(mt2)
-c.addRelationship()
-#c.addMainTopic(mt2)
+c.addMainTopic(mt1)
+##Create this one with a missing argument
+mt2 = MainTopic()
+mt2.setName('writePaper')
+c.addMainTopic(mt2)
 
+#Create two SubTopics and add them to one of the MainTopics
 s1 = SubTopic('relatedWork')
-mt2.subTopics.append(s1)
+mt2.addSubTopic(s1)
 s2 = SubTopic('contributions')
-mt2.subTopics.append(s2)
+mt2.addSubTopic(s2)
 
-x = Marker('currentStatus')
-mindmap.markers.append(x)
-s2.marker = x
+#Create a Marker
+x = Marker('x')
+mindmap.addMarker(x)
+s2.setMarker(x)
 
+
+#Print the MindMap
 printMindMap(mindmap)
-

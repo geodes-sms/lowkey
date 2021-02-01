@@ -1,11 +1,13 @@
 from .Topic import Topic
-#from ..relationships.CentralTopic_MainTopic_mainTopics import CentralTopic_MainTopic_mainTopics
 
 class CentralTopic(Topic):
     
-    def __init__(self, name):
+    def __init__(self, name=""):
         super().__init__(name)
-        self.mainTopics = []
+        self.__mainTopics = []
+
+    def getMainTopics(self):
+        return self.__mainTopics
         
-#    def addMainTopic(self, mainTopic):
-#        super().addRelationship()
+    def addMainTopic(self, mainTopic):
+        self.__mainTopics.append(mainTopic)
