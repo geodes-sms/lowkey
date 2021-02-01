@@ -2,7 +2,6 @@ from collabtypes.Model import Model
 
 class MindMap(Model):
     
-    #todo: add default constructor
     def __init__(self, title):
         super().__init__()
         self.__title = title
