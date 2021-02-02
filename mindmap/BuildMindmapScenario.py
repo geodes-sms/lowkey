@@ -3,25 +3,8 @@ from metamodel.entities.CentralTopic import CentralTopic
 from metamodel.entities.MainTopic import MainTopic
 from metamodel.entities.SubTopic import SubTopic
 from metamodel.entities.Marker import Marker
+import MindmapPrinter
 
-
-def printMindMap(mindmap):
-    print(mindmap.getTitle())
-    centralTopic = mindmap.getTopic()
-    printTopic(0, centralTopic)
-    for mainTopic in centralTopic.getMainTopics():
-        printTopic(1, mainTopic)
-        for subTopic in mainTopic.getSubTopics():
-            printTopic(2, subTopic)
-            
-def printTopic(depth, topic):
-    line = depth*2*' ' + '|_{}'.format(topic.getName())
-    marker = topic.getMarker()
-    if(marker !=None):
-        line+=(' [' + marker.getSymbol() + ']')
-    print(line)
-
-    
 #Create MindMap
 mindmap = MindMap('improvePublicationRecord')
 
@@ -50,4 +33,4 @@ s2.setMarker(x)
 
 
 #Print the MindMap
-printMindMap(mindmap)
+MindmapPrinter.printMindmap(mindmap)
