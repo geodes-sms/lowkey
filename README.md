@@ -14,6 +14,6 @@
 ## Reference architecture
 
 
-<img src="https://raw.githubusercontent.com/david-istvan/collabserver-modeling/main/docs/modelverse.png?raw=true"/>
+<img src="https://raw.githubusercontent.com/david-istvan/collabserver-modeling/main/docs/modelverse.PNG?raw=true"/>
 
 Source: [Van Mierlo, Barroca, Vangheluwe, Syriani, Kühne. Multi-Level Modelling in the Modelverse. Proceedings of MULTI 2014.](http://miso.es/multi/2014/proceedings_MULTI.pdf#page=89)
