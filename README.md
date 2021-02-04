@@ -4,7 +4,7 @@
 
 ## Metamodel
 
-<img src="https://raw.githubusercontent.com/david-istvan/collabserver-modeling/main/mindmap/mindmapMM.png?raw=true"/>
+<img src="https://raw.githubusercontent.com/david-istvan/collabserver-modeling/main/collabserver-modeling/mindmap/mindmapMM.png?raw=true"/>
 
 ## Reference architecture
 
