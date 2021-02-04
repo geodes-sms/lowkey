@@ -1,5 +1,4 @@
 from collabtypes.Model import Model
-from collabtypes.Node import Node
 
 class MindMap(Model):
     
@@ -11,12 +10,11 @@ class MindMap(Model):
 
     #Title: attribute
     #getter, setter
-    @Node.attributeGetter
     def getTitle(self):
         return self.__title
 
-    @Node.attributeSetter
     def setTitle(self, title):
+        super._setAttribute(title)
         self.__title = title
     
     #Topic: 0..1 reference
@@ -24,8 +22,8 @@ class MindMap(Model):
     def getTopic(self):
         return self.__topic
     
-    @Model.nodeSetter
     def setTopic(self, topic):
+        super()._setNode(self.__topic, topic)
         self.__topic = topic
     
     #Marker: 0..* reference
@@ -33,10 +31,10 @@ class MindMap(Model):
     def getMarkers(self):
         return self.__markers
     
-    @Model.nodeAdder
     def addMarker(self, marker):
+        super()._addNode(marker)
         self.__markers.append(marker)
     
-    @Model.nodeRemover
     def removeMarker(self, marker):
+        super()._removeNode(marker)
         self.__markers.remove(marker)

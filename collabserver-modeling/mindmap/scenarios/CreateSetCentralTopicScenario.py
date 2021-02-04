@@ -1,9 +1,6 @@
-from metamodel.entities.MindMap import MindMap
-from metamodel.entities.CentralTopic import CentralTopic
-from metamodel.entities.MainTopic import MainTopic
-from metamodel.entities.SubTopic import SubTopic
-from metamodel.entities.Marker import Marker
-import MindmapPrinter
+from mindmap.metamodel.entities.MindMap import MindMap
+from mindmap.metamodel.entities.CentralTopic import CentralTopic
+from mindmap import MindmapPrinter
 
 #Create MindMap
 mindmap = MindMap('improvePublicationRecord')

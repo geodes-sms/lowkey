@@ -1,10 +1,3 @@
-from metamodel.entities.MindMap import MindMap
-from metamodel.entities.CentralTopic import CentralTopic
-from metamodel.entities.MainTopic import MainTopic
-from metamodel.entities.SubTopic import SubTopic
-from metamodel.entities.Marker import Marker
-
-
 def printMindmap(mindmap):
     print('===============================')
     print(mindmap.getTitle())
@@ -25,5 +18,5 @@ def __printTopic(depth, topic):
     
 def printNodes(mindmap):
     print('\n')
-    for node in mindmap.getNodes():
+    for node in mindmap._getNodes():
         print(node)
