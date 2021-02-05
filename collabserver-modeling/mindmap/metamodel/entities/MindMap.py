@@ -2,7 +2,7 @@ from collabtypes.Model import Model
 
 class MindMap(Model):
     
-    def __init__(self, title):
+    def __init__(self, title=""):
         super().__init__()
         self.__title = title
         self.__topic = None
