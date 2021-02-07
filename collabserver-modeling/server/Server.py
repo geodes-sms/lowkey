@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 import asyncio
+import logging
 
 import websockets
-
-from server.Session import Session
+from websockets.server import WebSocketServerProtocol
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -18,37 +18,38 @@ Server component of the CollabServer Python stack.
 
 class Server():
     
+    logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
+    
     def __init__(self):
-        print("Creating server with Model.")
-        self.__session = Session()
-
-    async def listen(self, websocket, path):
-        request = await websocket.recv()
-        print(f"[SERVER] Request received: {request}.")
+        print("Creating server.")
+        self.__connectedClients = set()
         
-        arguments = request.split()
-        command = arguments[0]
-        
-        if command.upper() == 'CREATE':
-            self.__session.create(arguments[1:])
-        elif command.upper() == 'READ':
-            self.__session.read(arguments[1:])
-        elif command.upper() == 'UPDATE':
-            self.__session.update(arguments[1:])
-        elif command.upper() == 'DELETE':
-            self.__session.delete(arguments[1:])
-        else:
-            pass
-        
-        response = f"{command.upper()} command executed."
+    async def register(self, ws:WebSocketServerProtocol) -> None:
+        self.__connectedClients.add(ws)
+        logging.info(f'{ws.remote_address} connects.')
+            
+    async def unregister(self, ws:WebSocketServerProtocol) -> None:
+        self.__connectedClients.remove(ws)
+        logging.info(f'{ws.remote_address} disconnects.')
+    
+    async def sendToClients(self, message: str) -> None:
+        if self.__connectedClients:
+            await asyncio.wait([client.send(message) for client in self.__connectedClients])        
 
-        await websocket.send(response)
-
-
+    async def wsHandler(self, ws:WebSocketServerProtocol, uri:str) -> None:
+        await self.register(ws)
+        try:
+            await self.distribute(ws)
+        finally:
+            await self.unregister(ws)
+            
+    async def distribute(self, ws:WebSocketServerProtocol) -> None:
+        async for message in ws:
+            await self.sendToClients(message)
         
 if __name__ == "__main__":
-# import sys;sys.argv = ['', 'Test.testName']
     server = Server()
-    start_server = websockets.serve(server.listen, "localhost", 8765)
-    asyncio.get_event_loop().run_until_complete(start_server)
-    asyncio.get_event_loop().run_forever()
+    start_server = websockets.serve(server.wsHandler, "localhost", 8765)
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(start_server)
+    loop.run_forever()
