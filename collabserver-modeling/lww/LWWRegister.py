@@ -7,7 +7,7 @@ __license__ = "GPL-3.0"
 
 """
 LWWRegister data type.
-Loosely based on the specification https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf.
+Based on Specification 9 in https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf.
 """
 
 

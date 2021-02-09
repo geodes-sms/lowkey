@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
 __credits__ = "Eugene Syriani"
@@ -7,7 +6,7 @@ __license__ = "GPL-3.0"
 
 """
 LWWSet data type with a built-in SetElement.
-Loosely based on the specification https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf.
+Based on the LWW-element-Set specification in https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf.
 """
 
 
@@ -35,12 +34,12 @@ class LWWSet():
         self.__elements = set()
         self.__timestamp = 0
     
-    def query(self, element):
+    def query(self, element) -> bool:
         if self.__find(element):
             return True
         return False
 
-    def __find(self, element):
+    def __find(self, element) -> SetElement:
         return next((e for e in self.__elements if e.getValue() == element and not e.isDeleted()), None)
 
     def add(self, element, timestamp: int):
@@ -64,5 +63,8 @@ class LWWSet():
     def clear(self, timestamp: int):
         [e.remove(timestamp) for e in self.__elements]
             
-    def size(self):
+    def size(self) -> int:
         return len([x for x in self.__elements if not x.isDeleted()])
+    
+    def merge(self, otherSet):
+        pass
