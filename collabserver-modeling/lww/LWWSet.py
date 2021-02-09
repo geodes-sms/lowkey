@@ -13,58 +13,107 @@ Based on the LWW-element-Set specification in https://hal.inria.fr/file/index/do
 class SetElement(): 
 
     def __init__(self, value, timestamp):
-        self.__value = value
-        self.__timestamp = timestamp
-        self.__deleted = False
+        self.value = value
+        self.timestamp = timestamp
         
-    def getValue(self):
-        return self.__value
-    
-    def remove(self, timestamp):
-        self.__deleted = True
-        self.__timestamp = timestamp
+    def __eq__(self, other):
+        """Overrides the default implementation"""
+        if isinstance(other, SetElement):
+            return self.value == other.value
         
-    def isDeleted(self):
-        return self.__deleted
+    def __hash__(self):
+        """Overrides the default implementation"""
+        return hash(tuple(sorted(self.__dict__.items())))
 
-
+        
 class LWWSet():
     
     def __init__(self):
-        self.__elements = set()
-        self.__timestamp = 0
+        self.__addSet = set()
+        self.__removeSet = set()
     
-    def query(self, element) -> bool:
-        if self.__find(element):
+    def query(self, value) -> bool:
+        if self.__findByValue(value):
             return True
         return False
+    
+    def __findByValue(self, value) -> SetElement:
+        a = self.__findLatestInAddSet(value)
+        
+        if not a:
+            return a
+        
+        r = self.__findLatestInRemoveSet(value)
+        
+        if not r:
+            return a
+        
+        if r.timestamp > a.timestamp:
+            return None
+        else:
+            return a
+        
+    def __findLatestInAddSet(self, value):
+        addSetOccurrences = self.__findInAddSet(value)
+        if not addSetOccurrences:
+            return None
+        
+        return self.__orderByTimestamp(addSetOccurrences)
+    
+    def __findLatestInRemoveSet(self, value):
+        removeSetOccurrences = self.__findInRemoveSet(value)
+        if not removeSetOccurrences:
+            return None
+        
+        return self.__orderByTimestamp(removeSetOccurrences)
 
-    def __find(self, element) -> SetElement:
-        return next((e for e in self.__elements if e.getValue() == element and not e.isDeleted()), None)
+    def __findInAddSet(self, value):
+        return self.__findInInternalSet(value, self.__addSet)
+    
+    def __findInRemoveSet(self, value):
+        return self.__findInInternalSet(value, self.__removeSet)
+    
+    def __findInInternalSet(self, value, _set):
+        return [a for a in _set if a.value == value]
+    
+    def __orderByTimestamp(self, setElementCollection):
+
+        def timestamp(elem):
+            return elem.timestamp
+        
+        return sorted(setElementCollection, key=timestamp, reverse=True)[0]
 
     def add(self, element, timestamp: int):
         if not self.query(element):
             self.__addElement(element, timestamp)
-            self.__timestamp = timestamp
 
     def __addElement(self, element, timestamp):
-        self.__elements.add(SetElement(element, timestamp))
-
+        self.__addSet.add(SetElement(element, timestamp))
+    
     def remove(self, element, timestamp: int):
         if self.query(element):
             self.__removeElement(element, timestamp)
-            self.__timestamp = timestamp
     
     def __removeElement(self, element, timestamp):
-        element = self.__find(element)
-        if element:
-            element.remove(timestamp)
-    
+        self.__removeSet.add(SetElement(element, timestamp))
+        
     def clear(self, timestamp: int):
-        [e.remove(timestamp) for e in self.__elements]
-            
-    def size(self) -> int:
-        return len([x for x in self.__elements if not x.isDeleted()])
+        for a in self.__addSet:
+            if self.__exists(a):
+                self.__removeElement(a.value, timestamp)
+        
+    def __exists(self, element):
+        r = self.__findLatestInRemoveSet(element.value)
+        if not r or r.timestamp < element.timestamp:
+            return True
+        return False
     
+    def size(self) -> int:
+        size = 0
+        for a in self.__addSet:
+            if self.__exists(a):
+                size += 1
+        return size
+   
     def merge(self, otherSet):
         pass

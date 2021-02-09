@@ -2,8 +2,7 @@
 import unittest
 
 from lww import Time
-from lww.LWWSet import LWWSet
-
+from lww.LWWSet import LWWSet, SetElement
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -12,65 +11,132 @@ __license__ = "GPL-3.0"
 
 
 class LWWSetTests(unittest.TestCase):
-       
-    def testSimpleAdd(self):
+
+    def testSetElementObjectEquality(self):
+        e1 = SetElement("hello", 10)
+        e2 = SetElement("world", 20)
+        e3 = SetElement("hello", 30)
+        
+        self.assertTrue(e1 != e2)
+        self.assertTrue(e1 == e3)
+        self.assertNotEqual(e1, e2)
+        self.assertEqual(e1, e3)
+
+    def testQueryOnEmptySetReturnsFalse(self):
+        lwwSet = LWWSet()
+        self.assertFalse(lwwSet.query("element"))
+
+    def testAddingElementShowsUpInQuery(self):
         lwwSet = LWWSet()
         
-        key = "someKey"
+        key = "element"
         self.assertFalse(lwwSet.query(key))
         
         lwwSet.add(key, Time.current())
         self.assertTrue(lwwSet.query(key))
-        
-    def testSimpleRemove(self):
+
+    def testAddingElementsReflectsInSize(self):
         lwwSet = LWWSet()
         
-        key = "someKey"
+        element1 = "element1"
+        element2 = "element2"
+        
+        self.assertEqual(lwwSet.size(), 0)
+        
+        lwwSet.add(element1, Time.current())
+        self.assertEqual(lwwSet.size(), 1)
+        
+        lwwSet.add(element2, Time.current())
+        self.assertEqual(lwwSet.size(), 2)
+    
+    def testAddingDuplicatesIsOmitted(self):
+        lwwSet = LWWSet()
+        
+        key = "element"
+        self.assertEqual(lwwSet.size(), 0)
+        
+        addTime1 = 10
+        addTime2 = 20
+        
+        lwwSet.add(key, addTime1)
+        self.assertEqual(lwwSet.size(), 1)
+        
+        lwwSet.add(key, addTime2)
+        self.assertEqual(lwwSet.size(), 1)
+    
+    def testRemovedElementDoesNotShowUpInQuery(self):
+        lwwSet = LWWSet()
+        
+        key = "element"
         self.assertFalse(lwwSet.query(key))
         
-        lwwSet.add(key, Time.current())
+        addTime = 10
+        removeTime = 20
+        
+        lwwSet.add(key, addTime)
         self.assertTrue(lwwSet.query(key))
         
-        lwwSet.remove(key, Time.current())
+        lwwSet.remove(key, removeTime)
         self.assertFalse(lwwSet.query(key))
+        
+    def testAddRemoveAdd(self):
+        lwwSet = LWWSet()
+        self.assertEqual(lwwSet.size(), 0)
+        
+        element1 = "element1"
+        
+        lwwSet.add(element1, 10)
+        self.assertEqual(lwwSet.size(), 1)
+        
+        lwwSet.remove(element1, 20)
+        self.assertEqual(lwwSet.size(), 0)
+        
+        lwwSet.add(element1, 30)
+        self.assertEqual(lwwSet.size(), 1)
         
     def testSize(self):
         lwwSet = LWWSet()
         self.assertEqual(lwwSet.size(), 0)
         
-        lwwSet.add("element1", Time.current())
+        element1 = "element1"
+        element2 = "element2"
+        element3 = "element3"
+        
+        lwwSet.add(element1, 10)
         self.assertEqual(lwwSet.size(), 1)
         
-        lwwSet.add("element1", Time.current())
+        lwwSet.add(element1, 15)
         self.assertEqual(lwwSet.size(), 1)
         
-        lwwSet.add("element2", Time.current())
+        lwwSet.add(element2, 20)
         self.assertEqual(lwwSet.size(), 2)
         
-        lwwSet.remove("element1", Time.current())
+        lwwSet.remove(element1, 25)
+        self.assertFalse(lwwSet.query(element1))
         self.assertEqual(lwwSet.size(), 1)
         
-        lwwSet.remove("element1", Time.current())
+        lwwSet.remove(element1, 30)
         self.assertEqual(lwwSet.size(), 1)
         
-        lwwSet.remove("element3", Time.current())
+        lwwSet.remove(element3, 35)
         self.assertEqual(lwwSet.size(), 1)
         
-        lwwSet.remove("element2", Time.current())
+        lwwSet.remove(element2, 40)
         self.assertEqual(lwwSet.size(), 0)
-     
+        
     def testClear(self):
         lwwSet = LWWSet()
         self.assertEqual(lwwSet.size(), 0)
         
-        lwwSet.add("element1", Time.current())
+        lwwSet.add("element1", 10)
         self.assertEqual(lwwSet.size(), 1)
         
-        lwwSet.add("element2", Time.current())
+        lwwSet.add("element2", 20)
         self.assertEqual(lwwSet.size(), 2)
         
-        lwwSet.clear(Time.current())
+        lwwSet.clear(30)
         self.assertEqual(lwwSet.size(), 0)
+
 
 if __name__ == "__main__":
     unittest.main()
