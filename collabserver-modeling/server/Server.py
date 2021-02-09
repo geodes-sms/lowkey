@@ -46,6 +46,7 @@ class Server():
     async def distribute(self, ws:WebSocketServerProtocol) -> None:
         async for message in ws:
             await self.sendToClients(message)
+
         
 if __name__ == "__main__":
     server = Server()

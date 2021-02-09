@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import unittest
+
 from mindmap.metamodel.entities.CentralTopic import CentralTopic
 from mindmap.metamodel.entities.Marker import Marker
 from mindmap.metamodel.entities.MindMap import MindMap
@@ -15,13 +16,13 @@ class ContainmentRemovalTests(unittest.TestCase):
     def testRemovingAContainmentRemovesItsReferences(self):
         mindmap = MindMap('improvePublicationRecord')
         
-        #Create CentralTopic and add to the MindMap
+        # Create CentralTopic and add to the MindMap
         centralTopic = CentralTopic('publishPaper')
         mindmap.setTopic(centralTopic)
         
         self.assertTrue(centralTopic in mindmap._getNodes())
         
-        #Create a Marker and assign it to the central topic
+        # Create a Marker and assign it to the central topic
         marker = Marker('x')
         mindmap.addMarker(marker)
         centralTopic.setMarker(marker)
@@ -34,6 +35,7 @@ class ContainmentRemovalTests(unittest.TestCase):
         self.assertTrue(centralTopic.getMarker() != marker)
         self.assertTrue(centralTopic.getMarker() == None)
 
+
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
+    # import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

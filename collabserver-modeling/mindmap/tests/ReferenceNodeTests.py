@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import unittest
+
 from mindmap.metamodel.entities.CentralTopic import CentralTopic
 from mindmap.metamodel.entities.Marker import Marker
 from mindmap.metamodel.entities.MindMap import MindMap
@@ -15,7 +16,7 @@ class ReferenceNodeTests(unittest.TestCase):
     def testSetting01ReferenceAddsANode(self):
         mindmap = MindMap('improvePublicationRecord')
         
-        #Create CentralTopic and add to the MindMap
+        # Create CentralTopic and add to the MindMap
         centralTopic = CentralTopic('publishPaper')
         mindmap.setTopic(centralTopic)
         
@@ -24,13 +25,13 @@ class ReferenceNodeTests(unittest.TestCase):
     def testUpdating01ReferenceAddsNewNodeAndRemovesPreviousNode(self):
         mindmap = MindMap('improvePublicationRecord')
         
-        #Create CentralTopic and add to the MindMap
+        # Create CentralTopic and add to the MindMap
         centralTopic = CentralTopic('publishPaper')
         mindmap.setTopic(centralTopic)
         
         self.assertTrue(centralTopic in mindmap._getNodes())
         
-        #Create new CentralTopic and add to the MindMap
+        # Create new CentralTopic and add to the MindMap
         centralTopic2 = CentralTopic('goToVacation')
         mindmap.setTopic(centralTopic2)
         
@@ -40,13 +41,13 @@ class ReferenceNodeTests(unittest.TestCase):
     def testAdding0NReferenceAddsAllNodes(self):
         mindmap = MindMap('improvePublicationRecord')
                 
-        #Create a Marker
+        # Create a Marker
         marker = Marker('x')
         mindmap.addMarker(marker)
         
         self.assertTrue(marker in mindmap._getNodes())
         
-        #Create a Marker
+        # Create a Marker
         marker2 = Marker('*')
         mindmap.addMarker(marker2)
         
@@ -55,5 +56,5 @@ class ReferenceNodeTests(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
+    # import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 import asyncio
+import json
 
 import websockets
+
 from server import Commands
-import json
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -41,6 +42,7 @@ class Procuder():
         params = {}
         params['command'] = userInput
         return json.dumps(params)
+
     
 if __name__ == "__main__":
     producer = Procuder()

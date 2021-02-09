@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 import unittest
 
-from mindmap.tests.ContainmentRemovalTests import ContainmentRemovalTests
-from mindmap.tests.ReferenceNodeTests import ReferenceNodeTests
+from lww.tests.LWWRegisterMultiUserTests import LWWRegisterMultiUserTests
+from lww.tests.LWWRegisterTests import LWWRegisterTests
+from lww.tests.LWWSetTests import LWWSetTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -10,12 +11,11 @@ __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
 
 """
-Full test suite for the Mindmap example.
+Full test suite for the LWW implementations.
 """
 
-
 def create_suite():
-    testCases = [ReferenceNodeTests, ContainmentRemovalTests]
+    testCases = [LWWRegisterTests, LWWRegisterMultiUserTests, LWWSetTests]
     loadedCases = []
     
     for case in testCases:
@@ -23,8 +23,7 @@ def create_suite():
 
     return unittest.TestSuite(loadedCases)
 
-
 if __name__ == '__main__':
     suite = create_suite()
-    runner = unittest.TextTestRunner()
+    runner=unittest.TextTestRunner()
     runner.run(suite)

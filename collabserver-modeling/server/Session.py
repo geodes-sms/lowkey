@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from _ast import arguments
 import uuid
 
 from mindmap.metamodel import MindMapFactory
