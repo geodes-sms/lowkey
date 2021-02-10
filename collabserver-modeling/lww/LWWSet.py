@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from lww.LWWRegister import LWWRegister
+
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
 __credits__ = "Eugene Syriani"
@@ -9,7 +11,7 @@ LWWSet data type with a built-in SetElement.
 Based on the LWW-element-Set specification in https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf.
 """
 
-
+'''
 class SetElement(): 
 
     def __init__(self, value, timestamp):
@@ -24,8 +26,9 @@ class SetElement():
     def __hash__(self):
         """Overrides the default implementation"""
         return hash(tuple(sorted(self.__dict__.items())))
+'''
 
-        
+
 class LWWSet():
     
     def __init__(self):
@@ -37,35 +40,32 @@ class LWWSet():
             return True
         return False
     
-    def __findByValue(self, value) -> SetElement:
+    def __findByValue(self, value) -> LWWRegister:
         a = self.__findLatestInAddSet(value)
         
         if not a:
-            return a
+            return None
         
         r = self.__findLatestInRemoveSet(value)
         
-        if not r:
+        if self.__noEffectiveRemoveExists(a, r):
             return a
         
-        if r.timestamp > a.timestamp:
-            return None
-        else:
-            return a
+        return None
         
     def __findLatestInAddSet(self, value):
         addSetOccurrences = self.__findInAddSet(value)
         if not addSetOccurrences:
             return None
         
-        return self.__orderByTimestamp(addSetOccurrences)
+        return self.__orderByTimestamp(addSetOccurrences)[0]
     
     def __findLatestInRemoveSet(self, value):
         removeSetOccurrences = self.__findInRemoveSet(value)
         if not removeSetOccurrences:
             return None
         
-        return self.__orderByTimestamp(removeSetOccurrences)
+        return self.__orderByTimestamp(removeSetOccurrences)[0]
 
     def __findInAddSet(self, value):
         return self.__findInInternalSet(value, self.__addSet)
@@ -81,21 +81,24 @@ class LWWSet():
         def timestamp(elem):
             return elem.timestamp
         
-        return sorted(setElementCollection, key=timestamp, reverse=True)[0]
+        return sorted(setElementCollection, key=timestamp, reverse=True)
 
+    def __noEffectiveRemoveExists(self, latestAddOfElement, latetsRemoveOfElement):
+        return (not latetsRemoveOfElement or latetsRemoveOfElement.timestamp < latestAddOfElement.timestamp)
+    
     def add(self, element, timestamp: int):
         if not self.query(element):
             self.__addElement(element, timestamp)
 
     def __addElement(self, element, timestamp):
-        self.__addSet.add(SetElement(element, timestamp))
+        self.__addSet.add(LWWRegister(element, timestamp))
     
     def remove(self, element, timestamp: int):
         if self.query(element):
             self.__removeElement(element, timestamp)
     
     def __removeElement(self, element, timestamp):
-        self.__removeSet.add(SetElement(element, timestamp))
+        self.__removeSet.add(LWWRegister(element, timestamp))
         
     def clear(self, timestamp: int):
         for a in self.__addSet:
@@ -104,7 +107,7 @@ class LWWSet():
         
     def __exists(self, element):
         r = self.__findLatestInRemoveSet(element.value)
-        if not r or r.timestamp < element.timestamp:
+        if self.__noEffectiveRemoveExists(element, r):
             return True
         return False
     
