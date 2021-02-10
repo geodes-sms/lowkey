@@ -137,7 +137,27 @@ class LWWSetTests(unittest.TestCase):
         
         lwwSet.clear(30)
         self.assertEqual(lwwSet.size(), 0)
-
+        
+    def testMergeDifferent(self):
+        pass
+        """
+        lwwSet1 = LWWSet()
+        lwwSet2 = LWWSet()
+        
+        lwwSet1.add("element1", 10)
+        self.assertEqual(lwwSet1.size(), 1)
+        lwwSet1.add("element2", 20)
+        self.assertEqual(lwwSet1.size(), 2)
+        
+        lwwSet2.add("element3", 10)
+        self.assertEqual(lwwSet2.size(), 1)
+        lwwSet2.add("element4", 20)
+        self.assertEqual(lwwSet2.size(), 2)
+        
+        lwwSet1.merge(lwwSet2)
+        self.assertEqual(lwwSet1.size(), 4)
+        self.assertEqual(lwwSet2.size(), 2)
+        """
 
 if __name__ == "__main__":
     unittest.main()

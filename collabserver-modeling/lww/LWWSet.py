@@ -80,6 +80,8 @@ class LWWSet():
     
     def size(self) -> int:
         return sum(self.__exists(a) for a in self.__addSet)
-   
+    
+    """TODO: def __iter__(self):"""
+    """TODO:"""
     def merge(self, otherSet):
         pass
