@@ -14,21 +14,24 @@ Based on Specification 9 in https://hal.inria.fr/file/index/docid/555588/filenam
 class LWWRegister():
     
     def __init__(self, value=None, timestamp=0):
-        self.value = value
-        self.timestamp = timestamp
+        self.__value = value
+        self.__timestamp = timestamp
         
     def query(self):
-        return self.value
+        return self.__value
     
     def update(self, newValue, timestamp: int):
-        if timestamp > self.timestamp:
-            self.value = newValue
-            self.timestamp = timestamp
+        if timestamp > self.__timestamp:
+            self.__value = newValue
+            self.__timestamp = timestamp
+    
+    def getTimestamp(self):
+        return self.__timestamp
             
     def __eq__(self, other):
         """Overrides the default implementation"""
         if isinstance(other, LWWRegister):
-            return self.value == other.query()
+            return self.__value == other.query()
         
     def __hash__(self):
         """Overrides the default implementation"""
