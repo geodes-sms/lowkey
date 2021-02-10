@@ -36,9 +36,7 @@ class LWWSet():
         self.__removeSet = set()
     
     def query(self, value) -> bool:
-        if self.__findByValue(value):
-            return True
-        return False
+        return True if self.__findByValue(value) else False
     
     def __findByValue(self, value) -> LWWRegister:
         a = self.__findLatestInAddSet(value)
@@ -48,10 +46,7 @@ class LWWSet():
         
         r = self.__findLatestInRemoveSet(value)
         
-        if self.__noEffectiveRemoveExists(a, r):
-            return a
-        
-        return None
+        return a if self.__noEffectiveRemoveExists(a, r) else None
         
     def __findLatestInAddSet(self, value):
         addSetOccurrences = self.__findInAddSet(value)
@@ -101,10 +96,8 @@ class LWWSet():
         self.__removeSet.add(LWWRegister(element, timestamp))
         
     def clear(self, timestamp: int):
-        for a in self.__addSet:
-            if self.__exists(a):
-                self.__removeElement(a.value, timestamp)
-        
+        [self.__removeElement(a.value, timestamp) for a in self.__addSet if self.__exists(a)]
+                
     def __exists(self, element):
         r = self.__findLatestInRemoveSet(element.value)
         if self.__noEffectiveRemoveExists(element, r):
@@ -112,11 +105,7 @@ class LWWSet():
         return False
     
     def size(self) -> int:
-        size = 0
-        for a in self.__addSet:
-            if self.__exists(a):
-                size += 1
-        return size
+        return sum(self.__exists(a) for a in self.__addSet)
    
     def merge(self, otherSet):
         pass
