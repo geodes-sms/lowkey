@@ -24,3 +24,12 @@ class LWWRegister():
         if timestamp > self.__timestamp:
             self.__value = newValue
             self.__timestamp = timestamp
+            
+    def __eq__(self, other):
+        """Overrides the default implementation"""
+        if isinstance(other, LWWRegister):
+            return self.__value == other.query()
+        
+    def __hash__(self):
+        """Overrides the default implementation"""
+        return hash(tuple(sorted(self.__dict__.items())))
