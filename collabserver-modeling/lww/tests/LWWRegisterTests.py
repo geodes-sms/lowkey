@@ -11,21 +11,6 @@ __license__ = "GPL-3.0"
 
 class LWWRegisterTests(unittest.TestCase):
     
-    def testLWWRegisterEquality(self):
-        r1 = LWWRegister()
-        r1.update("hello", 10)
-        
-        r2 = LWWRegister()
-        r2.update("world", 20)
-        
-        r3 = LWWRegister()
-        r3.update("hello", 30)
-        
-        self.assertTrue(r1 != r2)
-        self.assertTrue(r1 == r3)
-        self.assertNotEqual(r1, r2)
-        self.assertEqual(r1, r3)
-    
     def testSimpleUpdate(self):
         lwwRegister = LWWRegister()
         lwwRegister.update("message 1", 10)
