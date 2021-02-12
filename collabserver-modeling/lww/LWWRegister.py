@@ -28,7 +28,7 @@ class LWWRegister():
     
     def __init__(self, value=None, timestamp:int=0, prototype:LWWRegister=None):
         self.__id = prototype.getId() if prototype else uuid.uuid1()
-        self.__value = prototype.getValue() if prototype and prototype.getValue() else value
+        self.__value = prototype.query() if prototype and prototype.query() else value
         self.__timestamp = timestamp
     
     def query(self):
@@ -41,9 +41,6 @@ class LWWRegister():
     
     def getId(self):
         return self.__id
-    
-    def getValue(self):
-        return self.__value
     
     def getTimestamp(self):
         return self.__timestamp

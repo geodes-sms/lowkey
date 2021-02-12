@@ -52,7 +52,7 @@ class LWWSet():
         counted = set()
         for a in self.__addSet:
             if not self.__removeExistsForRegister(a):
-                counted.add(a.getValue())
+                counted.add(a.query())
         return len(counted)
     
     def merge(self, otherSet):  # TODO
