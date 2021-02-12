@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import uuid
+from lww import LWWRegister
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -13,10 +15,11 @@ Based on Specification 9 in https://hal.inria.fr/file/index/docid/555588/filenam
 
 class LWWRegister():
     
-    def __init__(self, value=None, timestamp=0):
+    def __init__(self, value=None, timestamp:int=0, prototype:LWWRegister=None):
+        self.__id = prototype.getId() if prototype else uuid.uuid1()
         self.__value = value
         self.__timestamp = timestamp
-        
+    
     def query(self):
         return self.__value
     
@@ -27,3 +30,6 @@ class LWWRegister():
     
     def getTimestamp(self):
         return self.__timestamp
+    
+    def getId(self):
+        return self.__id

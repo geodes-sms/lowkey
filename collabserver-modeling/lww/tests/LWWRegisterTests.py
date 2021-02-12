@@ -29,7 +29,20 @@ class LWWRegisterTests(unittest.TestCase):
         self.assertEqual(lwwRegister.query(), "message 1")
         lwwRegister.update(1234, 11)
         self.assertEqual(lwwRegister.query(), 1234)
-
+        
+    def testIdGeneration(self):
+        lwwRegister1 = LWWRegister()
+        self.assertTrue(lwwRegister1.getId())
+        lwwRegister2 = LWWRegister()
+        self.assertTrue(lwwRegister2.getId())
+        self.assertNotEqual(lwwRegister1.getId(), lwwRegister2.getId())
+        
+    def testSameIdForPrototypes(self):
+        lwwRegister1 = LWWRegister()
+        self.assertTrue(lwwRegister1.getId())
+        lwwRegister2 = LWWRegister(prototype=lwwRegister1)
+        self.assertTrue(lwwRegister2.getId())
+        self.assertEqual(lwwRegister1.getId(), lwwRegister2.getId())
 
 if __name__ == "__main__":
     unittest.main()
