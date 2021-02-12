@@ -10,7 +10,8 @@ __license__ = "GPL-3.0"
 
 """
 LWWSet data type with a built-in SetElement.
-Based on the LWW-element-Set specification in https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf.
+Based on the LWW-element-Set specification in
+https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf.
 """
 
 
