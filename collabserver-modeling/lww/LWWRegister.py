@@ -44,4 +44,3 @@ class LWWRegister():
     
     def getTimestamp(self):
         return self.__timestamp
-    

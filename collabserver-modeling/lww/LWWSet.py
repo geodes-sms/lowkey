@@ -11,6 +11,16 @@ __license__ = "GPL-3.0"
 """
 LWWSet data type, based on the LWW-element-Set specification in
 https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf.
+
+Provides a redundancy-free collection to store values. Values are stored in LWWRegisters. The set
+emulates the behavior of the standard set types: on its public interface, if a value exists, only
+exists once. The following cases can happen:
+-there exists no LWWRegister with the value in the addSet: value does not exist in the LWWSet;
+-there exists an LWWRegister with the value in the addSet, but
+---a corresponding LWWRegister with the same value AND same ID AND greater timestamp exists in
+    the remove Set: the value has been deleted, it does not exist;
+---a corresponding LWWRegister with the same value AND same ID AND greater timestamp does NOT exist
+    in the remove Set: the value has not been deleted, it exists.
 """
 
 
@@ -61,11 +71,15 @@ class LWWSet():
     """Internal methods"""
 
     def __lookup(self, value) -> LWWRegister:
-        for a in self.__findInAddSetSortByDescendingTimestamp(value):  # TODO this should be solved by the LWWStack
+        for a in self.__findInAddSetSortByDescendingTimestamp(value):
             if not self.__removeExistsForRegister(a):
                 return a
 
         return None
+    
+    """
+    TODO: This could be more efficient if we used deque instead of set for A and R.
+    """
 
     def __findInAddSetSortByDescendingTimestamp(self, value) -> List[LWWRegister]:
         

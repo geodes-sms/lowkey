@@ -16,6 +16,10 @@ class LWWStackTests(unittest.TestCase):
         lwwStack.push("message 1", 10)
         self.assertEqual(lwwStack.peek().query(), "message 1")
         lwwStack.push("message 2", 20)
+        
+        for x in lwwStack.getContents():
+            print(x.getTimestamp())
+        
         self.assertEqual(lwwStack.peek().query(), "message 2")
         self.assertEqual(lwwStack.pop().query(), "message 2")
         self.assertEqual(lwwStack.pop().query(), "message 1")
