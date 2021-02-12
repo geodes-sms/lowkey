@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from _codecs import register
 from typing import List
 
 from lww.LWWRegister import LWWRegister
