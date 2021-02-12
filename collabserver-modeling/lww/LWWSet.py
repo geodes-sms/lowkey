@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+from _codecs import register
+from typing import List
+
 from lww.LWWRegister import LWWRegister
 
 __author__ = "Istvan David"
@@ -18,70 +21,78 @@ class LWWSet():
         self.__addSet = set()
         self.__removeSet = set()
     
+    """TODO: def __iter__(self):"""
+    
+    """Interface methods"""
+
     def query(self, value) -> bool:
-        return True if self.__findByValue(value) else False
+        return True if self.__lookup(value) else False
     
-    def __findByValue(self, value) -> LWWRegister:
-        a = self.__findLatestInAddSet(value)
+    def add(self, value, timestamp: int):
+        """We really have to use this one here instead of
+        a = self.__findInAddSetSortByDescendingTimestamp(value). By doing so, we allow potentially
+        duplicated A-entries, but we account for potentially late R-entries invalidating an older
+        A-entry.
+        The only catch is, that lookup(value) should interpret duplicated A-entries as one masking
+        the other, and only the latest shall be interpreted as existing.
+        """
+        a = self.__lookup(value)
         
-        if not a:
-            return None
-        
-        return a if self.__exists(a) else None
-        
-    def __findLatestInAddSet(self, value):
-        addSetOccurrences = self.__findInAddSet(value)
-        return self.__orderByTimestamp(addSetOccurrences)[0] if addSetOccurrences else None
+        if not a or a.getTimestamp() < timestamp:
+            self.__addRegisterWithValue(value, timestamp)
+            
+    def remove(self, value, timestamp: int):
+        self.__removeRegisterWithValue(value, timestamp)
     
-    def __findLatestInRemoveSet(self, value):
-        removeSetOccurrences = self.__findInRemoveSet(value)
-        return self.__orderByTimestamp(removeSetOccurrences)[0] if removeSetOccurrences else None
-
-    def __findInAddSet(self, value):
-        return self.__findInInternalSet(value, self.__addSet)
-    
-    def __findInRemoveSet(self, value):
-        return self.__findInInternalSet(value, self.__removeSet)
-    
-    def __findInInternalSet(self, value, _set):
-        return [a for a in _set if a.query() == value]
-    
-    def __orderByTimestamp(self, setElementCollection):
-
-        def timestamp(elem):
-            return elem.getTimestamp()
-        
-        return sorted(setElementCollection, key=timestamp, reverse=True)
-
-    def add(self, element, timestamp: int):
-        if not self.query(element):
-            self.__addElement(element, timestamp)
-
-    def __addElement(self, element, timestamp):
-        self.__addSet.add(LWWRegister(element, timestamp))
-    
-    def remove(self, element, timestamp: int):
-        if self.query(element):
-            self.__removeElement(element, timestamp)
-    
-    def __removeElement(self, element, timestamp):
-        self.__removeSet.add(LWWRegister(element, timestamp))
-        
     def clear(self, timestamp: int):
-        [self.__removeElement(a.query(), timestamp) for a in self.__addSet if self.__exists(a)]
-                
-    def __exists(self, element):
-        return True if self.__noEffectiveRemoveExists(element) else False
-    
-    def __noEffectiveRemoveExists(self, latestAddOfElement):
-        latestRemoveOfElement = self.__findLatestInRemoveSet(latestAddOfElement.query())
-        
-        return (not latestRemoveOfElement or latestRemoveOfElement.getTimestamp() < latestAddOfElement.getTimestamp())
+        for a in self.__addSet:
+            if not self.__removeExistsForRegister(a):
+                self.__removeRegister(a, timestamp)
     
     def size(self) -> int:
-        return sum(self.__exists(a) for a in self.__addSet)
+        counted = set()
+        for a in self.__addSet:
+            if not self.__removeExistsForRegister(a):
+                counted.add(a.getValue())
+        return len(counted)
     
-    """TODO: def __iter__(self):"""
-    """TODO:"""
-    def merge(self, otherSet):
+    def merge(self, otherSet):  # TODO
         pass
+    
+    """Internal methods"""
+
+    def __lookup(self, value) -> LWWRegister:
+        for a in self.__findInAddSetSortByDescendingTimestamp(value):  # TODO this should be solved by the LWWStack
+            if not self.__removeExistsForRegister(a):
+                return a
+
+        return None
+
+    def __findInAddSetSortByDescendingTimestamp(self, value) -> List[LWWRegister]:
+        
+        def __orderByTimestamp(setElementCollection):
+
+            def timestamp(elem):
+                return elem.getTimestamp()
+            
+            return sorted(setElementCollection, key=timestamp, reverse=True)
+        
+        return __orderByTimestamp([a for a in self.__addSet if a.query() == value])
+    
+    def __removeExistsForRegister(self, a) -> List[LWWRegister]:
+        for r in self.__removeSet:
+            if r == a and r.getTimestamp() > a.getTimestamp():
+                return True
+        
+        return False
+
+    def __addRegisterWithValue(self, value, timestamp):
+        valueInHistory = self.__findInAddSetSortByDescendingTimestamp(value)
+        prototype = valueInHistory[0] if valueInHistory else None
+        self.__addSet.add(LWWRegister(value, timestamp, prototype))
+    
+    def __removeRegisterWithValue(self, value, timestamp):
+        self.__removeSet.add(LWWRegister(value, timestamp, self.__lookup(value)))
+        
+    def __removeRegister(self, aRegister, timestamp):
+        self.__removeSet.add(LWWRegister(timestamp=timestamp, prototype=aRegister))
