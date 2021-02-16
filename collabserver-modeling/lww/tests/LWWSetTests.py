@@ -23,6 +23,7 @@ class LWWSetTests(unittest.TestCase):
         self.assertNotEqual(e1, e2)
         self.assertEqual(e1, e3)
     '''
+
     def testQueryOnEmptySetReturnsFalse(self):
         lwwSet = LWWSet()
         self.assertFalse(lwwSet.query("element"))
@@ -137,6 +138,50 @@ class LWWSetTests(unittest.TestCase):
         
         lwwSet.clear(30)
         self.assertEqual(lwwSet.size(), 0)
+    
+    def testIterations(self):
+        lwwSet = LWWSet()
+        
+        lwwSet.add("element1", 10)    
+        lwwSet.add("element2", 20)
+        self.assertEqual(lwwSet.size(), 2)
+        
+        i = 0
+        for _ in lwwSet:
+            i += 1
+        self.assertEquals(i, 2)
+        
+        lwwSet.add("element3", 30)
+        self.assertEqual(lwwSet.size(), 3)
+        
+        i = 0
+        for _ in lwwSet:
+            i += 1
+        self.assertEquals(i, 3)
+        
+        lwwSet.remove("element2", 40)
+        self.assertEqual(lwwSet.size(), 2)
+        
+        i = 0
+        for _ in lwwSet:
+            i += 1
+        self.assertEquals(i, 2)
+        
+        lwwSet.add("element3", 50)
+        self.assertEqual(lwwSet.size(), 2)
+        
+        i = 0
+        for _ in lwwSet:
+            i += 1
+        self.assertEquals(i, 2)
+        
+        lwwSet.clear(60)
+        self.assertEqual(lwwSet.size(), 0)
+        
+        i = 0
+        for _ in lwwSet:
+            i += 1
+        self.assertEquals(i, 0)
         
     def testMergeDifferent(self):
         pass
@@ -158,6 +203,7 @@ class LWWSetTests(unittest.TestCase):
         self.assertEqual(lwwSet1.size(), 4)
         self.assertEqual(lwwSet2.size(), 2)
         """
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -23,14 +23,25 @@ exists once. The following cases can happen:
     in the remove Set: the value has not been deleted, it exists.
 """
 
-
-class LWWSet():
     
+class LWWSet():
+            
     def __init__(self):
         self.__addSet = set()
         self.__removeSet = set()
-    
-    """TODO: def __iter__(self):"""
+
+    def __iter__(self):
+        self.__currentlyExisting = self.__lookupExisting()
+        self.__currentIteratorIndex = len(self.__currentlyExisting)
+        return self
+
+    def __next__(self):
+        if self.__currentIteratorIndex > 0:
+            self.__currentIteratorIndex -= 1
+            element = self.__currentlyExisting[self.__currentIteratorIndex]
+            return element
+        else: 
+            raise StopIteration
     
     """Interface methods"""
 
@@ -47,7 +58,7 @@ class LWWSet():
         """
         a = self.__lookup(value)
         
-        if not a or a.getTimestamp() < timestamp:
+        if not a: # or a.getTimestamp() < timestamp: -- Disallowing duplicate entries to prevent complications stemming from shadowing
             self.__addRegisterWithValue(value, timestamp)
             
     def remove(self, value, timestamp: int):
@@ -59,11 +70,7 @@ class LWWSet():
                 self.__removeRegister(a, timestamp)
     
     def size(self) -> int:
-        counted = set()
-        for a in self.__addSet:
-            if not self.__removeExistsForRegister(a):
-                counted.add(a.query())
-        return len(counted)
+        return len(self.__lookupExisting())
     
     def merge(self, otherSet):  # TODO
         pass
@@ -76,6 +83,13 @@ class LWWSet():
                 return a
 
         return None
+    
+    def __lookupExisting(self):
+        counted = set() #takes care of omitting shadowed values
+        for a in self.__addSet:
+            if not self.__removeExistsForRegister(a):
+                counted.add(a.query())
+        return list(counted)
     
     """
     TODO: This could be more efficient if we used deque instead of set for A and R.
