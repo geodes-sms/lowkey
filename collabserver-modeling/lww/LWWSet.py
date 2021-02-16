@@ -3,7 +3,7 @@ from typing import List
 
 from lww.LWWRegister import LWWRegister
 
-__author__ = "Istvan David"
+_author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
 __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
@@ -49,16 +49,9 @@ class LWWSet():
         return True if self.__lookup(value) else False
     
     def add(self, value, timestamp: int):
-        """We really have to use this one here instead of
-        a = self.__findInAddSetSortByDescendingTimestamp(value). By doing so, we allow potentially
-        duplicated A-entries, but we account for potentially late R-entries invalidating an older
-        A-entry.
-        The only catch is, that lookup(value) should interpret duplicated A-entries as one masking
-        the other, and only the latest shall be interpreted as existing.
-        """
         a = self.__lookup(value)
         
-        if not a: # or a.getTimestamp() < timestamp: -- Disallowing duplicate entries to prevent complications stemming from shadowing
+        if not a:  # disallowing duplicate entries to prevent complications stemming from shadowing
             self.__addRegisterWithValue(value, timestamp)
             
     def remove(self, value, timestamp: int):
@@ -85,11 +78,11 @@ class LWWSet():
         return None
     
     def __lookupExisting(self):
-        counted = set() #takes care of omitting shadowed values
+        found = set()  # the set takes care of omitting shadowed values
         for a in self.__addSet:
             if not self.__removeExistsForRegister(a):
-                counted.add(a.query())
-        return list(counted)
+                found.add(a.query())
+        return list(found)
     
     """
     TODO: This could be more efficient if we used deque instead of set for A and R.
