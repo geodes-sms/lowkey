@@ -183,6 +183,20 @@ class LWWSetTests(unittest.TestCase):
             i += 1
         self.assertEquals(i, 0)
         
+    def testIterationContents(self):
+        lwwSet = LWWSet()
+        
+        elements = ["element1", "element2"]
+        
+        lwwSet.add(elements[0], 10)    
+        lwwSet.add(elements[1], 20)
+        self.assertEqual(lwwSet.size(), 2)
+        
+        i = 0
+        for value in lwwSet:
+            self.assertEquals(value, elements[i])
+            i+=1
+        
     def testMergeDifferent(self):
         pass
         """
