@@ -46,13 +46,16 @@ class LWWSet():
     """Interface methods"""
 
     def query(self, value) -> bool:
-        return True if self.__lookup(value) else False
+        return True if self.lookup(value) else False
     
-    def add(self, value, timestamp: int):
-        a = self.__lookup(value)
+    def add(self, value, timestamp: int) -> bool:
+        a = self.lookup(value)
         
         if not a or a.getTimestamp() < timestamp: # recording every add to account for late removals
             self.__addRegisterWithValue(value, timestamp)
+            return True
+        
+        return False
             
     def remove(self, value, timestamp: int):
         self.__removeRegisterWithValue(value, timestamp)
@@ -68,14 +71,14 @@ class LWWSet():
     def merge(self, otherSet):  # TODO
         pass
     
-    """Internal methods"""
-
-    def __lookup(self, value) -> LWWRegister:
+    def lookup(self, value) -> LWWRegister:
         for a in self.__findInAddSetSortByDescendingTimestamp(value):
             if not self.__removeExistsForRegister(a):
                 return a
 
         return None
+    
+    """Internal methods"""
     
     def __lookupExisting(self):
         found = set()  # the set takes care of omitting shadowed values
@@ -112,7 +115,7 @@ class LWWSet():
         self.__addSet.add(LWWRegister(value, timestamp, prototype))
     
     def __removeRegisterWithValue(self, value, timestamp):
-        self.__removeSet.add(LWWRegister(value, timestamp, self.__lookup(value)))
+        self.__removeSet.add(LWWRegister(value, timestamp, self.lookup(value)))
         
     def __removeRegister(self, aRegister, timestamp):
         self.__removeSet.add(LWWRegister(timestamp=timestamp, prototype=aRegister))
