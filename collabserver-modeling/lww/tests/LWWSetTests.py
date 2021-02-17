@@ -96,6 +96,21 @@ class LWWSetTests(unittest.TestCase):
         lwwSet.add(element1, 30)
         self.assertEqual(lwwSet.size(), 1)
         
+    def testAddAddRemoveWithDelay(self):
+        lwwSet = LWWSet()
+        self.assertEqual(lwwSet.size(), 0)
+        
+        element1 = "element1"
+        
+        lwwSet.add(element1, 10)
+        self.assertEqual(lwwSet.size(), 1)
+        
+        lwwSet.add(element1, 30)
+        self.assertEqual(lwwSet.size(), 1)
+        
+        lwwSet.remove(element1, 20)
+        self.assertEqual(lwwSet.size(), 1)
+        
     def testSize(self):
         lwwSet = LWWSet()
         self.assertEqual(lwwSet.size(), 0)
