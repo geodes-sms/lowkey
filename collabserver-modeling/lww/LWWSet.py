@@ -51,7 +51,7 @@ class LWWSet():
     def add(self, value, timestamp: int):
         a = self.__lookup(value)
         
-        if not a:  # disallowing duplicate entries to prevent complications stemming from shadowing
+        if not a or a.getTimestamp() < timestamp: # recording every add to account for late removals
             self.__addRegisterWithValue(value, timestamp)
             
     def remove(self, value, timestamp: int):
