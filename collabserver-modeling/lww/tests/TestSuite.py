@@ -4,6 +4,7 @@ import unittest
 from lww.tests.LWWRegisterMultiUserTests import LWWRegisterMultiUserTests
 from lww.tests.LWWRegisterTests import LWWRegisterTests
 from lww.tests.LWWSetTests import LWWSetTests
+from lww.tests.EmbeddingTests import EmbeddingTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -15,7 +16,7 @@ Full test suite for the LWW implementations.
 """
 
 def create_suite():
-    testCases = [LWWRegisterTests, LWWRegisterMultiUserTests, LWWSetTests]
+    testCases = [LWWRegisterTests, LWWRegisterMultiUserTests, LWWSetTests, EmbeddingTests]
     loadedCases = []
     
     for case in testCases:
