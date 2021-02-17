@@ -192,10 +192,8 @@ class LWWSetTests(unittest.TestCase):
         lwwSet.add(elements[1], 20)
         self.assertEqual(lwwSet.size(), 2)
         
-        i = 0
         for value in lwwSet:
-            self.assertEquals(value, elements[i])
-            i+=1
+            self.assertTrue(value in elements)
         
     def testMergeDifferent(self):
         pass
