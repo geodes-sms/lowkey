@@ -12,18 +12,6 @@ __license__ = "GPL-3.0"
 
 class LWWSetTests(unittest.TestCase):
 
-    '''
-    def testSetElementObjectEquality(self):
-        e1 = SetElement("hello", 10)
-        e2 = SetElement("world", 20)
-        e3 = SetElement("hello", 30)
-        
-        self.assertTrue(e1 != e2)
-        self.assertTrue(e1 == e3)
-        self.assertNotEqual(e1, e2)
-        self.assertEqual(e1, e3)
-    '''
-
     def testQueryOnEmptySetReturnsFalse(self):
         lwwSet = LWWSet()
         self.assertFalse(lwwSet.query("element"))
@@ -209,27 +197,6 @@ class LWWSetTests(unittest.TestCase):
         
         for value in lwwSet:
             self.assertTrue(value in elements)
-        
-    def testMergeDifferent(self):
-        pass
-        """
-        lwwSet1 = LWWSet()
-        lwwSet2 = LWWSet()
-        
-        lwwSet1.add("element1", 10)
-        self.assertEqual(lwwSet1.size(), 1)
-        lwwSet1.add("element2", 20)
-        self.assertEqual(lwwSet1.size(), 2)
-        
-        lwwSet2.add("element3", 10)
-        self.assertEqual(lwwSet2.size(), 1)
-        lwwSet2.add("element4", 20)
-        self.assertEqual(lwwSet2.size(), 2)
-        
-        lwwSet1.merge(lwwSet2)
-        self.assertEqual(lwwSet1.size(), 4)
-        self.assertEqual(lwwSet2.size(), 2)
-        """
 
 
 if __name__ == "__main__":
