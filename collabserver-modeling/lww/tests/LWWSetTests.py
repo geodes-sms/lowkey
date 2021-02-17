@@ -164,7 +164,7 @@ class LWWSetTests(unittest.TestCase):
         i = 0
         for _ in lwwSet:
             i += 1
-        self.assertEquals(i, 2)
+        self.assertEqual(i, 2)
         
         lwwSet.add("element3", 30)
         self.assertEqual(lwwSet.size(), 3)
@@ -172,7 +172,7 @@ class LWWSetTests(unittest.TestCase):
         i = 0
         for _ in lwwSet:
             i += 1
-        self.assertEquals(i, 3)
+        self.assertEqual(i, 3)
         
         lwwSet.remove("element2", 40)
         self.assertEqual(lwwSet.size(), 2)
@@ -180,7 +180,7 @@ class LWWSetTests(unittest.TestCase):
         i = 0
         for _ in lwwSet:
             i += 1
-        self.assertEquals(i, 2)
+        self.assertEqual(i, 2)
         
         lwwSet.add("element3", 50)
         self.assertEqual(lwwSet.size(), 2)
@@ -188,7 +188,7 @@ class LWWSetTests(unittest.TestCase):
         i = 0
         for _ in lwwSet:
             i += 1
-        self.assertEquals(i, 2)
+        self.assertEqual(i, 2)
         
         lwwSet.clear(60)
         self.assertEqual(lwwSet.size(), 0)
@@ -196,7 +196,7 @@ class LWWSetTests(unittest.TestCase):
         i = 0
         for _ in lwwSet:
             i += 1
-        self.assertEquals(i, 0)
+        self.assertEqual(i, 0)
         
     def testIterationContents(self):
         lwwSet = LWWSet()
