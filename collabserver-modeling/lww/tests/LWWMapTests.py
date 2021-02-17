@@ -14,15 +14,30 @@ class LWWMapTests(unittest.TestCase):
     def testAddEntry(self):
         lwwMap = LWWMap()
         
-        key = "ABC"
-        value = 123
-        lwwMap.add(key, value, 10)
+        key1 = "name"
+        value1 = "Istvan"
+        lwwMap.add(key1, value1, 10)
         
-        self.assertEqual(lwwMap.query(key), value)
+        self.assertEqual(lwwMap.query(key1), value1)
+        self.assertEqual(lwwMap.size(), 1)
         
-        lwwMap.remove(key, 20)
-        self.assertEqual(lwwMap.query(key), None)
+        key2 = "profession"
+        value2 = "researcher"
+        lwwMap.add(key2, value2, 20)
         
+        self.assertEqual(lwwMap.query(key2), value2)
+        self.assertEqual(lwwMap.size(), 2)
+        
+        
+        value3 = "David"
+        lwwMap.update(key1, value3, 30)
+        
+        self.assertEqual(lwwMap.query(key1), value3)
+        self.assertEqual(lwwMap.size(), 2)
+        
+        lwwMap.remove(key1, 30)
+        self.assertEqual(lwwMap.query(key1), None)
+        self.assertEqual(lwwMap.size(), 1)
 
 if __name__ == "__main__":
     unittest.main()
