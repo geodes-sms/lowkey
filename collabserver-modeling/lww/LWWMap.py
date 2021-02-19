@@ -22,8 +22,14 @@ class Mapping():
     def getKey(self):
         return self.__key.query()
     
+    def getKeyRegister(self):
+        return self.__key
+    
     def getValue(self):
         return self.__value.query()
+    
+    def getValueRegister(self):
+        return self.__value
     
     def getTimestamp(self):
         return self.getValue().getTimestamp()
@@ -38,37 +44,37 @@ class LWWMap():
     """Interface methods"""
     
     def query(self, key):
-        mapping = None
-        
-        if self.__keySet.query(key):
-            for m in self.__mappings:
-                if m.getKey() == key:
-                    mapping = m
-                    break
+        mapping = self.__lookupMapping(key)
         
         if mapping:
             return mapping.getValue()
         return None
     
     def add(self, key, value, timestamp: int):
-        added = self.__keySet.add(key, timestamp)
+        keyRegister = self.__keySet.add(key, timestamp)
         
-        if added:
-            self.__mappings.add(Mapping(self.__keySet.lookup(key), value, timestamp))
+        if not keyRegister:
+            pass  # fail silent
+        
+        self.__mappings.add(Mapping(keyRegister, value, timestamp))
     
     def remove(self, key, timestamp: int):
         currentMapping = self.__lookupMapping(key)
         
-        if currentMapping:
-            self.__mappings.remove(currentMapping)
+        if not currentMapping:
+            raise KeyError  # this would mean an earlier value insertion/removal discrepancy
+        
+        self.__mappings.remove(currentMapping)
         self.__keySet.remove(key, timestamp)
     
     def update(self, key, newValue, timestamp):
         currentMapping = self.__lookupMapping(key)
         
-        if currentMapping:
-            self.__mappings.remove(currentMapping)
-            self.__mappings.add(Mapping(self.__keySet.lookup(key), newValue, timestamp))
+        if not currentMapping:
+            raise KeyError  # this would mean an earlier value insertion/removal discrepancy
+            
+        self.__mappings.remove(currentMapping)
+        self.__mappings.add(Mapping(self.__keySet.lookup(key), newValue, timestamp))
                     
     def clear(self, timestamp: int):
         pass
@@ -77,7 +83,7 @@ class LWWMap():
         return self.__keySet.size()
     
     """Internal methods"""
-
+     
     def __lookupMapping(self, key):
         mapping = None
         

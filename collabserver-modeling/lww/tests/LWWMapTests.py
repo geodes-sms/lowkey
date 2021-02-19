@@ -28,7 +28,6 @@ class LWWMapTests(unittest.TestCase):
         self.assertEqual(lwwMap.query(key2), value2)
         self.assertEqual(lwwMap.size(), 2)
         
-        
         value3 = "David"
         lwwMap.update(key1, value3, 30)
         
@@ -38,6 +37,7 @@ class LWWMapTests(unittest.TestCase):
         lwwMap.remove(key1, 30)
         self.assertEqual(lwwMap.query(key1), None)
         self.assertEqual(lwwMap.size(), 1)
+        self.assertEqual(lwwMap.query(key2), value2)
 
 if __name__ == "__main__":
     unittest.main()

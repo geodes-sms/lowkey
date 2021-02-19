@@ -52,10 +52,10 @@ class LWWSet():
         a = self.lookup(value)
         
         if not a or a.getTimestamp() < timestamp: # recording every add to account for late removals
-            self.__addRegisterWithValue(value, timestamp)
-            return True
+            register = self.__addRegisterWithValue(value, timestamp)
+            return register
         
-        return False
+        return None
             
     def remove(self, value, timestamp: int):
         self.__removeRegisterWithValue(value, timestamp)
@@ -112,7 +112,9 @@ class LWWSet():
     def __addRegisterWithValue(self, value, timestamp):
         valueInHistory = self.__findInAddSetSortByDescendingTimestamp(value)
         prototype = valueInHistory[0] if valueInHistory else None
-        self.__addSet.add(LWWRegister(value, timestamp, prototype))
+        register = LWWRegister(value, timestamp, prototype)
+        self.__addSet.add(register)
+        return register
     
     def __removeRegisterWithValue(self, value, timestamp):
         self.__removeSet.add(LWWRegister(value, timestamp, self.lookup(value)))
