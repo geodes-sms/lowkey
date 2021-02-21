@@ -48,13 +48,13 @@ class LWWSet():
     def exists(self, value) -> bool:
         return True if self.lookup(value) else False
 
-    #def query(self, value) -> bool:
-    #    return True if self.lookup(value) else False
+    def query(self, value):
+        return self.lookup(value).query()
     
     def add(self, value, timestamp: int) -> bool:
         a = self.lookup(value)
         
-        if not a or a.getTimestamp() < timestamp: # recording every add to account for late removals
+        if not a or a.getTimestamp() < timestamp:  # recording every add to account for late removals
             register = self.__addRegisterWithValue(value, timestamp)
             return register
         
