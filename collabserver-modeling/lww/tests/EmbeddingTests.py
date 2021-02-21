@@ -41,7 +41,7 @@ class EmbeddingTests(unittest.TestCase):
         retrievedEmbedded = base.query()
         self.assertTrue(retrievedEmbedded)
         self.assertTrue(isinstance(retrievedEmbedded, LWWSet))        
-        self.assertTrue(retrievedEmbedded.query(value))
+        self.assertTrue(retrievedEmbedded.exists(value))
         
     def testEmbedRegisterInSet(self):
         base = LWWSet()
@@ -52,7 +52,7 @@ class EmbeddingTests(unittest.TestCase):
         embedded.update(value, 10)
         base.add(embedded, 20)
         
-        self.assertTrue(base.query(embedded))
+        self.assertTrue(base.exists(embedded))
         
     def testEmbedSetInSet(self):
         base = LWWSet()
@@ -63,14 +63,14 @@ class EmbeddingTests(unittest.TestCase):
         embedded.add(value, 10)
         base.add(embedded, 20)
         
-        self.assertTrue(base.query(embedded))
+        self.assertTrue(base.exists(embedded))
         
         newValue = "element2"
         embedded.add(newValue, 30)
         
-        self.assertTrue(base.query(embedded))
-        self.assertTrue(embedded.query(value))
-        self.assertTrue(embedded.query(newValue))
+        self.assertTrue(base.exists(embedded))
+        self.assertTrue(embedded.exists(value))
+        self.assertTrue(embedded.exists(newValue))
 
 
 if __name__ == "__main__":

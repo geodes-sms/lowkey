@@ -12,18 +12,18 @@ __license__ = "GPL-3.0"
 
 class LWWSetTests(unittest.TestCase):
 
-    def testQueryOnEmptySetReturnsFalse(self):
+    def testExistsOnEmptySetReturnsFalse(self):
         lwwSet = LWWSet()
-        self.assertFalse(lwwSet.query("element"))
+        self.assertFalse(lwwSet.exists("element"))
 
-    def testAddingElementShowsUpInQuery(self):
+    def testAddingElementMakesItExist(self):
         lwwSet = LWWSet()
         
         key = "element"
-        self.assertFalse(lwwSet.query(key))
+        self.assertFalse(lwwSet.exists(key))
         
         lwwSet.add(key, Time.current())
-        self.assertTrue(lwwSet.query(key))
+        self.assertTrue(lwwSet.exists(key))
 
     def testAddingElementsReflectsInSize(self):
         lwwSet = LWWSet()
@@ -54,20 +54,20 @@ class LWWSetTests(unittest.TestCase):
         lwwSet.add(key, addTime2)
         self.assertEqual(lwwSet.size(), 1)
     
-    def testRemovedElementDoesNotShowUpInQuery(self):
+    def testRemovedElementDoesNotExist(self):
         lwwSet = LWWSet()
         
         key = "element"
-        self.assertFalse(lwwSet.query(key))
+        self.assertFalse(lwwSet.exists(key))
         
         addTime = 10
         removeTime = 20
         
         lwwSet.add(key, addTime)
-        self.assertTrue(lwwSet.query(key))
+        self.assertTrue(lwwSet.exists(key))
         
         lwwSet.remove(key, removeTime)
-        self.assertFalse(lwwSet.query(key))
+        self.assertFalse(lwwSet.exists(key))
         
     def testAddRemoveAdd(self):
         lwwSet = LWWSet()
@@ -117,7 +117,7 @@ class LWWSetTests(unittest.TestCase):
         self.assertEqual(lwwSet.size(), 2)
         
         lwwSet.remove(element1, 25)
-        self.assertFalse(lwwSet.query(element1))
+        self.assertFalse(lwwSet.exists(element1))
         self.assertEqual(lwwSet.size(), 1)
         
         lwwSet.remove(element1, 30)

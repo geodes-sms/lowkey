@@ -44,9 +44,12 @@ class LWWSet():
             raise StopIteration
     
     """Interface methods"""
-
-    def query(self, value) -> bool:
+    
+    def exists(self, value) -> bool:
         return True if self.lookup(value) else False
+
+    #def query(self, value) -> bool:
+    #    return True if self.lookup(value) else False
     
     def add(self, value, timestamp: int) -> bool:
         a = self.lookup(value)
