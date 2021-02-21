@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 import unittest
 
+from lww.tests.EmbeddingTests import EmbeddingTests
+from lww.tests.LWWGraphTests import LWWGrapTests
+from lww.tests.LWWMapTests import LWWMapTests
 from lww.tests.LWWRegisterMultiUserTests import LWWRegisterMultiUserTests
 from lww.tests.LWWRegisterTests import LWWRegisterTests
 from lww.tests.LWWSetTests import LWWSetTests
-from lww.tests.EmbeddingTests import EmbeddingTests
-from lww.tests.LWWMapTests import LWWMapTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -16,8 +17,9 @@ __license__ = "GPL-3.0"
 Full test suite for the LWW implementations.
 """
 
+
 def create_suite():
-    testCases = [LWWRegisterTests, LWWRegisterMultiUserTests, LWWSetTests, LWWMapTests, EmbeddingTests]
+    testCases = [LWWRegisterTests, LWWRegisterMultiUserTests, LWWSetTests, LWWMapTests, LWWGrapTests, EmbeddingTests]
     loadedCases = []
     
     for case in testCases:
@@ -25,7 +27,8 @@ def create_suite():
 
     return unittest.TestSuite(loadedCases)
 
+
 if __name__ == '__main__':
     suite = create_suite()
-    runner=unittest.TextTestRunner()
+    runner = unittest.TextTestRunner()
     runner.run(suite)
