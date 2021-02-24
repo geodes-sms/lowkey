@@ -49,10 +49,7 @@ class LWWMap():
     
     def query(self, key):
         mapping = self.__lookupMapping(key)
-        
-        if mapping:
-            return mapping.getValue()
-        return None
+        return mapping.getValue() if mapping else False
     
     def exists(self, key):
         return True if self.__lookupMapping(key) else False
