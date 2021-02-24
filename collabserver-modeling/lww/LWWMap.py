@@ -54,6 +54,9 @@ class LWWMap():
             return mapping.getValue()
         return None
     
+    def exists(self, key):
+        return True if self.__lookupMapping(key) else False
+    
     def add(self, key, value, timestamp: int):
         newKeyRegister = self.__keySet.add(key, timestamp)
         

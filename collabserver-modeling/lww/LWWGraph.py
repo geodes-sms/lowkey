@@ -1,5 +1,7 @@
 #!/usr/bin/env python
+from lww.LWWMap import LWWMap
 from lww.LWWSet import LWWSet
+
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -14,27 +16,23 @@ LWWGraph data type.
 class LWWGraph():
     
     def __init__(self):
-        self.__verteces = LWWSet()
-        self.__edges = LWWSet()
+        self.__graphMap = LWWMap()
     
     """Interface methods: accessors"""
         
-    def getVertexes(self):
-        return self.__verteces
-    
-    def getEdges(self):
-        return self.__edges
+    def size(self):
+        return self.__graphMap.size()
     
     """Interface methods: vertices"""
 
     def vertexExists(self, vertex) -> bool:
-        return self.__verteces.exists(vertex)
+        return self.__graphMap.exists(vertex)
     
-    def queryVertex(self, vertex):
-        return self.__verteces.query(vertex)
+    def getAdjacencySet(self, vertex):
+        return self.__graphMap.query(vertex)
     
     def addVertex(self, vertex, timestamp: int):
-        return self.__verteces.add(vertex, timestamp)
+        return self.__graphMap.add(vertex, LWWSet(), timestamp)
     
     def removeVertex(self, vertex, timestamp: int):
         pass
@@ -42,12 +40,20 @@ class LWWGraph():
     """Interface methods: edges"""
 
     def edgeExists(self, edge) -> bool:
-        return self.__edges.exists(edge)
+        pass
     
     def queryEdge(self, edge):
-        return self.__edges.query(edge)
+        pass
     
-    def addEdge(self, sourceVertexId, destinationVertexId, timestamp: int):
+    def addEdge(self, edge, sourceVertex, destinationVertex, timestamp: int):
+        if not self.vertexExists(sourceVertex):
+            raise KeyError("Source vertex does not exist.")
+        if not self.vertexExists(destinationVertex):
+            raise KeyError("Destination vertex does not exist.")
+        
+        self.getAdjacencySet(sourceVertex).add(edge, timestamp)
+    
+    def addEdgeByVertexId(self, edge, sourceVertexId, destinationVertexId, timestamp: int):
         pass
     
     def removeEdge(self, sourceVertexId, destinationVertexId, timestamp: int):
