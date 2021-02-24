@@ -16,23 +16,23 @@ LWWGraph data type.
 class LWWGraph():
     
     def __init__(self):
-        self.__graphMap = LWWMap()
+        self.__adjacencyMap = LWWMap()
     
     """Interface methods: accessors"""
         
     def size(self):
-        return self.__graphMap.size()
+        return self.__adjacencyMap.size()
     
     """Interface methods: vertices"""
 
     def vertexExists(self, vertex) -> bool:
-        return self.__graphMap.exists(vertex)
+        return self.__adjacencyMap.exists(vertex)
     
     def getAdjacencySet(self, vertex):
-        return self.__graphMap.query(vertex)
+        return self.__adjacencyMap.query(vertex)
     
     def addVertex(self, vertex, timestamp: int):
-        return self.__graphMap.add(vertex, LWWSet(), timestamp)
+        return self.__adjacencyMap.add(vertex, LWWSet(), timestamp)
     
     def removeVertex(self, vertex, timestamp: int):
         pass
