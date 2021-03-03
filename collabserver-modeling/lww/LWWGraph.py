@@ -20,7 +20,7 @@ class LWWGraph():
     
     """Interface methods: accessors"""
         
-    def size(self):
+    def numberOfVertices(self):
         return self.__adjacencyMap.size()
     
     """Interface methods: vertices"""
