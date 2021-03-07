@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from lww import LWWMap
 from lww.LWWRegister import LWWRegister
 from lww.LWWSet import LWWSet
 
@@ -15,6 +16,32 @@ Extends the LWWSet type. The keySet is an LWWSet, and a set Mappings is used to 
 keys. For each key, there is one mapping, which holds (i) a reference to the key, (ii) the value, and
 (iii) a timestamp. The construct is augmented with CRDT semantics by the keySet's LWWSet.
 """
+
+
+class EntrySet():
+
+    def __init__(self, lwwMap:LWWMap):
+        self.__lwwMap = lwwMap
+        self.__entries = list()
+            
+    def __collectEntries(self):
+        self.__entries = list()
+        for key in self.__lwwMap.getKeySet():
+            value = self.__lwwMap.query(key)
+            self.__entries.append((key, value))
+        
+    def __iter__(self):
+        self.__collectEntries()
+        self.__currentIteratorIndex = len(self.__entries)
+        return self
+
+    def __next__(self):
+        if self.__currentIteratorIndex > 0:
+            self.__currentIteratorIndex -= 1
+            entry = self.__entries[self.__currentIteratorIndex]
+            return entry
+        else: 
+            raise StopIteration
 
 
 class Mapping():
@@ -44,6 +71,14 @@ class LWWMap():
     def __init__(self):
         self.__keySet = LWWSet()
         self.__mappings = set()
+    
+    """Getters"""
+    
+    def getKeySet(self):
+        return self.__keySet
+    
+    def entrySet(self):
+        return EntrySet(self)
     
     """Interface methods"""
     
