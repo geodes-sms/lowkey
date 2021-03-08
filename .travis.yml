@@ -6,5 +6,5 @@ install:
   - pip install -r requirements.txt
 # command to run tests
 script:
-  - pytest ./collabserver-modeling/lww/tests/TestSuite.py
-  - pytest ./collabserver-modeling/mindmap/tests/TestSuite.py
+  - pytest ./lowkey/lww/tests/TestSuite.py
+  - pytest ./lowkey-examples/mindmap/tests/TestSuite.py
