@@ -1,4 +1,6 @@
 from setuptools import setup
+import sys
+sys.path.append("..")
 
 setup(
     name='collabtypes',
