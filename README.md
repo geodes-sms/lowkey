@@ -26,6 +26,3 @@ Source: [Van Mierlo, Barroca, Vangheluwe, Syriani, Kühne. Multi-Level Modelling
 
 [Shapiro M, Preguiça N, Baquero C, Zawirski M. A comprehensive study of convergent and commutative replicated data types (Doctoral dissertation, Inria–Centre Paris-Rocquencourt; INRIA)](https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf)
 
-## Metamodel of the Mindmap example
-
-<img src="https://raw.githubusercontent.com/david-istvan/collabserver-modeling/main/collabserver-modeling/mindmap/docs/mindmapMM.png?raw=true"/>
