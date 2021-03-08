@@ -45,11 +45,19 @@ class LWWSet():
     
     """Interface methods"""
     
+    def lookup(self, value) -> LWWRegister:
+        for a in self.__findInAddSetSortByDescendingTimestamp(value):
+            if not self.__removeExistsForRegister(a):
+                return a
+
+        return None
+    
+    def query(self, value):
+        lookup = self.lookup(value)
+        return lookup.query() if lookup else None
+    
     def exists(self, value) -> bool:
         return True if self.lookup(value) else False
-
-    def query(self, value):
-        return self.lookup(value).query()
     
     def add(self, value, timestamp: int) -> bool:
         a = self.lookup(value)
@@ -73,13 +81,6 @@ class LWWSet():
     
     def merge(self, otherSet):  # TODO
         pass
-    
-    def lookup(self, value) -> LWWRegister:
-        for a in self.__findInAddSetSortByDescendingTimestamp(value):
-            if not self.__removeExistsForRegister(a):
-                return a
-
-        return None
     
     """Internal methods"""
     
