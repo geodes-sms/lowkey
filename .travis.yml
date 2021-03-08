@@ -4,6 +4,7 @@ python:
 # command to install dependencies
 install:
   - pip install -r requirements.txt
+  - python .lowkey-examples/setup.py install
 # command to run tests
 script:
   - pytest ./lowkey/lww/tests/TestSuite.py
