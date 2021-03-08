@@ -63,7 +63,86 @@ class LWWGrapTests(unittest.TestCase):
         self.assertTrue(isinstance(v2AdjacencySet, LWWSet))
         self.assertEqual(v1AdjacencySet.size(), 1)
         self.assertEqual(v2AdjacencySet.size(), 0)
+        self.assertTrue(lwwGraph.edgeExists(e))
         
+    def testRemoveExistingEdge(self):
+        lwwGraph = LWWGraph()
+        
+        v1 = "A"
+        v2 = "B"
+        e = "edgeAtoB"
+        
+        lwwGraph.addVertex(v1, 10)
+        lwwGraph.addVertex(v2, 20)
+        lwwGraph.addEdge(e, v1, v2, 30)
+        
+        self.assertTrue(lwwGraph.vertexExists(v1))
+        self.assertTrue(lwwGraph.vertexExists(v2))
+        self.assertTrue(lwwGraph.edgeExists(e))
+        
+        lwwGraph.removeEdge(e, 40)
+        self.assertTrue(lwwGraph.vertexExists(v1))
+        self.assertTrue(lwwGraph.vertexExists(v2))
+        self.assertFalse(lwwGraph.edgeExists(e))
+        
+    def testRemoveVertexWithoutEdges(self):
+        lwwGraph = LWWGraph()
+        
+        v1 = "A"
+        v2 = "B"
+        
+        lwwGraph.addVertex(v1, 10)
+        lwwGraph.addVertex(v2, 20)
+        
+        self.assertTrue(lwwGraph.vertexExists(v1))
+        self.assertTrue(lwwGraph.vertexExists(v2))
+        
+        lwwGraph.removeVertex(v1, 30)
+        self.assertFalse(lwwGraph.vertexExists(v1))
+        self.assertTrue(lwwGraph.vertexExists(v2))
+        
+        lwwGraph.removeVertex(v2, 40)
+        self.assertFalse(lwwGraph.vertexExists(v1))
+        self.assertFalse(lwwGraph.vertexExists(v2))
+        
+    def testRemoveVertexWithOutgoingEdge(self):
+        lwwGraph = LWWGraph()
+        
+        v1 = "A"
+        v2 = "B"
+        e = "edgeAtoB"
+        
+        lwwGraph.addVertex(v1, 10)
+        lwwGraph.addVertex(v2, 20)
+        lwwGraph.addEdge(e, v1, v2, 30)
+        
+        self.assertTrue(lwwGraph.vertexExists(v1))
+        self.assertTrue(lwwGraph.vertexExists(v2))
+        self.assertTrue(lwwGraph.edgeExists(e))
+        
+        self.assertRaises(Exception, lwwGraph.removeVertex, v1, 30)
+        self.assertTrue(lwwGraph.vertexExists(v1))
+        self.assertTrue(lwwGraph.vertexExists(v2))
+        
+    def testRemoveVertexWithIncomingEdge(self):
+        lwwGraph = LWWGraph()
+        
+        v1 = "A"
+        v2 = "B"
+        e = "edgeAtoB"
+        
+        lwwGraph.addVertex(v1, 10)
+        lwwGraph.addVertex(v2, 20)
+        lwwGraph.addEdge(e, v1, v2, 30)
+        
+        self.assertTrue(lwwGraph.vertexExists(v1))
+        self.assertTrue(lwwGraph.vertexExists(v2))
+        self.assertTrue(lwwGraph.edgeExists(e))
+        
+        self.assertRaises(Exception, lwwGraph.removeVertex, v2, 40)
+        self.assertTrue(lwwGraph.vertexExists(v1))
+        self.assertTrue(lwwGraph.vertexExists(v2))
+    
         
 if __name__ == "__main__":
     unittest.main()
