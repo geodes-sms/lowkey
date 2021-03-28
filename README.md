@@ -2,7 +2,7 @@
 
 A low-level and transparent framework for collaborative modeling.
 
-[![Build Status](https://travis-ci.com/david-istvan/collabserver-modeling.svg?branch=main)](https://travis-ci.com/david-istvan/lowkey)
+[![Build Status](https://travis-ci.com/david-istvan/lowkey.svg?branch=main)](https://travis-ci.com/david-istvan/lowkey)
 [![License](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # Repository structure
