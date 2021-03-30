@@ -50,8 +50,8 @@ class LWWPlainValueSet():
         if not any(value == removedValue[0] for removedValue in self.__removeSet):
             return True
         
-        lastAdded = max(addedValue[1] for addedValue in self.__addSet if value == addedValue[0])
-        lastRemoved = max(removedValue[1] for removedValue in self.__removeSet if value == removedValue[0])
+        lastAdded = self.__lastTimestamp(value, self.__addSet)
+        lastRemoved = self.__lastTimestamp(value, self.__removeSet)
         
         return lastAdded > lastRemoved
         
@@ -69,17 +69,19 @@ class LWWPlainValueSet():
         if(self.size() == 0):
             return
         
-        addedEntries = self.__groupEntriesByValue(self.__addSet)
+        existing = self.__collectExisting()
         
-        for aKey, _ in addedEntries:
-            if self.lookup(aKey):
-                self.remove(aKey, timestamp)
+        for value, _ in existing:
+            self.remove(value, timestamp)
     
     def size(self) -> int:
         if(len(self.__addSet) == 0):
             return 0
         
         return len(list(self.__collectExisting()))
+    
+    def __lastTimestamp(self, value, entrySet):
+        return max(entry[1] for entry in entrySet if value == entry[0])
     
     def __groupEntriesByValue(self, entrySet):
         keyFunc = lambda x: x[0]
@@ -92,7 +94,7 @@ class LWWPlainValueSet():
         existing = list()
         for key, group in self.__groupEntriesByValue(self.__addSet):
             if self.lookup(key):
-                lastAdded = max(addedValue[1] for addedValue in group if key == addedValue[0])
+                lastAdded = self.__lastTimestamp(key, group)
                 existing.append((key, lastAdded))
                 
         return existing
