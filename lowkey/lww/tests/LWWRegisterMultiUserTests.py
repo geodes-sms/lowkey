@@ -45,7 +45,24 @@ class LWWRegisterMultiUserTests(unittest.TestCase):
         
         self.assertEqual(lwwRegisterA.query(), valueB)
         self.assertEqual(lwwRegisterB.query(), valueB)
+
+    def testDelayedMessages(self):
+        v1 = "v1"
+        v2 = "v2"
+        v3 = "v3"
         
+        register = LWWRegister()
+        
+        register.update(v1, 10)
+        self.assertEqual(register.query(), v1)
+        
+        register.update(v2, 30)
+        self.assertEqual(register.query(), v2)
+        
+        """v2 should be preserved due to the timestamp"""
+        register.update(v3, 20)
+        self.assertEqual(register.query(), v2)
+
 
 if __name__ == "__main__":
     unittest.main()
