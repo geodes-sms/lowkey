@@ -94,6 +94,7 @@ class LWWGraph():
         self.getAdjacencySet(sourceVertex).add(Edge(edgeId, destinationVertex), timestamp)
     
     def removeEdge(self, edgeId, timestamp: int):
-        edge, adjacencySet = self.queryEdge(edgeId)
-        if edge:
-            adjacencySet.remove(Edge(edgeId, edge.getDestinationVertex()), timestamp)
+        edge, adjacencySet = self.queryEdge(edgeId) or (None, None)
+        if not edge:
+            raise Exception("Edge does not exist")
+        adjacencySet.remove(Edge(edgeId, edge.getDestinationVertex()), timestamp)
