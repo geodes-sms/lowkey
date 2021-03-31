@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import itertools
 
 _author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -83,18 +82,28 @@ class LWWPlainValueSet():
     def __lastTimestamp(self, value, entrySet):
         return max(entry[1] for entry in entrySet if value == entry[0])
     
-    def __groupEntriesByValue(self, entrySet):
-        keyFunc = lambda x: x[0]
-        return itertools.groupby(sorted(entrySet, key=keyFunc), keyFunc)
-    
     def __collectExisting(self):
         if len(self.__addSet) == 0:
             return list()
         
+        keyFunc = lambda x: x[1]
+        # sorting in descending order to start with the likely existing ones and short-circuit the loop below
+        addedEntries = sorted(self.__addSet, key=keyFunc, reverse=True)
+        
         existing = list()
-        for key, group in self.__groupEntriesByValue(self.__addSet):
-            if self.lookup(key):
-                lastAdded = self.__lastTimestamp(key, group)
-                existing.append((key, lastAdded))
+        for value, timestamp in addedEntries:
+            if not self.lookup(value):
+                continue
+            
+            existingEntry = next(iter([entry for entry in existing if entry[0] == value]), None)
+            
+            if not existingEntry:
+                existing.append((value, timestamp))
+                continue
+            elif existingEntry[1] < timestamp:
+                existing.remove(existingEntry[0])
+                existing.append((value, timestamp))
+            else:
+                continue
                 
         return existing
