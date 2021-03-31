@@ -76,7 +76,7 @@ class LWWPlainValueMapTests(unittest.TestCase):
         entrySet = lwwMap.entrySet()
         
         entriesVisited = 0
-        for (key, value), timestamp in entrySet:
+        for (key, value), _ in entrySet:
             if(key == key1):
                 self.assertEqual(value, value1)
                 entriesVisited += 1
@@ -93,7 +93,7 @@ class LWWPlainValueMapTests(unittest.TestCase):
         lwwMap.add(key3, value3, 30)
         
         entriesVisited = 0
-        for (key, value), timestamp in entrySet:
+        for (key, value), _ in entrySet:
             if(key == key1):
                 self.assertEqual(value, value1)
                 entriesVisited += 1
