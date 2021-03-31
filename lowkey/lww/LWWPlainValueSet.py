@@ -41,20 +41,26 @@ class LWWPlainValueSet():
         else: 
             raise StopIteration
     
+    def _getValue(self, entry):
+        return entry[0]
+    
+    def _getTimestamp(self, entry):
+        return entry[1]
+    
     """Interface methods"""
     
     def lookup(self, value) -> bool:
-        return any(value == existing[0] for existing in self.__existing())
+        return any(value == self._getValue(existing) for existing in self.__existing())
         
     def add(self, newValue, timestamp: int) -> bool:
-        if any(newValue == addedValue[0] and timestamp < addedValue[1] for addedValue in self.__addSet):  # LWW
+        if any(newValue == self._getValue(addedValue) and timestamp < self._getTimestamp(addedValue) for addedValue in self.__addSet):  # LWW
             return False
         
         self.__addSet.add((newValue, timestamp))
         return True
             
     def remove(self, value, timestamp: int):
-        if any(value == removedValue[0] and timestamp < removedValue[1] for removedValue in self.__removeSet):  # LWW
+        if any(value == self._getValue(removedValue) and timestamp < self._getTimestamp(removedValue) for removedValue in self.__removeSet):  # LWW
             return False
         self.__removeSet.add((value, timestamp))
     
@@ -77,20 +83,20 @@ class LWWPlainValueSet():
         if len(self.__addSet) == 0:
             return list()
         
-        keyFunc = lambda x: x[1]
+        keyFunc = lambda x: self._getTimestamp(x)
         # sorting in descending order to start with the likely existing ones and short-circuit the loop below
         addedEntries = sorted(self.__addSet, key=keyFunc, reverse=True)
         
         existing = list()
         for value, timestamp in addedEntries:
-            existingEntry = next(iter([entry for entry in existing if entry[0] == value]), None)
+            existingEntry = next(iter([entry for entry in existing if self._getValue(entry) == value]), None)
             
             if not existingEntry:
                 if not self.__laterRemoveExists(value, timestamp):
                     existing.append((value, timestamp))
                     continue
-            elif existingEntry[1] < timestamp:
-                existing.remove(existingEntry[0])
+            elif self._getTimestamp(existingEntry) < timestamp:
+                existing.remove(existingEntry)
                 existing.append((value, timestamp))
             else:
                 continue
@@ -98,9 +104,9 @@ class LWWPlainValueSet():
         return existing
     
     def __laterRemoveExists(self, value, timestamp):
-        if not any(value == removedValue[0] for removedValue in self.__removeSet):
+        if not any(value == self._getValue(removedValue) for removedValue in self.__removeSet):
             return False
         
-        lastRemoved = max(entry[1] for entry in self.__removeSet if value == entry[0])
+        lastRemoved = max(self._getTimestamp(entry) for entry in self.__removeSet if value == self._getValue(entry))
         
         return timestamp < lastRemoved
