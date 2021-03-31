@@ -44,24 +44,18 @@ class LWWPlainValueSet():
     """Interface methods"""
     
     def lookup(self, value) -> bool:
-        if not any(value == addedValue[0] for addedValue in self.__addSet):
-            return False
-        if not any(value == removedValue[0] for removedValue in self.__removeSet):
-            return True
-        
-        lastAdded = self.__lastTimestamp(value, self.__addSet)
-        lastRemoved = self.__lastTimestamp(value, self.__removeSet)
-        
-        return lastAdded > lastRemoved
+        return any(value == existing[0] for existing in self.__collectExisting())
         
     def add(self, newValue, timestamp: int) -> bool:
-        if any(newValue == addedValues[0] and timestamp < addedValues[1] for addedValues in self.__addSet):
+        if any(newValue == addedValue[0] and timestamp < addedValue[1] for addedValue in self.__addSet):  # LWW
             return False
         
         self.__addSet.add((newValue, timestamp))
         return True
             
     def remove(self, value, timestamp: int):
+        if any(value == removedValue[0] and timestamp < removedValue[1] for removedValue in self.__removeSet):  # LWW
+            return False
         self.__removeSet.add((value, timestamp))
     
     def clear(self, timestamp: int):
@@ -92,14 +86,12 @@ class LWWPlainValueSet():
         
         existing = list()
         for value, timestamp in addedEntries:
-            if not self.lookup(value):
-                continue
-            
             existingEntry = next(iter([entry for entry in existing if entry[0] == value]), None)
             
             if not existingEntry:
-                existing.append((value, timestamp))
-                continue
+                if not self.__laterRemoveExists(value, timestamp):
+                    existing.append((value, timestamp))
+                    continue
             elif existingEntry[1] < timestamp:
                 existing.remove(existingEntry[0])
                 existing.append((value, timestamp))
@@ -107,3 +99,11 @@ class LWWPlainValueSet():
                 continue
                 
         return existing
+    
+    def __laterRemoveExists(self, value, timestamp):
+        if not any(value == removedValue[0] for removedValue in self.__removeSet):
+            return False
+        
+        lastRemoved = self.__lastTimestamp(value, self.__removeSet)
+        
+        return timestamp < lastRemoved
