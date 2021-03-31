@@ -29,7 +29,7 @@ class LWWPlainValueSet():
         self.__removeSet = set()
     
     def __iter__(self):
-        self.__currentlyExisting = self.__collectExisting()
+        self.__currentlyExisting = self.__existing()
         self.__currentIteratorIndex = len(self.__currentlyExisting)
         return self
 
@@ -44,7 +44,7 @@ class LWWPlainValueSet():
     """Interface methods"""
     
     def lookup(self, value) -> bool:
-        return any(value == existing[0] for existing in self.__collectExisting())
+        return any(value == existing[0] for existing in self.__existing())
         
     def add(self, newValue, timestamp: int) -> bool:
         if any(newValue == addedValue[0] and timestamp < addedValue[1] for addedValue in self.__addSet):  # LWW
@@ -62,21 +62,18 @@ class LWWPlainValueSet():
         if(self.size() == 0):
             return
         
-        existing = self.__collectExisting()
-        
-        for value, _ in existing:
+        for value, _ in self.__existing():
             self.remove(value, timestamp)
     
     def size(self) -> int:
         if(len(self.__addSet) == 0):
             return 0
         
-        return len(list(self.__collectExisting()))
+        return len(list(self.__existing()))
     
-    def __lastTimestamp(self, value, entrySet):
-        return max(entry[1] for entry in entrySet if value == entry[0])
-    
-    def __collectExisting(self):
+    """ Internal mechanism for maintaining the view on the existing entries """
+
+    def __existing(self):
         if len(self.__addSet) == 0:
             return list()
         
@@ -104,6 +101,6 @@ class LWWPlainValueSet():
         if not any(value == removedValue[0] for removedValue in self.__removeSet):
             return False
         
-        lastRemoved = self.__lastTimestamp(value, self.__removeSet)
+        lastRemoved = max(entry[1] for entry in self.__removeSet if value == entry[0])
         
         return timestamp < lastRemoved
