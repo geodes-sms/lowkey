@@ -1,5 +1,8 @@
 #!/usr/bin/env python
+import time
 import uuid
+
+from lww.LWWPlainValueMap import LWWPlainValueMap
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -13,24 +16,18 @@ Serves as a common abstraction to the other logical types.
 """
 
 
-class Node:
+class Node(LWWPlainValueMap):
     
     def __init__(self):
+        super().__init__()
         self.__id = uuid.uuid1()
         
     def getId(self):
         return self.__id
         
     # Attribute handling
-    def _getAttribute(self):
-        '''
-        TODO: query CollabServer for an updated value at this point
-        and potantially establish caching
-        '''
-        pass
+    def _getAttribute(self, name):
+        return self.query(name)
     
-    def _setAttribute(self):
-        '''
-        TODO: push the new value to CollabServer at this point
-        '''
-        pass
+    def _setAttribute(self, name, value):
+        return self.add(name, value, round(time.time() * 1000))
