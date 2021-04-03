@@ -9,7 +9,7 @@ __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
 
 
-class Test(unittest.TestCase):
+class EntityTests(unittest.TestCase):
 
     def testEntityCreation(self):
         entity = Entity()
