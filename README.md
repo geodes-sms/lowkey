@@ -2,8 +2,8 @@
 
 A low-level and transparent framework for collaborative modeling.
 
-[![Build Status](https://travis-ci.com/david-istvan/lowkey.svg?branch=main)](https://travis-ci.com/david-istvan/lowkey)
 [![License](https://img.shields.io/badge/license-GPL--3.0-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Build Status](https://travis-ci.com/david-istvan/lowkey.svg?branch=main)](https://travis-ci.com/david-istvan/lowkey)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=david-istvan_lowkey&metric=alert_status)](https://sonarcloud.io/dashboard?id=david-istvan_lowkey)
 
 # Repository structure
