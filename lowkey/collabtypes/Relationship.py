@@ -12,4 +12,6 @@ Relationship type for the general logical type model level.
 
 
 class Relationship(Node):
-    pass
+
+    def __init__(self):
+        super().__init__()

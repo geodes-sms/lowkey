@@ -2,6 +2,7 @@
 import unittest
 
 from collabtypes.Entity import Entity
+from collabtypes.Relationship import Relationship
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -27,6 +28,21 @@ class EntityTests(unittest.TestCase):
         
         self.assertEqual(returnValue1, attributeValue1)
         self.assertEqual(returnValue2, attributeValue2)
+        
+        relationship = Relationship()
+        relationship._setAttribute("name", "affiliation")
+        relationship._setAttribute("directed", "target")
+        
+        entity2 = Entity()
+        entity2._setAttribute("name", "University of Montreal")
+        
+        entity._addRelationship(relationship)
+        
+        returnedRelationship = entity._getRelationship("affiliation")
+        self.assertEqual(len(returnedRelationship), 1,)
+        direction = returnedRelationship[0]._getAttribute("directed")
+        
+        self.assertEqual(direction, "target")
 
 
 if __name__ == "__main__":

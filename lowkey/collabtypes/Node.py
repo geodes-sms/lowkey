@@ -31,3 +31,6 @@ class Node(LWWPlainValueMap):
     
     def _setAttribute(self, name, value):
         return self.add(name, value, round(time.time() * 1000))
+    
+    def _updateAttribute(self, name, value):
+        return self.update(name, value, round(time.time() * 1000))
