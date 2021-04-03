@@ -8,4 +8,5 @@ install:
 # command to run tests
 script:
   - pytest ./lowkey/lww/tests/TestSuite.py
+  - pytest ./lowkey/collabtypes/TestSuite.py
 #  - pytest ./lowkey-examples/mindmap/tests/TestSuite.py
