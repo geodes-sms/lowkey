@@ -1,2 +1,3 @@
-import sys
-sys.path.append('../')
+from distutils.core import setup
+
+py_modules = ['collabtypes']
