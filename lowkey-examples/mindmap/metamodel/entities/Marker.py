@@ -4,10 +4,10 @@ class Marker(Entity):
     
     def __init__(self, symbol=""):
         super().__init__()
-        self.__symbol = symbol
+        self.setSymbol(symbol)
 
     def getSymbol(self):
-        return self.__symbol
+        return self._getAttribute("symbol")
         
     def setSymbol(self, symbol):
-        self.__symbol = symbol
+        self._setAttribute("symbol", symbol)

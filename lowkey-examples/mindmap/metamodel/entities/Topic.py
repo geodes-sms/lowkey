@@ -4,14 +4,14 @@ class Topic(Entity):
     
     def __init__(self, name=""):
         super().__init__()
-        self.__name = name
+        self._setName(name)
         self.__marker = None
         
     def getName(self):
-        return self.__name
+        return self._getName()
         
     def setName(self, name):
-        self.__name = name
+        self._setName(name)
 
     def getMarker(self):
         return self.__marker
