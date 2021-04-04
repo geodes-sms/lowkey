@@ -2,6 +2,8 @@
 import time
 import uuid
 
+from collabtypes import Literals
+
 from lww.LWWPlainValueMap import LWWPlainValueMap
 
 __author__ = "Istvan David"
@@ -24,13 +26,36 @@ class Node(LWWPlainValueMap):
         
     def getId(self):
         return self.__id
+    
+    def _currentTime(self):
+        return round(time.time() * 1000)
+    
+    """Naming"""
+
+    def _setName(self, name):
+        return self.add(Literals.NAME, name, self._currentTime())
+    
+    def _getName(self):
+        return self.query(Literals.NAME)
+    
+    """Typing"""
+
+    def _setType(self, node):
+        return self.add(Literals.TYPED_BY, node, self._currentTime())
+    
+    def _getType(self):
+        return self.query(Literals.TYPED_BY)
         
-    # Attribute handling
+    """Attributes CRUD"""
+
+    def _setAttribute(self, name, value):
+        return self.add(name, value, self._currentTime())
+    
     def _getAttribute(self, name):
         return self.query(name)
     
-    def _setAttribute(self, name, value):
-        return self.add(name, value, round(time.time() * 1000))
-    
     def _updateAttribute(self, name, value):
-        return self.update(name, value, round(time.time() * 1000))
+        return self.update(name, value, self._currentTime())
+    
+    def _deleteAttribute(self, name):
+        self.remove(name, self._currentTime())
