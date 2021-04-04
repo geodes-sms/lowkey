@@ -5,6 +5,7 @@ python:
 install:
   - pip install -r requirements.txt
 #  - python ./lowkey-examples/setup.py install
+  - python ./setup.py sdist
 
 addons:
   sonarcloud:
