@@ -1,3 +1,7 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
-py_modules = ['collabtypes']
+setup(
+    name='MyPackageName',
+    version='1.0.0',
+    packages=find_packages(),
+)

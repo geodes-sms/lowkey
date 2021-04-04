@@ -7,6 +7,7 @@ install:
 #  - python ./lowkey-examples/setup.py install
   - pip install pipenv --upgrade-strategy=only-if-needed
   - pipenv install --dev
+  - python setup.py install
 
 addons:
   sonarcloud:
