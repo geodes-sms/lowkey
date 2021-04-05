@@ -6,7 +6,7 @@ env: PYTHONPATH=$PYTHONPATH:$TRAVIS_BUILD_DIR/lowkey:$TRAVIS_BUILD_DIR/collabtyp
 install:
   - pip install -r requirements.txt
 #  - python ./lowkey-examples/setup.py install
-  - python ./setup.py sdist
+#  - python ./setup.py sdist
 
 addons:
   sonarcloud:
