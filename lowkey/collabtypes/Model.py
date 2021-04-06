@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+from collabtypes import Literals
+
 from .Node import Node
 
 __author__ = "Istvan David"
@@ -15,21 +17,26 @@ class Model(Node):
     
     def __init__(self):
         super().__init__()
-        self.__nodes = []
+        self.add(Literals.NODES, (), self._currentTime())
     
-    # Node handling
-    def _getNodes(self):
-        return self.__nodes
+    # Nodes CRUD
+    def _addNode(self, node:Node):
+        nodes = self.query(Literals.NODES)
+        nodes = nodes + (node,)
+        return self.update(Literals.NODES, nodes, self._currentTime())
         
-    def _addNode(self, node):
-        self.__nodes.append(node)
+    def _getNode(self, name:str) -> Node:
+        nodes = self.query(Literals.NODES)
+        return [n for n in nodes if n._getAttribute(Literals.NAME) == name]
     
-    def _removeNode(self, node):
-        if(node in self.__nodes):
-            self.__nodes.remove(node)
+    def _removeNode(self, node:Node):
+        nodes = self.query(Literals.NODES)
+        for n in nodes:
+            if n == node:
+                self.remove(n, self._currentTime())
         # Here, this should trigger a cascade delete on every reference,
         # since this is the composite aggregation that contains the node in the model.
         
-    def _setNode(self, oldNode, newNode):
+    def _updateNode(self, oldNode:Node, newNode:Node):
         self._removeNode(oldNode)
         self._addNode(newNode)
