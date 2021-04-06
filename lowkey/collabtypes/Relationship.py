@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+
+from collabtypes import Literals
+
 from .Node import Node
 
 __author__ = "Istvan David"
@@ -15,3 +18,21 @@ class Relationship(Node):
 
     def __init__(self):
         super().__init__()
+    
+    def setFrom(self, entity):
+        self._setAttribute(Literals.RELATIONSHIP_FROM, entity)
+        
+    def getFrom(self):
+        return self._getAttribute(Literals.RELATIONSHIP_FROM)
+    
+    def setTo(self, entity):
+        self._setAttribute(Literals.RELATIONSHIP_TO, entity)
+        
+    def getTo(self):
+        return self._getAttribute(Literals.RELATIONSHIP_TO)
+    
+    def setAggregation(self, isAggregation):
+        self._setAttribute(Literals.RELATIONSHIP_ISAGGREGATION, isAggregation)
+        
+    def isAggregation(self):
+        return self._getAttribute(Literals.RELATIONSHIP_ISAGGREGATION)
