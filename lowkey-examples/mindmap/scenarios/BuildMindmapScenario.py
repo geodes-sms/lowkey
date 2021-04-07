@@ -19,62 +19,44 @@ def halt():
     time.sleep(0.001)
 
 
-class BuildMindmapScenario(unittest.TestCase):
+mindmap = MindMap('improvePublicationRecord')
+halt()
 
-    def testBuildMindmap(self): 
-        # Create MindMap
-        title = 'improveTeachingRecord'
-        mindmap = MindMap(title)
-        halt()
-        
-        self.assertEqual(mindmap.getTitle(), title)
-        
-        newTitle = 'improvePublicationRecord'
-        mindmap.setTitle(newTitle)
-        halt()
-        self.assertEqual(mindmap.getTitle(), newTitle)
-        
-        # Create CentralTopic and add to the MindMap
-        centralTopicName = 'publishPaper'
-        centralTopic = CentralTopic(centralTopicName)
-        mindmap.setTopic(centralTopic)
-        halt()
-        self.assertEqual(centralTopic.getName(), centralTopicName)
-        
-        self.assertEqual(mindmap.getTopic(), centralTopic)
-        self.assertEqual(mindmap.getTopic().getName(), centralTopicName)
-        
-        """
-        # Create two MainTopics and add them to the CentralTopic
-        mt1 = MainTopic('experiment')
-        c.addMainTopic(mt1)
-        halt()
-        
-        # #Create this one with a missing argument
-        mt2 = MainTopic()
-        mt2.setName('writePaper')
-        halt()
-        c.addMainTopic(mt2)
-        halt()
-        
-        # Create two SubTopics and add them to one of the MainTopics
-        s1 = SubTopic('relatedWork')
-        mt2.addSubTopic(s1)
-        halt()
-        s2 = SubTopic('contributions')
-        mt2.addSubTopic(s2)
-        halt()
-        
-        # Create a Marker
-        x = Marker('x')
-        mindmap.addMarker(x)
-        halt()
-        s2.setMarker(x)
-        halt()
-        """
-        # Print the MindMap
-        # MindmapPrinter.printMindmap(mindmap)
+
+# Create CentralTopic and add to the MindMap
+centralTopicName = 'publishPaper'
+centralTopic = CentralTopic(centralTopicName)
+mindmap.setTopic(centralTopic)
+halt()
 
         
-if __name__ == "__main__":
-    unittest.main()
+"""
+# Create two MainTopics and add them to the CentralTopic
+mt1 = MainTopic('experiment')
+c.addMainTopic(mt1)
+halt()
+
+# #Create this one with a missing argument
+mt2 = MainTopic()
+mt2.setName('writePaper')
+halt()
+c.addMainTopic(mt2)
+halt()
+
+# Create two SubTopics and add them to one of the MainTopics
+s1 = SubTopic('relatedWork')
+mt2.addSubTopic(s1)
+halt()
+s2 = SubTopic('contributions')
+mt2.addSubTopic(s2)
+halt()
+
+# Create a Marker
+x = Marker('x')
+mindmap.addMarker(x)
+halt()
+s2.setMarker(x)
+halt()
+"""
+# Print the MindMap
+# MindmapPrinter.printMindmap(mindmap)
