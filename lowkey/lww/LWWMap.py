@@ -74,15 +74,6 @@ class LWWMap(LWWSet):
     
     """Interface methods"""
     
-    def _lookupFunction(self, entry):
-        return entry[0][0]
-    
-    def _getValue(self, entry):
-        return entry[0][1]
-    
-    def _getTimestamp(self, entry):
-        return entry[1]
-    
     def query(self, key):
         query = next((entry for entry in self._existing() if self._lookupFunction(entry) == key), None)
         return self._getValue(query) if query else None
@@ -112,35 +103,14 @@ class LWWMap(LWWSet):
         
         for (key, value), _ in self._existing():
             self.remove((key, value), timestamp)
+
+    """ Internal methods """
+
+    def _lookupFunction(self, entry):
+        return entry[0][0]
     
-    def _existing(self):
-        if len(self._addSet) == 0:
-            return list()
-        
-        keyFunc = lambda x: self._getTimestamp(x)
-        # sorting in descending order to start with the likely existing ones and short-circuit the loop below
-        addedEntries = sorted(self._addSet, key=keyFunc, reverse=True)
-        
-        existing = list()
-        for (key, value), timestamp in addedEntries:
-            existingEntry = next(iter([entry for entry in existing if self._lookupFunction(entry) == key]), None)
-            
-            if not existingEntry:
-                if not self._laterRemoveExists(key, timestamp):
-                    existing.append(((key, value), timestamp))
-                    continue
-            elif self._getTimestamp(existingEntry) < timestamp:
-                existing.remove(existingEntry)
-                existing.append(((key, value), timestamp))
-            else:
-                continue
-                
-        return existing
+    def _getValue(self, entry):
+        return entry[0][1]
     
-    def _laterRemoveExists(self, key, timestamp):
-        if not any(key == self._lookupFunction(removedValue) for removedValue in self._removeSet):
-            return False
-        
-        lastRemoved = max(self._getTimestamp(entry) for entry in self._removeSet if key == self._lookupFunction(entry))
-        
-        return timestamp < lastRemoved
+    def _getTimestamp(self, entry):
+        return entry[1]
