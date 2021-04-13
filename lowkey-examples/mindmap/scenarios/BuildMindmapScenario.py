@@ -13,14 +13,6 @@ __copyright__ = "Copyright 2021, GEODES"
 __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
 
-"""
-print(time.time_ns())
-halt()
-halt()
-print(time.time_ns())
-
-"""
-
 Clock.setUp(ClockMode.DEBUG)
 
 mindmap = MindMap('improvePublicationRecord')
@@ -45,9 +37,14 @@ s2 = SubTopic('contributions')
 mt2.addSubTopic(s2)
 
 # Create a Marker
-x = Marker('x')
-mindmap.addMarker(x)
-s2.setMarker(x)
+markerX = Marker('x')
+mindmap.addMarker(markerX)
+s2.setMarker(markerX)
+
+# Create another Marker
+markerPlus = Marker('+')
+mindmap.addMarker(markerPlus)
+s1.setMarker(markerPlus)
 
 # Print the MindMap
 MindmapPrinter.printMindmap(mindmap)
