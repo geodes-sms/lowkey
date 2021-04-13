@@ -31,22 +31,25 @@ class MindMap(Entity):
     # ========================
     # Methods: get, set, remove
     def getTopic(self) -> CentralTopic:
-        topic = self.getRelationship("topic")
-        if topic:
-            return topic[0].getTo()  # safe due to MultiplicityToMax = 1
+        topicReferences = self.getRelationship("topic")
+        if topicReferences:
+            return topicReferences[0].getTo()  # safe due to MultiplicityToMax = 1
         return None
     
-    def setTopic(self, topic: CentralTopic):  # typing due to Type:O CentralTopic
-        if self.getTopic():  # required due to MultiplicityToMax = 1
-            self.remove("topic", self.currentTime())
+    def setTopic(self, topic: CentralTopic):  # typing due to Type: CentralTopic
+        topicReferences = self.getRelationship("topic") 
+        if topicReferences:
+            # Removes the relationship to the Marker object but not the object
+            # safe due to MultiplicityToMax = 1
+            self.removeRelationship(topicReferences[0])
         
-        topic_ = Relationship()
-        topic_.setName("topic")
-        topic_.setFrom(self)
-        topic_.setTo(topic)
-        topic_.setAggregation(True)
+        topicReference = Relationship()
+        topicReference.setName("topic")
+        topicReference.setFrom(self)
+        topicReference.setTo(topic)
+        topicReference.setAggregation(True)
         
-        self.addRelationship(topic_)
+        self.addRelationship(topicReference)
     
     # markers: Reference
     # ========================
@@ -58,20 +61,23 @@ class MindMap(Entity):
     # Methods: get, add, remove
     def getMarkers(self):
         markers = []
-        relationships = self.getRelationship("markers")
-        for r in relationships:
+        markersReferences = self.getRelationship("markers")
+        for r in markersReferences:
             markers.append(r.getTo())
         return markers
     
     def addMarker(self, marker):
-        marker_ = Relationship()
-        marker_.setName("markers")
-        marker_.setFrom(self)
-        marker_.setTo(marker)
-        marker_.setAggregation(True)
+        markersReference = Relationship()
+        markersReference.setName("markers")
+        markersReference.setFrom(self)
+        markersReference.setTo(marker)
+        markersReference.setAggregation(True)
         
-        self.addRelationship(marker_)
+        self.addRelationship(markersReference)
         
-    def removeMarker(self, marker):
-        self.removeRelationship(marker)
-
+    def removeMarker(self, marker): # Removes the relationship to the Marker object but not the object
+        markersReferences = self.getRelationship("markers")
+        for mr in markersReferences:
+            if mr.getTo() == marker:
+                self.removeRelationship(mr)
+                return

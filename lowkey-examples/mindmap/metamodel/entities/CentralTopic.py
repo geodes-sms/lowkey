@@ -18,19 +18,19 @@ class CentralTopic(Topic):
     # Methods: get, set, remove
     def getMainTopics(self):
         mainTopics = []
-        relationships = self.getRelationship("maintopics")
-        for r in relationships:
+        mainTopicsReferences = self.getRelationship("maintopics")
+        for r in mainTopicsReferences:
             mainTopics.append(r.getTo())
         return mainTopics
     
     def addMainTopic(self, mainTopic):
-        mainTopic_ = Relationship()
-        mainTopic_.setName("maintopics")
-        mainTopic_.setFrom(self)
-        mainTopic_.setTo(mainTopic)
-        mainTopic_.setAggregation(True)
+        mainTopicsReference = Relationship()
+        mainTopicsReference.setName("maintopics")
+        mainTopicsReference.setFrom(self)
+        mainTopicsReference.setTo(mainTopic)
+        mainTopicsReference.setAggregation(True)
         
-        self.addRelationship(mainTopic_)
+        self.addRelationship(mainTopicsReference)
         
     def removeMainTopic(self, mainTopic):
         self.removeRelationship(mainTopic)

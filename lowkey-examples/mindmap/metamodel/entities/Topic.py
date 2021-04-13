@@ -29,21 +29,26 @@ class Topic(Entity):
     # MultiplicityTo: 0..1
     # IsAggregation: False
     # ========================
-    # Methods: get, set
+    # Methods: get, set, remove
     def getMarker(self) -> Marker:
-        marker = self.getRelationship("marker")
-        if marker:
-            return marker[0].getTo()  # safe due to MultiplicityToMax = 1
+        markerReference = self.getRelationship("marker")
+        if markerReference:
+            return markerReference[0].getTo()  # safe due to MultiplicityToMax = 1
         return None
     
     def setMarker(self, marker: Marker):  # typing due to Type: Marker
         if self.getMarker():  # required due to MultiplicityToMax = 1
-            self.remove("marker", self.currentTime())
+            self.removeMarker()
         
-        marker_ = Relationship()
-        marker_.setName("marker")
-        marker_.setFrom(self)
-        marker_.setTo(marker)
-        marker_.setAggregation(True)
+        markerReference = Relationship()
+        markerReference.setName("marker")
+        markerReference.setFrom(self)
+        markerReference.setTo(marker)
+        markerReference.setAggregation(True)
         
-        self.addRelationship(marker_)
+        self.addRelationship(markerReference)
+        
+    def removeMarker(self):  # Removes the relationship to the Marker object but not the object
+        markerReference = self.getRelationship("marker")
+        if markerReference:
+            self.removeRelationship(markerReference[0]) # safe due to MultiplicityToMax = 1
