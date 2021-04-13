@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import unittest
 
-from mindmap.tests.BuildMindmapTest import BuildMindmapTest
+from mindmap.tests.BasicMindmapTests import BasicMindmapTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -14,7 +14,7 @@ Full test suite for the Mindmap example.
 
 
 def create_suite():
-    testCases = [BuildMindmapTest]
+    testCases = [BasicMindmapTests]
     loadedCases = []
     
     for case in testCases:
