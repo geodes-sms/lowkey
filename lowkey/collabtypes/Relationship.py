@@ -31,6 +31,30 @@ class Relationship(Node):
     def getTo(self):
         return self.getAttribute(Literals.RELATIONSHIP_TO)
     
+    def setFromMin(self, fromMin):
+        self.setAttribute(Literals.RELATIONSHIP_FROM_MIN, fromMin)
+        
+    def getFromMin(self):
+        return self.getAttribute(Literals.RELATIONSHIP_FROM_MIN)
+    
+    def setFromMax(self, fromMax):
+        self.setAttribute(Literals.RELATIONSHIP_FROM_MAX, fromMax)
+        
+    def getFromMax(self):
+        return self.getAttribute(Literals.RELATIONSHIP_FROM_MAX)
+    
+    def setToMin(self, toMin):
+        self.setAttribute(Literals.RELATIONSHIP_TO_MIN, toMin)
+        
+    def getToMin(self):
+        return self.getAttribute(Literals.RELATIONSHIP_TO_MIN)
+    
+    def setToMax(self, toMax):
+        self.setAttribute(Literals.RELATIONSHIP_TO_MAX, toMax)
+        
+    def getToMax(self):
+        return self.getAttribute(Literals.RELATIONSHIP_TO_MAX)
+    
     def setAggregation(self, isAggregation):
         self.setAttribute(Literals.RELATIONSHIP_ISAGGREGATION, isAggregation)
         
