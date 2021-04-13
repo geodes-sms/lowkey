@@ -1,5 +1,6 @@
 from collabtypes.Entity import Entity
 
+
 class Marker(Entity):
     
     def __init__(self, symbol=""):

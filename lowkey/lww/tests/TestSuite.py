@@ -3,9 +3,9 @@ import unittest
 
 from lww.tests.EmbeddingTests import EmbeddingTests
 from lww.tests.LWWMapTests import LWWMapTests
-from lww.tests.LWWSetTests import LWWSetTests
 from lww.tests.LWWRegisterMultiUserTests import LWWRegisterMultiUserTests
 from lww.tests.LWWRegisterTests import LWWRegisterTests
+from lww.tests.LWWSetTests import LWWSetTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

@@ -59,5 +59,6 @@ class LWWRegisterTests(unittest.TestCase):
         self.assertTrue(lwwRegister2.getId())
         self.assertEqual(lwwRegister1.getId(), lwwRegister2.getId())
 
+
 if __name__ == "__main__":
     unittest.main()

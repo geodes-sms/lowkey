@@ -4,8 +4,6 @@ from collabtypes.Relationship import Relationship
 from mindmap.metamodel.entities.CentralTopic import CentralTopic
 
 
-
-
 class MindMap(Entity):
     
     def __init__(self, title=""):
