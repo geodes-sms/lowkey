@@ -20,16 +20,16 @@ class Model(Node):
         self.add(Literals.NODES, (), self._currentTime())
     
     # Nodes CRUD
-    def _addNode(self, node:Node):
+    def addNode(self, node:Node):
         nodes = self.query(Literals.NODES)
         nodes = nodes + (node,)
         return self.update(Literals.NODES, nodes, self._currentTime())
         
-    def _getNode(self, name:str) -> Node:
+    def getNode(self, name:str) -> Node:
         nodes = self.query(Literals.NODES)
         return [n for n in nodes if n._getAttribute(Literals.NAME) == name]
     
-    def _removeNode(self, node:Node):
+    def removeNode(self, node:Node):
         nodes = self.query(Literals.NODES)
         for n in nodes:
             if n == node:
@@ -37,6 +37,6 @@ class Model(Node):
         # Here, this should trigger a cascade delete on every reference,
         # since this is the composite aggregation that contains the node in the model.
         
-    def _updateNode(self, oldNode:Node, newNode:Node):
-        self._removeNode(oldNode)
-        self._addNode(newNode)
+    def updateNode(self, oldNode:Node, newNode:Node):
+        self.removeNode(oldNode)
+        self.addNode(newNode)

@@ -27,35 +27,35 @@ class Node(LWWPlainValueMap):
     def getId(self):
         return self.__id
     
-    def _currentTime(self):
+    def currentTime(self):
         return round(time.time() * 1000)
     
     """Naming"""
 
-    def _setName(self, name):
-        return self.add(Literals.NAME, name, self._currentTime())
+    def setName(self, name):
+        return self.add(Literals.NAME, name, self.currentTime())
     
-    def _getName(self):
+    def getName(self):
         return self.query(Literals.NAME)
     
     """Typing"""
 
-    def _setType(self, node):
-        return self.add(Literals.TYPED_BY, node, self._currentTime())
+    def setType(self, node):
+        return self.add(Literals.TYPED_BY, node, self.currentTime())
     
-    def _getType(self):
+    def getType(self):
         return self.query(Literals.TYPED_BY)
         
     """Attributes CRUD"""
 
-    def _setAttribute(self, name, value):
-        return self.add(name, value, self._currentTime())
+    def setAttribute(self, name, value):
+        return self.add(name, value, self.currentTime())
     
-    def _getAttribute(self, name):
+    def getAttribute(self, name):
         return self.query(name)
     
-    def _updateAttribute(self, name, value):
-        return self.update(name, value, self._currentTime())
+    def updateAttribute(self, name, value):
+        return self.update(name, value, self.currentTime())
     
-    def _deleteAttribute(self, name):
-        self.remove(name, self._currentTime())
+    def deleteAttribute(self, name):
+        self.remove(name, self.currentTime())

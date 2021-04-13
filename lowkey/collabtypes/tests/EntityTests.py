@@ -22,16 +22,16 @@ class EntityTests(unittest.TestCase):
         
         attributeName1 = "name"
         attributeValue1 = "Istvan"
-        person._setAttribute(attributeName1, attributeValue1)
+        person.setAttribute(attributeName1, attributeValue1)
         halt()
         
         attributeName2 = "profession"
         attributeValue2 = "Researcher"
-        person._setAttribute(attributeName2, attributeValue2)
+        person.setAttribute(attributeName2, attributeValue2)
         halt()
         
-        returnValue1 = person._getAttribute(attributeName1)
-        returnValue2 = person._getAttribute(attributeName2)
+        returnValue1 = person.getAttribute(attributeName1)
+        returnValue2 = person.getAttribute(attributeName2)
         
         self.assertEqual(returnValue1, attributeValue1)
         self.assertEqual(returnValue2, attributeValue2)
@@ -39,10 +39,10 @@ class EntityTests(unittest.TestCase):
         attributeName3 = "name"
         attributeValue3 = "University of Montreal"
         university = Entity()
-        university._setAttribute(attributeName3, attributeValue3)
+        university.setAttribute(attributeName3, attributeValue3)
         halt()
         
-        returnValue3 = university._getAttribute(attributeName3)
+        returnValue3 = university.getAttribute(attributeName3)
         self.assertEqual(returnValue3, attributeValue3)
         
         relationship = Relationship()
@@ -52,20 +52,20 @@ class EntityTests(unittest.TestCase):
         halt()
         relationship.setAggregation(False)
         halt()
-        relationship._setAttribute("name", "affiliation")
+        relationship.setAttribute("name", "affiliation")
         halt()
-        relationship._setAttribute("directed", "target")
+        relationship.setAttribute("directed", "target")
         halt()
-        person._addRelationship(relationship)
+        person.addRelationship(relationship)
         halt()
         
-        affiliationRelationship = person._getRelationship("affiliation")
+        affiliationRelationship = person.getRelationship("affiliation")
         affiliationRelationship = affiliationRelationship[0] if len(affiliationRelationship) == 1 else self.fail()
         
         self.assertEqual(affiliationRelationship.getFrom(), person)
         self.assertEqual(affiliationRelationship.getTo(), university)
         self.assertFalse(affiliationRelationship.isAggregation())
-        direction = affiliationRelationship._getAttribute("directed")
+        direction = affiliationRelationship.getAttribute("directed")
         self.assertEqual(direction, "target")
 
 

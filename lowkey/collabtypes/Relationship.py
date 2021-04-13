@@ -20,19 +20,19 @@ class Relationship(Node):
         super().__init__()
     
     def setFrom(self, entity):
-        self._setAttribute(Literals.RELATIONSHIP_FROM, entity)
+        self.setAttribute(Literals.RELATIONSHIP_FROM, entity)
         
     def getFrom(self):
-        return self._getAttribute(Literals.RELATIONSHIP_FROM)
+        return self.getAttribute(Literals.RELATIONSHIP_FROM)
     
     def setTo(self, entity):
-        self._setAttribute(Literals.RELATIONSHIP_TO, entity)
+        self.setAttribute(Literals.RELATIONSHIP_TO, entity)
         
     def getTo(self):
-        return self._getAttribute(Literals.RELATIONSHIP_TO)
+        return self.getAttribute(Literals.RELATIONSHIP_TO)
     
     def setAggregation(self, isAggregation):
-        self._setAttribute(Literals.RELATIONSHIP_ISAGGREGATION, isAggregation)
+        self.setAttribute(Literals.RELATIONSHIP_ISAGGREGATION, isAggregation)
         
     def isAggregation(self):
-        return self._getAttribute(Literals.RELATIONSHIP_ISAGGREGATION)
+        return self.getAttribute(Literals.RELATIONSHIP_ISAGGREGATION)

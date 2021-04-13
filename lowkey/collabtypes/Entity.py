@@ -19,31 +19,31 @@ class Entity(Node):
     
     def __init__(self):
         super().__init__()
-        self.add(Literals.REALATIONSHIPS, (), self._currentTime())
+        self.add(Literals.REALATIONSHIPS, (), self.currentTime())
                 
     """Abstract nature"""
     
-    def _setAbstract(self, isAbstract:bool):
-        return self.add(Literals.IS_ABSTRACT, isAbstract, self._currentTime())
+    def setAbstract(self, isAbstract:bool):
+        return self.add(Literals.IS_ABSTRACT, isAbstract, self.currentTime())
     
-    def _isAbstract(self) -> bool:
+    def isAbstract(self) -> bool:
         return self.query(Literals.IS_ABSTRACT)
     
     """Inheritance"""
 
-    def _extends(self, entity):
-        return self.add(Literals.EXTENDS, entity, self._currentTime())
+    def extends(self, entity):
+        return self.add(Literals.EXTENDS, entity, self.currentTime())
     
-    def _super(self):
+    def super(self):
         return self.query(Literals.EXTENDS)
     
     """Relationships CRUD"""
     
-    def _addRelationship(self, relationship:Relationship):
+    def addRelationship(self, relationship:Relationship):
         relationships = self.query(Literals.REALATIONSHIPS)
         relationships = relationships + (relationship,)
-        self.update(Literals.REALATIONSHIPS, relationships, self._currentTime())
+        self.update(Literals.REALATIONSHIPS, relationships, self.currentTime())
         
-    def _getRelationship(self, name):
+    def getRelationship(self, name):
         relationships = self.query(Literals.REALATIONSHIPS)
-        return [r for r in relationships if r._getAttribute(Literals.NAME) == name]
+        return [r for r in relationships if r.getAttribute(Literals.NAME) == name]
