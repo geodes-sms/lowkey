@@ -25,7 +25,7 @@ class Model(Node):
         nodes = nodes + (node,)
         return self.update(Literals.NODES, nodes, self._currentTime())
         
-    def getNode(self, name:str) -> Node:
+    def getNode(self, name:str):
         nodes = self.query(Literals.NODES)
         return [n for n in nodes if n._getAttribute(Literals.NAME) == name]
     

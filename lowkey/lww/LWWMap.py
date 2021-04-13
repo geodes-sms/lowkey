@@ -81,7 +81,7 @@ class LWWMap(LWWSet):
     def lookup(self, key) -> bool:
         return super().lookup(key)
     
-    def add(self, key, value, timestamp: int) -> bool:
+    def add(self, key=None, value=None, timestamp: int=0) -> bool:
         if any(key == self._lookupFunction(addedValue) and timestamp < self._getTimestamp(addedValue) for addedValue in self._addSet):  # LWW
             return False
         

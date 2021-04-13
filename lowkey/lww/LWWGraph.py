@@ -104,7 +104,7 @@ class LWWGraph():
     
     """Internal methods"""
         
-    def __queryEdge(self, edgeId) -> bool:
+    def __queryEdge(self, edgeId):
         for edgeData, _timestamp in self.__edges:
             if edgeData[0] == edgeId:
                 return edgeData
