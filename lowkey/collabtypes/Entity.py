@@ -19,7 +19,7 @@ class Entity(Node):
     
     def __init__(self):
         super().__init__()
-        self.add(Literals.REALATIONSHIPS, (), self.currentTime())
+        self.add(Literals.RELATIONSHIPS, (), self.currentTime())
                 
     """Abstract nature"""
     
@@ -40,20 +40,20 @@ class Entity(Node):
     """Relationships CRUD"""
     
     def addRelationship(self, relationship:Relationship):
-        relationships = self.query(Literals.REALATIONSHIPS)
+        relationships = self.query(Literals.RELATIONSHIPS)
         relationships = relationships + (relationship,)
-        self.update(Literals.REALATIONSHIPS, relationships, self.currentTime())
+        self.update(Literals.RELATIONSHIPS, relationships, self.currentTime())
         
     def getRelationship(self, name):
-        relationships = self.query(Literals.REALATIONSHIPS)
+        relationships = self.query(Literals.RELATIONSHIPS)
         return [r for r in relationships if r.getAttribute(Literals.NAME) == name]
     
     def removeRelationship(self, name):
-        relationships = self.query(Literals.REALATIONSHIPS)
-        self.remove(Literals.REALATIONSHIPS, self.currentTime())
+        relationships = self.query(Literals.RELATIONSHIPS)
+        self.remove(Literals.RELATIONSHIPS, self.currentTime())
         _relationships = ()
         for r in relationships:
             if r.getAttribute(Literals.NAME) != name:
                 _relationships = _relationships + (r,)
         
-        self.add(Literals.REALATIONSHIPS, _relationships, self.currentTime())
+        self.add(Literals.RELATIONSHIPS, _relationships, self.currentTime())
