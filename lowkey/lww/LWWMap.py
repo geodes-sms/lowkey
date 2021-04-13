@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-from lww import LWWPlainValueMap
-from lww.LWWPlainValueSet import LWWPlainValueSet
+from lww import LWWMap
+from lww.LWWSet import LWWSet
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -17,7 +17,7 @@ Extends the LWWSet type.
 
 class ViewSet():
     
-    def __init__(self, lwwMap:LWWPlainValueMap):
+    def __init__(self, lwwMap:LWWMap):
         self._lwwMap = lwwMap
         
     def _collectViewElements(self):
@@ -39,7 +39,7 @@ class ViewSet():
 
 class EntrySet(ViewSet):
 
-    def __init__(self, lwwMap:LWWPlainValueMap):
+    def __init__(self, lwwMap:LWWMap):
         super().__init__(lwwMap)
             
     def _collectViewElements(self):
@@ -50,7 +50,7 @@ class EntrySet(ViewSet):
 
 class KeySet(ViewSet):
 
-    def __init__(self, lwwMap:LWWPlainValueMap):
+    def __init__(self, lwwMap:LWWMap):
         super().__init__(lwwMap)
             
     def _collectViewElements(self):
@@ -59,7 +59,7 @@ class KeySet(ViewSet):
             self._viewElements.append(key)
 
 
-class LWWPlainValueMap(LWWPlainValueSet):
+class LWWMap(LWWSet):
 
     def __init__(self):
         super().__init__()

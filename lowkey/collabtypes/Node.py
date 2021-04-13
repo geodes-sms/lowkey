@@ -4,7 +4,7 @@ import uuid
 from collabtypes import Literals
 
 from collabtypes.Clock import Clock
-from lww.LWWPlainValueMap import LWWPlainValueMap
+from lww.LWWMap import LWWMap
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -18,7 +18,7 @@ Serves as a common abstraction to the other logical types.
 """
 
 
-class Node(LWWPlainValueMap):
+class Node(LWWMap):
     
     def __init__(self):
         super().__init__()

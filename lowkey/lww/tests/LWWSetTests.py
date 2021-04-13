@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import unittest
 
-from lww.LWWPlainValueSet import LWWPlainValueSet
+from lww.LWWSet import LWWSet
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -9,14 +9,14 @@ __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
 
 
-class LWWPlainValueSetTests(unittest.TestCase):
+class LWWSetTests(unittest.TestCase):
 
     def testExistsOnEmptySetReturnsFalse(self):
-        lwwSet = LWWPlainValueSet()
+        lwwSet = LWWSet()
         self.assertFalse(lwwSet.lookup("element"))
 
     def testAddingElementMakesItExist(self):
-        lwwSet = LWWPlainValueSet()
+        lwwSet = LWWSet()
         
         key = "element"
         self.assertFalse(lwwSet.lookup(key))
@@ -25,7 +25,7 @@ class LWWPlainValueSetTests(unittest.TestCase):
         self.assertTrue(lwwSet.lookup(key))
         
     def testAddingOlderValuesIsOmitted(self):
-        lwwSet = LWWPlainValueSet()
+        lwwSet = LWWSet()
         
         key = "element"
         self.assertEqual(lwwSet.size(), 0)
@@ -40,7 +40,7 @@ class LWWPlainValueSetTests(unittest.TestCase):
         self.assertEqual(lwwSet.size(), 1)
     
     def testAddingElementsReflectsInSize(self):
-        lwwSet = LWWPlainValueSet()
+        lwwSet = LWWSet()
         
         element1 = "element1"
         element2 = "element2"
@@ -54,7 +54,7 @@ class LWWPlainValueSetTests(unittest.TestCase):
         self.assertEqual(lwwSet.size(), 2)
         
     def testRemovingElementsReflectsInSize(self):
-        lwwSet = LWWPlainValueSet()
+        lwwSet = LWWSet()
         
         element1 = "element1"
         element2 = "element2"
@@ -71,7 +71,7 @@ class LWWPlainValueSetTests(unittest.TestCase):
         self.assertEqual(lwwSet.size(), 1)
 
     def testAddingDuplicatesIsOmitted(self):
-        lwwSet = LWWPlainValueSet()
+        lwwSet = LWWSet()
         
         key1 = "element1"
         key2 = "element2"
@@ -87,7 +87,7 @@ class LWWPlainValueSetTests(unittest.TestCase):
         self.assertEqual(lwwSet.size(), 2)
 
     def testRemovedElementDoesNotExist(self):
-        lwwSet = LWWPlainValueSet()
+        lwwSet = LWWSet()
         
         key = "element"
         self.assertFalse(lwwSet.lookup(key))
@@ -102,7 +102,7 @@ class LWWPlainValueSetTests(unittest.TestCase):
         self.assertFalse(lwwSet.lookup(key))
         
     def testAddRemoveAdd(self):
-        lwwSet = LWWPlainValueSet()
+        lwwSet = LWWSet()
         self.assertEqual(lwwSet.size(), 0)
         
         element1 = "element1"
@@ -117,7 +117,7 @@ class LWWPlainValueSetTests(unittest.TestCase):
         self.assertEqual(lwwSet.size(), 1)
         
     def testAddAddRemoveWithDelay(self):
-        lwwSet = LWWPlainValueSet()
+        lwwSet = LWWSet()
         self.assertEqual(lwwSet.size(), 0)
         
         element1 = "element1"
@@ -132,7 +132,7 @@ class LWWPlainValueSetTests(unittest.TestCase):
         self.assertEqual(lwwSet.size(), 1)
     
     def testSize(self):
-        lwwSet = LWWPlainValueSet()
+        lwwSet = LWWSet()
         self.assertEqual(lwwSet.size(), 0)
         
         element1 = "element1"
@@ -168,7 +168,7 @@ class LWWPlainValueSetTests(unittest.TestCase):
         self.assertEqual(lwwSet.size(), 0)
     
     def testClear(self):
-        lwwSet = LWWPlainValueSet()
+        lwwSet = LWWSet()
         self.assertEqual(lwwSet.size(), 0)
         
         lwwSet.add("element1", 10)
@@ -181,7 +181,7 @@ class LWWPlainValueSetTests(unittest.TestCase):
         self.assertEqual(lwwSet.size(), 0)
 
     def testIterations(self):
-        lwwSet = LWWPlainValueSet()
+        lwwSet = LWWSet()
         
         lwwSet.add("element1", 10)    
         lwwSet.add("element2", 20)
@@ -225,7 +225,7 @@ class LWWPlainValueSetTests(unittest.TestCase):
         self.assertEqual(i, 0)  
     
     def testIterationContents(self):
-        lwwSet = LWWPlainValueSet()
+        lwwSet = LWWSet()
         
         elements = ["element1", "element2"]
         

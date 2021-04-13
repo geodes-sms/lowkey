@@ -22,7 +22,7 @@ Otherwise the value does not exist.
 """
 
     
-class LWWPlainValueSet():
+class LWWSet():
             
     def __init__(self):
         self._addSet = set()

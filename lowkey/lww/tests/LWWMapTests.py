@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import unittest
 
-from lww.LWWPlainValueMap import LWWPlainValueMap
+from lww.LWWMap import LWWMap
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -9,10 +9,10 @@ __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
 
 
-class LWWPlainValueMapTests(unittest.TestCase):
+class LWWMapTests(unittest.TestCase):
 
     def testAddAndQueryEntries(self):
-        lwwMap = LWWPlainValueMap()
+        lwwMap = LWWMap()
         
         key1 = "name"
         value1 = "Istvan"
@@ -31,7 +31,7 @@ class LWWPlainValueMapTests(unittest.TestCase):
         self.assertEqual(lwwMap.size(), 2)
     
     def testAddingWithExistingKeyIsProcessedButNotExistsImmediately(self):
-        lwwMap = LWWPlainValueMap()
+        lwwMap = LWWMap()
         
         key1 = "name"
         value1 = "Istvan"
@@ -46,7 +46,7 @@ class LWWPlainValueMapTests(unittest.TestCase):
         self.assertEqual(lwwMap.size(), 1)
         
     def testRemoveAndQueryEntry(self):
-        lwwMap = LWWPlainValueMap()
+        lwwMap = LWWMap()
         
         key1 = "name"
         value1 = "Istvan"
@@ -60,7 +60,7 @@ class LWWPlainValueMapTests(unittest.TestCase):
         self.assertEqual(lwwMap.size(), 0)
 
     def testIterateOverEntries(self):
-        lwwMap = LWWPlainValueMap()
+        lwwMap = LWWMap()
         
         key1 = "firstName"
         value1 = "Istvan"
@@ -109,7 +109,7 @@ class LWWPlainValueMapTests(unittest.TestCase):
         self.assertEqual(entriesVisited, 3)
         
     def testIterateOverKeys(self):
-        lwwMap = LWWPlainValueMap()
+        lwwMap = LWWMap()
         
         key1 = "firstName"
         value1 = "Istvan"
@@ -139,7 +139,7 @@ class LWWPlainValueMapTests(unittest.TestCase):
 
     """
     def testRemoveNotexisting(self):
-        lwwMap = LWWPlainValueMap()
+        lwwMap = LWWMap()
         
         self.assertRaises(KeyError, lwwMap.remove, "key", 10)
     """

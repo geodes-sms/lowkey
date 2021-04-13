@@ -2,7 +2,7 @@
 import unittest
 
 from lww.LWWRegister import LWWRegister
-from lww.LWWPlainValueSet import LWWPlainValueSet
+from lww.LWWSet import LWWSet
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -31,7 +31,7 @@ class EmbeddingTests(unittest.TestCase):
         
     def testEmbedSetInRegister(self):
         base = LWWRegister()
-        embedded = LWWPlainValueSet()
+        embedded = LWWSet()
                 
         value = "element1"
         
@@ -40,11 +40,11 @@ class EmbeddingTests(unittest.TestCase):
         
         retrievedEmbedded = base.query()
         self.assertTrue(retrievedEmbedded)
-        self.assertTrue(isinstance(retrievedEmbedded, LWWPlainValueSet))        
+        self.assertTrue(isinstance(retrievedEmbedded, LWWSet))        
         self.assertTrue(retrievedEmbedded.lookup(value))
         
     def testEmbedRegisterInSet(self):
-        base = LWWPlainValueSet()
+        base = LWWSet()
         embedded = LWWRegister()
                 
         value = "element1"
@@ -54,8 +54,8 @@ class EmbeddingTests(unittest.TestCase):
         self.assertTrue(base.lookup(embedded))
         
     def testEmbedSetInSet(self):
-        base = LWWPlainValueSet()
-        embedded = LWWPlainValueSet()
+        base = LWWSet()
+        embedded = LWWSet()
                 
         value = "element1"
         

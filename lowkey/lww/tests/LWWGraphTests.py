@@ -2,7 +2,7 @@
 import unittest
 
 from lww.LWWGraph import LWWGraph
-from lww.LWWPlainValueSet import LWWPlainValueSet
+from lww.LWWSet import LWWSet
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -22,14 +22,14 @@ class LWWGrapTests(unittest.TestCase):
         self.assertTrue(lwwGraph.vertexExists(v1))
         self.assertEqual(lwwGraph.numberOfVertices(), 1)
         v1AdjacencySet = lwwGraph.getAdjacencySet(v1)
-        self.assertTrue(isinstance(v1AdjacencySet, LWWPlainValueSet))
+        self.assertTrue(isinstance(v1AdjacencySet, LWWSet))
         self.assertEqual(v1AdjacencySet.size(), 0)
         
         lwwGraph.addVertex(v1, 20)
         self.assertTrue(lwwGraph.vertexExists(v1))
         self.assertEqual(lwwGraph.numberOfVertices(), 1)
         v1AdjacencySet = lwwGraph.getAdjacencySet(v1)
-        self.assertTrue(isinstance(v1AdjacencySet, LWWPlainValueSet))
+        self.assertTrue(isinstance(v1AdjacencySet, LWWSet))
         self.assertEqual(v1AdjacencySet.size(), 0)
         
         lwwGraph.addVertex(v2, 30)
@@ -38,8 +38,8 @@ class LWWGrapTests(unittest.TestCase):
         self.assertEqual(lwwGraph.numberOfVertices(), 2)
         v1AdjacencySet = lwwGraph.getAdjacencySet(v1)
         v2AdjacencySet = lwwGraph.getAdjacencySet(v2)
-        self.assertTrue(isinstance(v1AdjacencySet, LWWPlainValueSet))
-        self.assertTrue(isinstance(v2AdjacencySet, LWWPlainValueSet))
+        self.assertTrue(isinstance(v1AdjacencySet, LWWSet))
+        self.assertTrue(isinstance(v2AdjacencySet, LWWSet))
         self.assertEqual(v1AdjacencySet.size(), 0)
         self.assertEqual(v2AdjacencySet.size(), 0)
         
@@ -59,8 +59,8 @@ class LWWGrapTests(unittest.TestCase):
         self.assertEqual(lwwGraph.numberOfVertices(), 2)
         v1AdjacencySet = lwwGraph.getAdjacencySet(v1)
         v2AdjacencySet = lwwGraph.getAdjacencySet(v2)
-        self.assertTrue(isinstance(v1AdjacencySet, LWWPlainValueSet))
-        self.assertTrue(isinstance(v2AdjacencySet, LWWPlainValueSet))
+        self.assertTrue(isinstance(v1AdjacencySet, LWWSet))
+        self.assertTrue(isinstance(v2AdjacencySet, LWWSet))
         self.assertEqual(v1AdjacencySet.size(), 1)
         self.assertEqual(v2AdjacencySet.size(), 0)
         self.assertTrue(lwwGraph.edgeExists(e))
