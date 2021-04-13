@@ -103,7 +103,7 @@ class LWWPlainValueMap(LWWPlainValueSet):
         self._removeSet.add(((key, self.query(key)), timestamp))
     
     def update(self, key, newValue, timestamp):
-        self.remove(key, timestamp)
+        self.remove(key, timestamp - 1)  # reduce timestamp by 1ns to avoid identical timestamps
         self.add(key, newValue, timestamp)
                     
     def clear(self, timestamp: int):
