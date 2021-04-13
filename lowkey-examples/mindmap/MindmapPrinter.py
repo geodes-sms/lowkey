@@ -12,7 +12,7 @@ def printMindmap(mindmap):
 def __printTopic(depth, topic):
     line = depth*2*' ' + '|_{}'.format(topic.getName())
     marker = topic.getMarker()
-    if(marker !=None):
+    if marker:
         line+=(' [' + marker.getSymbol() + ']')
     print(line)
     

@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-import time
-import unittest
 
+from collabtypes.Clock import Clock, ClockMode
 from mindmap import MindmapPrinter
 from mindmap.metamodel.entities.CentralTopic import CentralTopic
 from mindmap.metamodel.entities.MainTopic import MainTopic
@@ -14,49 +13,41 @@ __copyright__ = "Copyright 2021, GEODES"
 __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
 
+"""
+print(time.time_ns())
+halt()
+halt()
+print(time.time_ns())
 
-def halt():
-    time.sleep(0.001)
+"""
 
+Clock.setUp(ClockMode.DEBUG)
 
 mindmap = MindMap('improvePublicationRecord')
-halt()
-
 
 # Create CentralTopic and add to the MindMap
-centralTopicName = 'publishPaper'
-centralTopic = CentralTopic(centralTopicName)
+centralTopic = CentralTopic('publishPaper')
 mindmap.setTopic(centralTopic)
-halt()
 
-        
-"""
 # Create two MainTopics and add them to the CentralTopic
 mt1 = MainTopic('experiment')
-c.addMainTopic(mt1)
-halt()
+centralTopic.addMainTopic(mt1)
 
-# #Create this one with a missing argument
+# Create this one with a missing argument
 mt2 = MainTopic()
 mt2.setName('writePaper')
-halt()
-c.addMainTopic(mt2)
-halt()
+centralTopic.addMainTopic(mt2)
 
 # Create two SubTopics and add them to one of the MainTopics
 s1 = SubTopic('relatedWork')
 mt2.addSubTopic(s1)
-halt()
 s2 = SubTopic('contributions')
 mt2.addSubTopic(s2)
-halt()
 
 # Create a Marker
 x = Marker('x')
 mindmap.addMarker(x)
-halt()
 s2.setMarker(x)
-halt()
-"""
+
 # Print the MindMap
-# MindmapPrinter.printMindmap(mindmap)
+MindmapPrinter.printMindmap(mindmap)

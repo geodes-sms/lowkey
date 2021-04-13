@@ -1,13 +1,7 @@
-import time
-
 from collabtypes.Entity import Entity
 from collabtypes.Relationship import Relationship
 
 from mindmap.metamodel.entities.CentralTopic import CentralTopic
-
-
-def halt():
-    time.sleep(0.001)
 
 
 class MindMap(Entity):
@@ -15,49 +9,69 @@ class MindMap(Entity):
     def __init__(self, title=""):
         super().__init__()
         self.setTitle(title)
-        self._topic = None
-        # self._markers = []
 
-    # Title: attribute
-    # getter, setter
+    # title: Attribute
+    # ========================
+    # Multiplicity: 1
+    # Type: String
+    # ========================
+    # Methods: get, set
     def getTitle(self):
-        return self._getAttribute("title")
+        return self.getAttribute("title")
 
     def setTitle(self, title):
-        self._setAttribute("title", title)
+        self.setAttribute("title", title)
     
-    # Topic: 0..1 reference
-    # getter, setter
+    # topic: Reference
+    # ========================
+    # Type: CentralTopic
+    # MultiplicityFrom: 1..1
+    # MultiplicityTo: 1..1
+    # IsAggregation: True
+    # ========================
+    # Methods: get, set, remove
     def getTopic(self) -> CentralTopic:
-        topic = self._getRelationship("topic")
+        topic = self.getRelationship("topic")
         if topic:
-            return topic[0].getTo()
+            return topic[0].getTo()  # safe due to MultiplicityToMax = 1
         return None
     
-    def setTopic(self, topic):
-        if self.getTopic():
-            self.remove("topic", self._currentTime())
-            halt()
+    def setTopic(self, topic: CentralTopic):  # typing due to Type:O CentralTopic
+        if self.getTopic():  # required due to MultiplicityToMax = 1
+            self.remove("topic", self.currentTime())
         
-        mindMapTopic = Relationship()
-        mindMapTopic._setName("topic")
-        mindMapTopic.setFrom(self)
-        mindMapTopic.setTo(topic)
-        mindMapTopic.setAggregation(True)
+        topic_ = Relationship()
+        topic_.setName("topic")
+        topic_.setFrom(self)
+        topic_.setTo(topic)
+        topic_.setAggregation(True)
         
-        self._addRelationship(mindMapTopic)
+        self.addRelationship(topic_)
     
-    """
-    # Marker: 0..* reference
-    # getter, adder, remover
+    # markers: Reference
+    # ========================
+    # Type: Marker
+    # MultiplicityFrom: 0..1
+    # MultiplicityTo: 0..*
+    # IsAggregation: True
+    # ========================
+    # Methods: get, add, remove
     def getMarkers(self):
-        return self.__markers
+        markers = []
+        relationships = self.getRelationship("markers")
+        for r in relationships:
+            markers.append(r.getTo())
+        return markers
     
     def addMarker(self, marker):
-        super()._addNode(marker)
-        self.__markers.append(marker)
-    
+        marker_ = Relationship()
+        marker_.setName("markers")
+        marker_.setFrom(self)
+        marker_.setTo(marker)
+        marker_.setAggregation(True)
+        
+        self.addRelationship(marker_)
+        
     def removeMarker(self, marker):
-        super()._removeNode(marker)
-        self.__markers.remove(marker)
-    """
+        self.removeRelationship(marker)
+
