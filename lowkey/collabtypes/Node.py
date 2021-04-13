@@ -1,9 +1,9 @@
 #!/usr/bin/env python
-import time
 import uuid
 
 from collabtypes import Literals
 
+from collabtypes.Clock import Clock
 from lww.LWWPlainValueMap import LWWPlainValueMap
 
 __author__ = "Istvan David"
@@ -23,12 +23,13 @@ class Node(LWWPlainValueMap):
     def __init__(self):
         super().__init__()
         self.__id = uuid.uuid1()
+        self.__clock = Clock.setUp()
         
     def getId(self):
         return self.__id
     
     def currentTime(self):
-        return round(time.time() * 1000)
+        return self.__clock.currentTime()
     
     """Naming"""
 
