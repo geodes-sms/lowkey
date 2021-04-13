@@ -52,7 +52,7 @@ class LWWGraph():
     def vertexExists(self, vertex) -> bool:
         return self.__vertices.lookup(vertex)
     
-    def getAdjacencySetForVertex(self, vertex) -> LWWSet:
+    def getAdjacencyListForVertex(self, vertex):
         adjacentVertices = []
         for edgeData, _timestamp in self.__edges:
             if edgeData[1] == vertex:
