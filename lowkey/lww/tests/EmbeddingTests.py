@@ -2,7 +2,7 @@
 import unittest
 
 from lww.LWWRegister import LWWRegister
-from lww.LWWSet import LWWSet
+from lww.LWWPlainValueSet import LWWPlainValueSet
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -31,7 +31,7 @@ class EmbeddingTests(unittest.TestCase):
         
     def testEmbedSetInRegister(self):
         base = LWWRegister()
-        embedded = LWWSet()
+        embedded = LWWPlainValueSet()
                 
         value = "element1"
         
@@ -40,37 +40,36 @@ class EmbeddingTests(unittest.TestCase):
         
         retrievedEmbedded = base.query()
         self.assertTrue(retrievedEmbedded)
-        self.assertTrue(isinstance(retrievedEmbedded, LWWSet))        
-        self.assertTrue(retrievedEmbedded.exists(value))
+        self.assertTrue(isinstance(retrievedEmbedded, LWWPlainValueSet))        
+        self.assertTrue(retrievedEmbedded.lookup(value))
         
     def testEmbedRegisterInSet(self):
-        base = LWWSet()
+        base = LWWPlainValueSet()
         embedded = LWWRegister()
                 
         value = "element1"
-        
         embedded.update(value, 10)
         base.add(embedded, 20)
         
-        self.assertTrue(base.exists(embedded))
+        self.assertTrue(base.lookup(embedded))
         
     def testEmbedSetInSet(self):
-        base = LWWSet()
-        embedded = LWWSet()
+        base = LWWPlainValueSet()
+        embedded = LWWPlainValueSet()
                 
         value = "element1"
         
         embedded.add(value, 10)
         base.add(embedded, 20)
         
-        self.assertTrue(base.exists(embedded))
+        self.assertTrue(base.lookup(embedded))
         
         newValue = "element2"
         embedded.add(newValue, 30)
         
-        self.assertTrue(base.exists(embedded))
-        self.assertTrue(embedded.exists(value))
-        self.assertTrue(embedded.exists(newValue))
+        self.assertTrue(base.lookup(embedded))
+        self.assertTrue(embedded.lookup(value))
+        self.assertTrue(embedded.lookup(newValue))
 
 
 if __name__ == "__main__":
