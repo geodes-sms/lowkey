@@ -48,12 +48,11 @@ class Entity(Node):
         relationships = self.query(Literals.RELATIONSHIPS)
         return [r for r in relationships if r.getAttribute(Literals.NAME) == name]
     
-    def removeRelationship(self, name):
+    def removeRelationship(self, relationship:Relationship):
         relationships = self.query(Literals.RELATIONSHIPS)
-        self.remove(Literals.RELATIONSHIPS, self.currentTime())
-        _relationships = ()
+        remainingRelationships = ()
         for r in relationships:
-            if r.getAttribute(Literals.NAME) != name:
-                _relationships = _relationships + (r,)
+            if r != relationship:
+                remainingRelationships = remainingRelationships + (r,)
         
-        self.add(Literals.RELATIONSHIPS, _relationships, self.currentTime())
+        self.update(Literals.RELATIONSHIPS, remainingRelationships, self.currentTime())
