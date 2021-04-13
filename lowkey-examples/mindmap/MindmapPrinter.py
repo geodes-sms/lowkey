@@ -18,5 +18,5 @@ def __printTopic(depth, topic):
     
 def printNodes(mindmap):
     print('\n')
-    for node in mindmap._getNodes():
+    for node in mindmap.getNodes():
         print(node)
