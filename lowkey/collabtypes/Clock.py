@@ -11,7 +11,6 @@ __license__ = "GPL-3.0"
 Clock facility supporting DEBUG mode without boilerplate.
 """
 
-
 class ClockMode(enum.Enum):
     REAL = 0
     DEBUG = 1
@@ -19,9 +18,11 @@ class ClockMode(enum.Enum):
 
 class Clock:
     
+    __step = 1000000000 
     __instance = None
     __mode = ClockMode.REAL
     __debugTime = 0
+    
     
     @staticmethod
     def setUp(mode=ClockMode.REAL):
@@ -39,8 +40,11 @@ class Clock:
                 self.__debugTime = self.__currentRealTime()
                 print("Clock in DEBUG mode")
     
-    def printMode(self):
-        print(self.__mode)
+    def getMode(self):
+        return self.__mode
+    
+    def getStep(self):
+        return self.__step
     
     def currentTime(self):
         if self.__mode == ClockMode.REAL:
@@ -52,5 +56,5 @@ class Clock:
         return time.time_ns()
     
     def __currentDebugTime(self):
-        self.__debugTime += 1000000000
+        self.__debugTime += self.__step
         return self.__debugTime
