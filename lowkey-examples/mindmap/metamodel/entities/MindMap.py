@@ -4,6 +4,8 @@ from collabtypes.Relationship import Relationship
 from mindmap.metamodel.entities.CentralTopic import CentralTopic
 
 
+
+
 class MindMap(Entity):
     
     def __init__(self, title=""):
@@ -50,6 +52,11 @@ class MindMap(Entity):
         topicReference.setAggregation(True)
         
         self.addRelationship(topicReference)
+    
+    def removeTopic(self):
+        topicReferences = self.getRelationship("topic")
+        if topicReferences:
+            self.removeRelationship(topicReferences[0]) # safe due to MultiplicityToMax = 1
     
     # markers: Reference
     # ========================
