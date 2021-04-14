@@ -10,70 +10,67 @@ __license__ = "GPL-3.0"
 
 
 class LWWMapTests(unittest.TestCase):
+    
+    lwwMap = None
+    
+    def setUp(self):
+        self.lwwMap = LWWMap()
 
     def testAddAndQueryEntries(self):
-        lwwMap = LWWMap()
-        
         key1 = "name"
         value1 = "Istvan"
-        lwwMap.add(key1, value1, 10)
+        self.lwwMap.add(key1, value1, 10)
         
-        self.assertTrue(lwwMap.lookup(key1))
+        self.assertTrue(self.lwwMap.lookup(key1))
         
-        self.assertEqual(lwwMap.query(key1), value1)
-        self.assertEqual(lwwMap.size(), 1)
+        self.assertEqual(self.lwwMap.query(key1), value1)
+        self.assertEqual(self.lwwMap.size(), 1)
         
         key2 = "profession"
         value2 = "researcher"
-        lwwMap.add(key2, value2, 20)
+        self.lwwMap.add(key2, value2, 20)
         
-        self.assertEqual(lwwMap.query(key2), value2)
-        self.assertEqual(lwwMap.size(), 2)
+        self.assertEqual(self.lwwMap.query(key2), value2)
+        self.assertEqual(self.lwwMap.size(), 2)
     
     def testAddingWithExistingKeyIsProcessedButNotExistsImmediately(self):
-        lwwMap = LWWMap()
-        
         key1 = "name"
         value1 = "Istvan"
-        lwwMap.add(key1, value1, 10)
+        self.lwwMap.add(key1, value1, 10)
         
-        self.assertEqual(lwwMap.query(key1), value1)
-        self.assertEqual(lwwMap.size(), 1)
+        self.assertEqual(self.lwwMap.query(key1), value1)
+        self.assertEqual(self.lwwMap.size(), 1)
         
         value2 = "David"
-        lwwMap.add(key1, value2, 20)
-        self.assertEqual(lwwMap.query(key1), value2)
-        self.assertEqual(lwwMap.size(), 1)
+        self.lwwMap.add(key1, value2, 20)
+        self.assertEqual(self.lwwMap.query(key1), value2)
+        self.assertEqual(self.lwwMap.size(), 1)
         
     def testRemoveAndQueryEntry(self):
-        lwwMap = LWWMap()
-        
         key1 = "name"
         value1 = "Istvan"
-        lwwMap.add(key1, value1, 10)
+        self.lwwMap.add(key1, value1, 10)
         
-        self.assertEqual(lwwMap.query(key1), value1)
-        self.assertEqual(lwwMap.size(), 1)
+        self.assertEqual(self.lwwMap.query(key1), value1)
+        self.assertEqual(self.lwwMap.size(), 1)
         
-        lwwMap.remove(key1, 30)
-        self.assertFalse(lwwMap.lookup(key1), value1)
-        self.assertEqual(lwwMap.size(), 0)
+        self.lwwMap.remove(key1, 30)
+        self.assertFalse(self.lwwMap.lookup(key1), value1)
+        self.assertEqual(self.lwwMap.size(), 0)
 
     def testIterateOverEntries(self):
-        lwwMap = LWWMap()
-        
         key1 = "firstName"
         value1 = "Istvan"
-        lwwMap.add(key1, value1, 10)
+        self.lwwMap.add(key1, value1, 10)
         key2 = "lastName"
         value2 = "David"
-        lwwMap.add(key2, value2, 20)
+        self.lwwMap.add(key2, value2, 20)
         
-        self.assertEqual(lwwMap.query(key1), value1)
-        self.assertEqual(lwwMap.query(key2), value2)
-        self.assertEqual(lwwMap.size(), 2)
+        self.assertEqual(self.lwwMap.query(key1), value1)
+        self.assertEqual(self.lwwMap.query(key2), value2)
+        self.assertEqual(self.lwwMap.size(), 2)
         
-        entrySet = lwwMap.entrySet()
+        entrySet = self.lwwMap.entrySet()
         
         entriesVisited = 0
         for (key, value), _ in entrySet:
@@ -90,7 +87,7 @@ class LWWMapTests(unittest.TestCase):
                 
         key3 = "profession"
         value3 = "researcher"
-        lwwMap.add(key3, value3, 30)
+        self.lwwMap.add(key3, value3, 30)
         
         entriesVisited = 0
         for (key, value), _ in entrySet:
@@ -109,28 +106,26 @@ class LWWMapTests(unittest.TestCase):
         self.assertEqual(entriesVisited, 3)
         
     def testIterateOverKeys(self):
-        lwwMap = LWWMap()
-        
         key1 = "firstName"
         value1 = "Istvan"
-        lwwMap.add(key1, value1, 10)
+        self.lwwMap.add(key1, value1, 10)
         key2 = "lastName"
         value2 = "David"
-        lwwMap.add(key2, value2, 20)
+        self.lwwMap.add(key2, value2, 20)
         
-        self.assertEqual(lwwMap.query(key1), value1)
-        self.assertEqual(lwwMap.query(key2), value2)
-        self.assertEqual(lwwMap.size(), 2)
+        self.assertEqual(self.lwwMap.query(key1), value1)
+        self.assertEqual(self.lwwMap.query(key2), value2)
+        self.assertEqual(self.lwwMap.size(), 2)
         
-        keySet = lwwMap.keySet()
+        keySet = self.lwwMap.keySet()
         
         entriesVisited = 0
         for key in keySet:
             if(key == key1):
-                self.assertEqual(lwwMap.query(key), value1)
+                self.assertEqual(self.lwwMap.query(key), value1)
                 entriesVisited += 1
             elif(key == key2):
-                self.assertEqual(lwwMap.query(key), value2)
+                self.assertEqual(self.lwwMap.query(key), value2)
                 entriesVisited += 1
             else:
                 self.fail()
