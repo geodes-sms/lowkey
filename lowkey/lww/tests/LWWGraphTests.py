@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 import unittest
 
+from lww.LWWEdge import LWWEdge
 from lww.LWWGraph import LWWGraph
+from lww.LWWVertex import LWWVertex
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -14,8 +16,13 @@ class LWWGrapTests(unittest.TestCase):
     def testAddVertices(self):
         lwwGraph = LWWGraph()
         
-        v1 = "A"
-        v2 = "B"
+        v1Name = "A"
+        v2Name = "B"
+        
+        v1 = LWWVertex()
+        v1.add("name", v1Name, 5)
+        v2 = LWWVertex()
+        v2.add("name", v2Name, 6)
         
         lwwGraph.addVertex(v1, 10)
         self.assertTrue(lwwGraph.vertexExists(v1))
@@ -41,17 +48,32 @@ class LWWGrapTests(unittest.TestCase):
     def testAddEdgesToExistingVertices(self):
         lwwGraph = LWWGraph()
         
-        v1 = "A"
-        v2 = "B"
-        e1 = "edgeAtoB"
-        e2 = "edgeAtoB_2"
+        v1Name = "A"
+        v2Name = "B"
+        e1Name = "edgeAtoB"
+        e2Name = "edgeAtoB_2"
+        
+        v1 = LWWVertex()
+        v1.add("name", v1Name, 1)
+        v2 = LWWVertex()
+        v2.add("name", v2Name, 2)
+        
+        e1 = LWWEdge()
+        e1.add("name", e1Name, 3)
+        e1.add("from", v1, 3)
+        e1.add("to", v2, 3)
+        
+        e2 = LWWEdge()
+        e2.add("name", e2Name, 4)
+        e2.add("from", v1, 4)
+        e2.add("to", v2, 4)
         
         lwwGraph.addVertex(v1, 10)
         lwwGraph.addVertex(v2, 20)
         self.assertTrue(lwwGraph.vertexExists(v1))
         self.assertTrue(lwwGraph.vertexExists(v2))
         
-        lwwGraph.addEdge(e1, v1, v2, 30)
+        lwwGraph.addEdge(e1, 30)
         self.assertEqual(lwwGraph.numberOfVertices(), 2)
         self.assertTrue(lwwGraph.edgeExists(e1))
         v1AdjacencySet = lwwGraph.getAdjacencyListForVertex(v1)
@@ -59,7 +81,7 @@ class LWWGrapTests(unittest.TestCase):
         self.assertEqual(len(v1AdjacencySet), 1)
         self.assertEqual(len(v2AdjacencySet), 0)
         
-        lwwGraph.addEdge(e2, v1, v2, 30)
+        lwwGraph.addEdge(e2, 30)
         self.assertEqual(lwwGraph.numberOfVertices(), 2)
         self.assertTrue(lwwGraph.edgeExists(e1))
         self.assertTrue(lwwGraph.edgeExists(e2))
@@ -71,17 +93,32 @@ class LWWGrapTests(unittest.TestCase):
     def testDirectedEdgeHandling(self):
         lwwGraph = LWWGraph()
         
-        v1 = "A"
-        v2 = "B"
-        e1 = "edgeAtoB"
-        e2 = "edgeBtoA"
+        v1Name = "A"
+        v2Name = "B"
+        e1Name = "edgeAtoB"
+        e2Name = "edgeBtoA"
+        
+        v1 = LWWVertex()
+        v1.add("name", v1Name, 1)
+        v2 = LWWVertex()
+        v2.add("name", v2Name, 2)
+        
+        e1 = LWWEdge()
+        e1.add("name", e1Name, 3)
+        e1.add("from", v1, 3)
+        e1.add("to", v2, 3)
+        
+        e2 = LWWEdge()
+        e2.add("name", e2Name, 4)
+        e2.add("from", v2, 4)
+        e2.add("to", v1, 4)
         
         lwwGraph.addVertex(v1, 10)
         lwwGraph.addVertex(v2, 20)
         self.assertTrue(lwwGraph.vertexExists(v1))
         self.assertTrue(lwwGraph.vertexExists(v2))
         
-        lwwGraph.addEdge(e1, v1, v2, 30)
+        lwwGraph.addEdge(e1, 30)
         self.assertEqual(lwwGraph.numberOfVertices(), 2)
         self.assertTrue(lwwGraph.edgeExists(e1))
         v1AdjacencySet = lwwGraph.getAdjacencyListForVertex(v1)
@@ -89,7 +126,7 @@ class LWWGrapTests(unittest.TestCase):
         self.assertEqual(len(v1AdjacencySet), 1)
         self.assertEqual(len(v2AdjacencySet), 0)
         
-        lwwGraph.addEdge(e2, v2, v1, 30)
+        lwwGraph.addEdge(e2, 30)
         self.assertEqual(lwwGraph.numberOfVertices(), 2)
         self.assertTrue(lwwGraph.edgeExists(e1))
         self.assertTrue(lwwGraph.edgeExists(e2))
@@ -101,70 +138,115 @@ class LWWGrapTests(unittest.TestCase):
     def testAddEdgeToNonExistingSource(self):
         lwwGraph = LWWGraph()
         
-        v1 = "A"
-        v2 = "B"
-        e = "edgeAtoB"
+        v1Name = "A"
+        v2Name = "B"
+        e1Name = "edgeAtoB"
+        
+        v1 = LWWVertex()
+        v1.add("name", v1Name, 1)
+        v2 = LWWVertex()
+        v2.add("name", v2Name, 2)
+        
+        e1 = LWWEdge()
+        e1.add("name", e1Name, 3)
+        e1.add("from", v1, 3)
+        e1.add("to", v2, 3)
         
         lwwGraph.addVertex(v2, 10)
         self.assertFalse(lwwGraph.vertexExists(v1))
         self.assertTrue(lwwGraph.vertexExists(v2))
         
-        self.assertRaises(KeyError, lwwGraph.addEdge, e, v1, v2, 30)
+        self.assertRaises(KeyError, lwwGraph.addEdge, e1, 30)
         
     def testAddEdgeToNonExistingDestination(self):
         lwwGraph = LWWGraph()
         
-        v1 = "A"
-        v2 = "B"
-        e = "edgeAtoB"
+        v1Name = "A"
+        v2Name = "B"
+        e1Name = "edgeAtoB"
+        
+        v1 = LWWVertex()
+        v1.add("name", v1Name, 1)
+        v2 = LWWVertex()
+        v2.add("name", v2Name, 2)
+        
+        e1 = LWWEdge()
+        e1.add("name", e1Name, 3)
+        e1.add("from", v1, 3)
+        e1.add("to", v2, 3)
         
         lwwGraph.addVertex(v1, 10)
         self.assertTrue(lwwGraph.vertexExists(v1))
         self.assertFalse(lwwGraph.vertexExists(v2))
         
-        self.assertRaises(KeyError, lwwGraph.addEdge, e, v1, v2, 30)
+        self.assertRaises(KeyError, lwwGraph.addEdge, e1, 30)
     
     def testRemoveExistingEdge(self):
         lwwGraph = LWWGraph()
         
-        v1 = "A"
-        v2 = "B"
-        e = "edgeAtoB"
+        v1Name = "A"
+        v2Name = "B"
+        e1Name = "edgeAtoB"
+        
+        v1 = LWWVertex()
+        v1.add("name", v1Name, 1)
+        v2 = LWWVertex()
+        v2.add("name", v2Name, 2)
+        
+        e1 = LWWEdge()
+        e1.add("name", e1Name, 3)
+        e1.add("from", v1, 3)
+        e1.add("to", v2, 3)
         
         lwwGraph.addVertex(v1, 10)
         lwwGraph.addVertex(v2, 20)
-        lwwGraph.addEdge(e, v1, v2, 30)
+        lwwGraph.addEdge(e1, 30)
         
         self.assertTrue(lwwGraph.vertexExists(v1))
         self.assertTrue(lwwGraph.vertexExists(v2))
-        self.assertTrue(lwwGraph.edgeExists(e))
+        self.assertTrue(lwwGraph.edgeExists(e1))
         
-        lwwGraph.removeEdge(e, 40)
+        lwwGraph.removeEdge(e1, 40)
         self.assertTrue(lwwGraph.vertexExists(v1))
         self.assertTrue(lwwGraph.vertexExists(v2))
-        self.assertFalse(lwwGraph.edgeExists(e))
+        self.assertFalse(lwwGraph.edgeExists(e1))
     
     def testRemoveNonExistingEdge(self):
         lwwGraph = LWWGraph()
         
-        v1 = "A"
-        v2 = "B"
-        e = "edgeAtoB"
+        v1Name = "A"
+        v2Name = "B"
+        e1Name = "edgeAtoB"
+        
+        v1 = LWWVertex()
+        v1.add("name", v1Name, 1)
+        v2 = LWWVertex()
+        v2.add("name", v2Name, 2)
+        
+        e1 = LWWEdge()
+        e1.add("name", e1Name, 3)
+        e1.add("from", v1, 3)
+        e1.add("to", v2, 3)
         
         lwwGraph.addVertex(v1, 10)
         lwwGraph.addVertex(v2, 20)
         
         self.assertTrue(lwwGraph.vertexExists(v1))
         self.assertTrue(lwwGraph.vertexExists(v2))
-        self.assertFalse(lwwGraph.edgeExists(e))
+        self.assertFalse(lwwGraph.edgeExists(e1))
         
-        self.assertRaises(Exception, lwwGraph.removeEdge, e, 40)
+        self.assertRaises(Exception, lwwGraph.removeEdge, e1, 40)
         
     def testRemoveVertexWithoutEdges(self):
         lwwGraph = LWWGraph()
         
-        v1 = "A"
-        v2 = "B"
+        v1Name = "A"
+        v2Name = "B"
+        
+        v1 = LWWVertex()
+        v1.add("name", v1Name, 1)
+        v2 = LWWVertex()
+        v2.add("name", v2Name, 2)
         
         lwwGraph.addVertex(v1, 10)
         lwwGraph.addVertex(v2, 20)
@@ -183,17 +265,27 @@ class LWWGrapTests(unittest.TestCase):
     def testRemoveVertexWithOutgoingEdge(self):
         lwwGraph = LWWGraph()
         
-        v1 = "A"
-        v2 = "B"
-        e = "edgeAtoB"
+        v1Name = "A"
+        v2Name = "B"
+        e1Name = "edgeAtoB"
+        
+        v1 = LWWVertex()
+        v1.add("name", v1Name, 1)
+        v2 = LWWVertex()
+        v2.add("name", v2Name, 2)
+        
+        e1 = LWWEdge()
+        e1.add("name", e1Name, 3)
+        e1.add("from", v1, 3)
+        e1.add("to", v2, 3)
         
         lwwGraph.addVertex(v1, 10)
         lwwGraph.addVertex(v2, 20)
-        lwwGraph.addEdge(e, v1, v2, 30)
+        lwwGraph.addEdge(e1, 30)
         
         self.assertTrue(lwwGraph.vertexExists(v1))
         self.assertTrue(lwwGraph.vertexExists(v2))
-        self.assertTrue(lwwGraph.edgeExists(e))
+        self.assertTrue(lwwGraph.edgeExists(e1))
         
         self.assertRaises(Exception, lwwGraph.removeVertex, v1, 30)
         self.assertTrue(lwwGraph.vertexExists(v1))
@@ -202,17 +294,27 @@ class LWWGrapTests(unittest.TestCase):
     def testRemoveVertexWithIncomingEdge(self):
         lwwGraph = LWWGraph()
         
-        v1 = "A"
-        v2 = "B"
-        e = "edgeAtoB"
+        v1Name = "A"
+        v2Name = "B"
+        e1Name = "edgeAtoB"
+        
+        v1 = LWWVertex()
+        v1.add("name", v1Name, 1)
+        v2 = LWWVertex()
+        v2.add("name", v2Name, 2)
+        
+        e1 = LWWEdge()
+        e1.add("name", e1Name, 3)
+        e1.add("from", v1, 3)
+        e1.add("to", v2, 3)
         
         lwwGraph.addVertex(v1, 10)
         lwwGraph.addVertex(v2, 20)
-        lwwGraph.addEdge(e, v1, v2, 30)
+        lwwGraph.addEdge(e1, 30)
         
         self.assertTrue(lwwGraph.vertexExists(v1))
         self.assertTrue(lwwGraph.vertexExists(v2))
-        self.assertTrue(lwwGraph.edgeExists(e))
+        self.assertTrue(lwwGraph.edgeExists(e1))
         
         self.assertRaises(Exception, lwwGraph.removeVertex, v2, 40)
         self.assertTrue(lwwGraph.vertexExists(v1))
