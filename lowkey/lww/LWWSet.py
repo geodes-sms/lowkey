@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import uuid
 
 _author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -27,6 +28,7 @@ class LWWSet():
     def __init__(self):
         self._addSet = set()
         self._removeSet = set()
+        self._id = uuid.uuid1()
     
     def __iter__(self):
         self.__currentlyExisting = self._existing()
@@ -42,6 +44,9 @@ class LWWSet():
             raise StopIteration
     
     """Interface methods"""
+    
+    def getId(self):
+        return self._id
     
     def lookup(self, value) -> bool:
         return any(value == self._lookupFunction(existing) for existing in self._existing())
