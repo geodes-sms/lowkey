@@ -15,6 +15,9 @@ class LWWMapTests(unittest.TestCase):
     
     def setUp(self):
         self.lwwMap = LWWMap()
+        
+    def tearDown(self):
+        self.lwwMap = None
 
     def testAddAndQueryEntries(self):
         key1 = "name"
