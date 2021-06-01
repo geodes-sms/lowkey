@@ -319,7 +319,32 @@ class LWWGrapTests(unittest.TestCase):
         self.assertRaises(Exception, lwwGraph.removeVertex, v2, 40)
         self.assertTrue(lwwGraph.vertexExists(v1))
         self.assertTrue(lwwGraph.vertexExists(v2))
-
+        
+    def testGraphAsEdgeEndpoint(self):
+        lwwGraph = LWWGraph()
+        lwwGraph.add("name", "root", 1)
+        
+        v1Name = "A"
+        e1Name = "edgeRootToA"
+        
+        v1 = LWWVertex()
+        v1.add("name", v1Name, 2)
+        
+        e1 = LWWEdge()
+        e1.add("name", e1Name, 3)
+        e1.add("from", lwwGraph, 3)
+        e1.add("to", v1, 3)
+        
+        lwwGraph.addVertex(v1, 10)
+        self.assertTrue(lwwGraph.vertexExists(v1))
+        
+        lwwGraph.addEdge(e1, 30)
+        self.assertEqual(lwwGraph.numberOfVertices(), 1)
+        self.assertTrue(lwwGraph.edgeExists(e1))
+        v1AdjacencySet = lwwGraph.getAdjacencyListForVertex(v1)
+        self.assertEqual(len(v1AdjacencySet), 0)
+        graphVirtualAdjacencySet = lwwGraph.getAdjacencyListForVertex(lwwGraph)
+        self.assertEqual(len(graphVirtualAdjacencySet), 1)
         
 if __name__ == "__main__":
     unittest.main()

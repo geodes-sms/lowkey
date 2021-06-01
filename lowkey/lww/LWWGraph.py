@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 from lww.LWWEdge import LWWEdge
+from lww.LWWMap import LWWMap
 from lww.LWWSet import LWWSet
 from lww.LWWVertex import LWWVertex
 
-__author__ = "Istvan David"
+_author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
 __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
@@ -14,34 +15,12 @@ https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf.
 """
 
 
-class Edge():
-    
-    def __eq__(self, other):
-        """Overrides the default implementation"""
-        if isinstance(other, Edge):
-            return self.__id == other.getId()
-        return False
-    
-    def __hash__(self):
-        """Overrides the default implementation"""
-        return hash(tuple(sorted(self.__dict__.items())))
-    
-    def __init__(self, edgeId, destinationVertex):
-        self.__id = edgeId
-        self.__destinationVertex = destinationVertex
-    
-    def getId(self):
-        return self.__id
-    
-    def getDestinationVertex(self):
-        return self.__destinationVertex
-
-
-class LWWGraph():
+class LWWGraph(LWWMap):
     
     def __init__(self):
+        super().__init__()
         self.__vertices = LWWSet()  # set of (LWWVertex, timestamp) tuples
-        self.__edges = LWWSet()  # set of (LWWEdge, timestamp) tuples
+        self.__edges = LWWSet()  # set of (LWWEdge, timestamp) tuples        
     
     """Interface methods: accessors"""
         
@@ -90,24 +69,27 @@ class LWWGraph():
     
     def edgeExistsWithName(self, edgeName) -> bool:
         return True if self.__queryEdgeByName(edgeName) else False
-    
-    def addEdgeWithName(self, edgeName, sourceVertex, destinationVertex, timestamp: int):
-        if not self.vertexExists(sourceVertex):
+   
+    def nodeExists(self, node):
+        return self.vertexExists(node) or node == self
+     
+    def addEdgeWithName(self, edgeName, sourceNode, destinationNode, timestamp: int):
+        if not self.nodeExists(sourceNode):
             raise KeyError("Source vertex does not exist.")
-        if not self.vertexExists(destinationVertex):
+        if not self.nodeExists(destinationNode):
             raise KeyError("Destination vertex does not exist.")
         
         edge = LWWEdge()
         edge.add("name", edgeName)
-        edge.add("from", sourceVertex)
-        edge.add("to", destinationVertex)
+        edge.add("from", sourceNode)
+        edge.add("to", destinationNode)
         
         self.__edges.add(edge, timestamp)
         
     def addEdge(self, edge:LWWEdge, timestamp: int):
-        if not self.vertexExists(edge.query("from")):
+        if not self.nodeExists(edge.query("from")):
             raise KeyError("Source vertex does not exist.")
-        if not self.vertexExists(edge.query("to")):
+        if not self.nodeExists(edge.query("to")):
             raise KeyError("Destination vertex does not exist.")
         
         self.__edges.add(edge, timestamp)
