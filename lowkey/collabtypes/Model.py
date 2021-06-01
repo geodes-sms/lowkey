@@ -17,13 +17,13 @@ class Model(Node):
     
     def __init__(self):
         super().__init__()
-        self.add(Literals.NODES, (), self._currentTime())
+        self.add(Literals.NODES, (), self.currentTime())
     
     # Nodes CRUD
     def addNode(self, node:Node):
         nodes = self.query(Literals.NODES)
         nodes = nodes + (node,)
-        return self.update(Literals.NODES, nodes, self._currentTime())
+        return self.update(Literals.NODES, nodes, self.currentTime())
         
     def getNode(self, name:str):
         nodes = self.query(Literals.NODES)
@@ -33,7 +33,7 @@ class Model(Node):
         nodes = self.query(Literals.NODES)
         for n in nodes:
             if n == node:
-                self.remove(n, self._currentTime())
+                self.remove(n, self.currentTime())
         # Here, this should trigger a cascade delete on every reference,
         # since this is the composite aggregation that contains the node in the model.
         
