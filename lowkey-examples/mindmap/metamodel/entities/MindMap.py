@@ -54,7 +54,7 @@ class MindMap(Entity):
     def removeTopic(self):
         topicReferences = self.getRelationship("topic")
         if topicReferences:
-            self.removeRelationship(topicReferences[0]) # safe due to MultiplicityToMax = 1
+            self.removeRelationship(topicReferences[0])  # safe due to MultiplicityToMax = 1
     
     # markers: Reference
     # ========================
@@ -80,7 +80,7 @@ class MindMap(Entity):
         
         self.addRelationship(markersReference)
         
-    def removeMarker(self, marker): # Removes the relationship to the Marker object but not the object
+    def removeMarker(self, marker):  # Removes the relationship to the Marker object but not the object
         markersReferences = self.getRelationship("markers")
         for mr in markersReferences:
             if mr.getTo() == marker:
