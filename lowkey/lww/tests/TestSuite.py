@@ -8,6 +8,7 @@ from lww.tests.LWWMapTests import LWWMapTests
 from lww.tests.LWWRegisterMultiUserTests import LWWRegisterMultiUserTests
 from lww.tests.LWWRegisterTests import LWWRegisterTests
 from lww.tests.LWWSetTests import LWWSetTests
+from lww.tests.CloningTests import CloningTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -21,10 +22,11 @@ Full test suite for the LWW implementations.
 
 def create_suite():
     typeTestCases = [LWWRegisterTests, LWWSetTests, LWWMapTests, LWWGrapTests, LWWGraphPartsTests]
-    typeUsageCases = [LWWRegisterMultiUserTests, EmbeddingTests]
+    typeUsageTestCases = [LWWRegisterMultiUserTests, EmbeddingTests]
+    behavioralTestCases = [CloningTests]
     loadedCases = []
     
-    for case in typeTestCases + typeUsageCases:
+    for case in typeTestCases + typeUsageTestCases + behavioralTestCases:
         loadedCases.append(unittest.defaultTestLoader.loadTestsFromTestCase(case))    
 
     return unittest.TestSuite(loadedCases)
