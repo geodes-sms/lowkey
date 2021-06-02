@@ -1,4 +1,8 @@
+from collabtypes.Model import Model
+
+
 def printMindmap(mindmap):
+    print("\nPrinting Mindmap")
     print('===============================')
     print(mindmap.getTitle())
     centralTopic = mindmap.getTopic()
@@ -10,13 +14,15 @@ def printMindmap(mindmap):
 
     
 def __printTopic(depth, topic):
-    line = depth*2*' ' + '|_{}'.format(topic.getName())
+    line = depth * 2 * ' ' + '|_{}'.format(topic.getName())
     marker = topic.getMarker()
     if marker:
-        line+=(' [' + marker.getSymbol() + ']')
+        line += (' [' + marker.getSymbol() + ']')
     print(line)
-    
-def printNodes(mindmap):
-    print('\n')
-    for node in mindmap.getNodes():
-        print(node)
+
+        
+def printModel(model: Model):
+    print("\nPrinting model nodes")
+    print('===============================')
+    for n in model.getNodes():
+        print('-"{0}" of type {1}. (ID: {2})'.format(n.getName(), n.__class__.__name__, n.getId()))

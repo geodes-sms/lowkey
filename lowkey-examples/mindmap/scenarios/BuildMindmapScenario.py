@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
 from collabtypes.Clock import Clock, ClockMode
-from mindmap import MindmapPrinter
+from mindmap import PrintHelper
 from mindmap.metamodel.entities.CentralTopic import CentralTopic
 from mindmap.metamodel.entities.MainTopic import MainTopic
 from mindmap.metamodel.entities.Marker import Marker
 from mindmap.metamodel.entities.MindMap import MindMap
 from mindmap.metamodel.entities.SubTopic import SubTopic
+from mindmap.metamodel.entities.MindMapModel import MindMapModel
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -41,10 +42,39 @@ markerX = Marker('x')
 mindmap.addMarker(markerX)
 s2.setMarker(markerX)
 
-# Create another Marker
+# Print the MindMap
+PrintHelper.printMindmap(mindmap)
+
+
+# Assemble model
+model = MindMapModel('mindmapModel')
+model.addNode(mindmap)
+model.addNode(centralTopic)
+model.addNode(mt1)
+model.addNode(mt2)
+model.addNode(s1)
+model.addNode(s2)
+model.addNode(markerX)
+
+# Print model nodes
+PrintHelper.printModel(model)
+
+# Create another Marker and add it to the model, but not to the mindmap
 markerPlus = Marker('+')
+model.addNode(markerPlus)
+
+print("\n>added new Marker (+) to the model")
+
+# Print model nodes
+PrintHelper.printMindmap(mindmap)
+PrintHelper.printModel(model)
+
+# Add Marker to the model
 mindmap.addMarker(markerPlus)
 s1.setMarker(markerPlus)
 
-# Print the MindMap
-MindmapPrinter.printMindmap(mindmap)
+print("\n>added Marker + to the mindmap")
+
+# Print model nodes
+PrintHelper.printMindmap(mindmap)
+PrintHelper.printModel(model)
