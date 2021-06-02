@@ -5,6 +5,7 @@ from collabtypes.Clock import Clock, ClockMode
 from mindmap.metamodel.entities.CentralTopic import CentralTopic
 from mindmap.metamodel.entities.Marker import Marker
 from mindmap.metamodel.entities.MindMap import MindMap
+from mindmap.metamodel.entities.MindMapModel import MindMapModel
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -16,6 +17,13 @@ class BasicMindmapTests(unittest.TestCase):
     
     def setUp(self):
         Clock.setUp(ClockMode.DEBUG)
+        
+    def testCreateModelWithContent(self):
+        mindmapModel = MindMapModel()
+        title1 = "improveTeachingRecord"
+        mindmap = MindMap(title1)
+        mindmapModel.addNode(mindmap)
+        self.assertEqual(mindmapModel.getNodeById(mindmap.getId()), mindmap)
 
     def testCreateUpdateRoot(self):
         title1 = "improveTeachingRecord"
