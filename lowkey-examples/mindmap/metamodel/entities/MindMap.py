@@ -9,6 +9,7 @@ class MindMap(Entity):
     def __init__(self, title=""):
         super().__init__()
         self.setTitle(title)
+        self.setName(title+"_mindmap")
 
     # title: Attribute
     # ========================

@@ -6,6 +6,7 @@ class Marker(Entity):
     def __init__(self, symbol=""):
         super().__init__()
         self.setSymbol(symbol)
+        self.setName(symbol+"_marker")
         
     # symbol: Attribute
     # ========================
