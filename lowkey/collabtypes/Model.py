@@ -24,10 +24,17 @@ class Model(Node):
         nodes = self.query(Literals.NODES)
         nodes = nodes + (node,)
         return self.update(Literals.NODES, nodes, self.currentTime())
+    
+    def getNodes(self):
+        return self.query(Literals.NODES)
         
-    def getNode(self, name:str):
-        nodes = self.query(Literals.NODES)
-        return [n for n in nodes if n._getAttribute(Literals.NAME) == name]
+    def getNodeByName(self, name:str):
+        nodes = self.getNodes()
+        return next(n for n in nodes if n._getAttribute(Literals.NAME) == name)  # names should be unique
+    
+    def getNodeById(self, identifier):
+        nodes = self.getNodes()
+        return next(n for n in nodes if n.getId() == identifier)  # IDs should be unique
     
     def removeNode(self, node:Node):
         nodes = self.query(Literals.NODES)
