@@ -12,19 +12,18 @@ __license__ = "GPL-3.0"
 class Dummy():
     
     def __init__(self):
-        self.__name:str = "Dummy object"
-        self.__id:int = 1234
+        self.name:str = "Dummy object"
+        self.id:int = 1234
 
 
-class SerializationTest(unittest.TestCase):
+class SerializationTests(unittest.TestCase):
 
     def testDump(self):
         dummy = Dummy()
-        print(dummy)
         jsondata = json.dumps(dummy.__dict__)
-        print(jsondata)
-        x = json.loads(jsondata, object_hook=lambda d: SimpleNamespace(**d))
-        print(x)
+        dummy2 = json.loads(jsondata, object_hook=lambda d: SimpleNamespace(**d))
+        self.assertEqual(dummy.name, dummy2.name)
+        self.assertEqual(dummy.id, dummy2.id)
 
 
 if __name__ == "__main__":
