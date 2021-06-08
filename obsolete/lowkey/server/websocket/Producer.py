@@ -4,8 +4,6 @@ import json
 
 import websockets
 
-from server import Commands
-
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
 __credits__ = "Eugene Syriani"
@@ -16,7 +14,12 @@ Message producer component for CollabClients.
 """
 
 
-class Procuder():
+class Producer():
+    
+    __commands = ['CREATE', 'READ', 'UPDATE', 'DELETE']
+
+    def valid(self, command):
+        return command.upper() in self.__commands
     
     async def produce(self, message:str):
         async with websockets.connect("ws://localhost:8765") as ws:
@@ -32,7 +35,7 @@ class Procuder():
             arguments = userInput.split()
             command = arguments[0]
                         
-            if not Commands.valid(command):
+            if not self.valid(command):
                 print("Invalid command")
             else:
                 loop = asyncio.get_event_loop()
@@ -45,5 +48,5 @@ class Procuder():
 
     
 if __name__ == "__main__":
-    producer = Procuder()
+    producer = Producer()
     producer.readUserInput()
