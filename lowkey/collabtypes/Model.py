@@ -30,7 +30,7 @@ class Model(Node):
         
     def getNodeByName(self, name:str):
         nodes = self.getNodes()
-        return next(n for n in nodes if n._getAttribute(Literals.NAME) == name)  # names should be unique
+        return next(n for n in nodes if n.getAttribute(Literals.NAME) == name)  # names should be unique
     
     def getNodeById(self, identifier):
         nodes = self.getNodes()
