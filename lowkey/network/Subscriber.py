@@ -17,7 +17,10 @@ Subscriber facility for clients.
 
 class Subscriber:
 
-    def __init__(self, address='127.0.0.1', port='5567'):
+    def __init__(self, address="127.0.0.1", port="5567", loggingLevel=logging.DEBUG):
+        logging.basicConfig()
+        logging.getLogger().setLevel(loggingLevel)
+        
         self.context = Context.instance()
         self.url = "tcp://{}:{}".format(address, port)
         
@@ -26,17 +29,21 @@ class Subscriber:
         self.sub = self.context.socket(zmq.SUB)  # @UndefinedVariable
         self.sub.connect(self.url)
         
-        self.__topic = "lowkey"
-        self.sub.setsockopt(zmq.SUBSCRIBE, self.__topic.encode('ascii'))  # @UndefinedVariable
+        self.__topic = ""
+        self.sub.setsockopt(zmq.SUBSCRIBE, self.__topic.encode("ascii"))  # @UndefinedVariable
         
         self.listen()
 
     def listen(self):
+        logging.info("Subscriber listening.")
         while True:
-            msg_received = self.sub.recv_multipart()
-            print("sub {}: {}".format(self.__topic, msg_received))
+            try:
+                msg_received = self.sub.recv()
+                print("sub: {}".format(msg_received.decode("ascii")))
+            except zmq.Again:
+                pass
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.info("Running with arguments: {}.".format(sys.argv))
     Subscriber()

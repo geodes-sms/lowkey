@@ -17,7 +17,10 @@ Proxy facility providing XSUB/XPUB interfaces.
 
 class Proxy:
 
-    def __init__(self, address='127.0.0.1', xsubPort='5566', xpubPort='5567'):
+    def __init__(self, address="127.0.0.1", xsubPort="5566", xpubPort="5567", loggingLevel=logging.DEBUG):
+        logging.basicConfig()
+        logging.getLogger().setLevel(loggingLevel)
+        
         self.context = Context.instance()
         self.xsubUrl = "tcp://{}:{}".format(address, xsubPort)
         self.xpubUrl = "tcp://{}:{}".format(address, xpubPort)
@@ -36,11 +39,19 @@ class Proxy:
         backend_subs = self.context.socket(zmq.XPUB)  # @UndefinedVariable
         backend_subs.bind(self.xpubUrl)
 
-        logging.info("Try: Proxy... CONNECT!")
+        logging.info("Proxy established.")
         zmq.proxy(frontend_pubs, backend_subs)  # @UndefinedVariable
-        logging.info("CONNECT successful!")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     logging.info("Running with arguments: {}.".format(sys.argv))
-    Proxy()
+    if len(sys.argv) == 1:
+        Proxy()
+    elif len(sys.argv) == 2:
+        level_config = {"critical": logging.CRITICAL, "error": logging.ERROR,
+                        "warning": logging.WARNING, "debug": logging.DEBUG,
+                        "info": logging.INFO, "notset": logging.NOTSET}
+        log_level = level_config[''.join(sys.argv[1]).lower()]
+        Proxy(loggingLevel=log_level)
+    else:
+        Proxy()
