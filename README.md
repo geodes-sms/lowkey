@@ -32,3 +32,7 @@ Source: [Van Mierlo, Barroca, Vangheluwe, Syriani, Kühne. Multi-Level Modelling
 <img src="https://raw.githubusercontent.com/david-istvan/collabserver-modeling/main/docs/zmq_pattern.PNG?raw=true"/>
 
 Source: [ZMQ: Reliable Pub-Sub with Update republishing](https://zguide.zeromq.org/docs/chapter5/#Republishing-Updates-from-Clients)
+
+Further pointers:
+* [Ephemeral values](https://zguide.zeromq.org/docs/chapter5/#Ephemeral-Values)
+* [Reactor](https://zguide.zeromq.org/docs/chapter5/#Using-a-Reactor)
