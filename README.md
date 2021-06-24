@@ -27,3 +27,8 @@ Source: [Van Mierlo, Barroca, Vangheluwe, Syriani, Kühne. Multi-Level Modelling
 
 [Shapiro M, Preguiça N, Baquero C, Zawirski M. A comprehensive study of convergent and commutative replicated data types (Doctoral dissertation, Inria–Centre Paris-Rocquencourt; INRIA)](https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf)
 
+## Network architecture and patterns
+
+<img src="https://raw.githubusercontent.com/david-istvan/collabserver-modeling/main/docs/zmq_pattern.PNG?raw=true"/>
+
+Source: [ZMQ: Reliable Pub-Sub with Update republishing](https://zguide.zeromq.org/docs/chapter5/#Republishing-Updates-from-Clients)
