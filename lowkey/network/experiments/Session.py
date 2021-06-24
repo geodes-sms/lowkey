@@ -5,7 +5,6 @@ from collabtypes.Entity import Entity
 from collabtypes.Model import Model
 
 from network.Publisher import Publisher
-from network.Subscriber import Subscriber
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
