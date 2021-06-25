@@ -1,5 +1,12 @@
 #!/usr/bin/env python
+import os
+import sys
+
 import zmq
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+
+from network.Memory import Memory
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -40,9 +47,10 @@ class Server():
         self._poller = zmq.Poller()
         self._poller.register(self._collector, zmq.POLLIN)  # @UndefinedVariable
         self._poller.register(self._snapshot, zmq.POLLIN)  # @UndefinedVariable
+        
+        self._memory = Memory()
     
     def run(self):
-        sequence = 0
         msg = ""
         
         while True:
@@ -53,13 +61,11 @@ class Server():
             
             # PULLed messages PUBLISHED by the clients
             if self._collector in items:
-                msg = self._collector.recv_multipart()
-                identity = msg[0]
-                request = msg[1]
-                print(request)
-                sequence += 1
-                print("I: publishing update %5d" % sequence)
-                self._publisher.send(b'This was published by the srv.')
+                msg = self._collector.recv()
+                print("Saving msg: {}".format(msg))
+                self._memory.saveMessage(msg)
+                print("Publishing update")
+                self._publisher.send(msg)
             
             # snapshot requests by joining clients
             if self._snapshot in items:
@@ -75,15 +81,20 @@ class Server():
                     break
     
                 route = Route(self._snapshot, identity)
+                
+                for message in self._memory.getMessages():
+                    route.socket.send(route.identity, zmq.SNDMORE)  # @UndefinedVariable
+                    print("Sending message {}".format(message))
+                    self._snapshot.send(message)
     
-                route.socket.send(route.identity, zmq.SNDMORE)  # @UndefinedVariable
-                self._snapshot.send(b'asd')
+                # route.socket.send(route.identity, zmq.SNDMORE)  # @UndefinedVariable
+                # self._snapshot.send(b'asd')
     
-                print("Sending state shapshot=%d\n" % sequence)
+                print("Sent state shapshot")
                 self._snapshot.send(identity, zmq.SNDMORE)  # @UndefinedVariable
                 self._snapshot.send(b'KTHXBAI')
     
-        print(" Interrupted\n%d messages handled" % sequence)
+        print(" Interrupted")
 
 
 if __name__ == '__main__':

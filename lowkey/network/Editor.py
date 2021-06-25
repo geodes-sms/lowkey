@@ -20,6 +20,7 @@ Example client
 class Editor(Client):
     
     __commands = ["CREATE", "READ", "UPDATE", "DELETE"]
+    __encoding = "utf-8"
     
     def run(self):
         connection_thread = threading.Thread(target=self.subscribe, args=())
@@ -28,10 +29,19 @@ class Editor(Client):
         connection_thread.start()
         print("Starting editor")
         self.editorThread()
-        
+    
     def subscriberAction(self):
         msg2 = self._subscriber.recv()
-        print("I: received update=%s" % msg2)
+        senderId, message = self.getMessage(msg2)
+        
+        if not self.throwawayMessage(senderId):
+            print("Processing message {}".format(message))
+        
+    def getMessage(self, rawMessage):
+        return rawMessage.decode(self.__encoding).split(' ', 1)        
+    
+    def throwawayMessage(self, senderId):
+        return senderId.replace('[', '').replace(']', '') == str(self._id)
     
     def timeoutAction(self):
         pass
@@ -66,10 +76,14 @@ class Editor(Client):
             command = arguments[0]
             
             if self.valid(command):
-                self._publisher.send(b'CREATE MindMap')
+                msg = self.createMessage(userInput)
+                self._publisher.send(msg)
             else:
                 print("Invalid command")
                 continue
+
+    def createMessage(self, body):
+        return bytes('[{}] {}'.format(self._id, body), self.__encoding)
 
 
 if __name__ == "__main__":

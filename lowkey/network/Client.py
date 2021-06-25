@@ -2,6 +2,7 @@
 import time
 
 import zmq
+import uuid
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -15,6 +16,8 @@ __license__ = "GPL-3.0"
 class Client():
 
     def __init__(self):
+        self._id = uuid.uuid1()
+        
         ctx = zmq.Context()
         
         self._snapshot = ctx.socket(zmq.DEALER)  # @UndefinedVariable
