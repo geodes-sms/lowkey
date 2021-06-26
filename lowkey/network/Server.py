@@ -3,6 +3,8 @@ import os
 import sys
 
 import zmq
+import logging
+import argparse
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
@@ -14,25 +16,14 @@ __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
 
 """
-Server
+Server component, responsible for:
+-publishing the initial snapshot to joiners (via ROUTER/DEALER);
+-pulling client updates (via PULL/PUSH);
+-distributing client updates (via PUB/SUB).
 """
 
 
-# simple struct for routing information for a key-value snapshot
-class Route:
-
-    def __init__(self, socket, identity):
-        self.socket = socket  # ROUTER socket to send to
-        self.identity = identity  # Identity of peer who requested state
-
-
 class Server():
-
-    def send_single(self, key, kvmsg, route):
-        """Send one state snapshot key-value pair to a socket"""
-        # Send identity of recipient first
-        route.socket.send(route.identity, zmq.SNDMORE)  # @UndefinedVariable
-        kvmsg.send(route.socket)
     
     def __init__(self):
         ctx = zmq.Context()
@@ -51,8 +42,6 @@ class Server():
         self._memory = Memory()
     
     def run(self):
-        msg = ""
-        
         while True:
             try:
                 items = dict(self._poller.poll(1000))
@@ -61,42 +50,66 @@ class Server():
             
             # PULLed messages PUBLISHED by the clients
             if self._collector in items:
-                msg = self._collector.recv()
-                print("Saving msg: {}".format(msg))
-                self._memory.saveMessage(msg)
-                print("Publishing update")
-                self._publisher.send(msg)
+                message = self._collector.recv()
+                logging.debug("Saving message: {}".format(message))
+                self._memory.saveMessage(message)
+                logging.debug("Publishing update")
+                self._publisher.send(message)
             
             # snapshot requests by joining clients
             if self._snapshot in items:
-                msg = self._snapshot.recv_multipart()
-                identity = msg[0]
-                request = msg[1]
-                print("Identity: {}".format(identity))
-                print("Request: {}".format(request))
-                if request == b"ICANHAZ?":
+                message = self._snapshot.recv_multipart()
+                identity = message[0]
+                request = message[1]
+                logging.debug("Identity: {}".format(identity))
+                logging.debug("Request: {}".format(request))
+                if request == b"request_snapshot":
                     pass
                 else:
-                    print("E: bad request, aborting\n")
+                    print("Bad request, aborting.")
                     break
     
-                route = Route(self._snapshot, identity)
-                
                 for message in self._memory.getMessages():
-                    route.socket.send(route.identity, zmq.SNDMORE)  # @UndefinedVariable
-                    print("Sending message {}".format(message))
+                    self._snapshot.send(identity, zmq.SNDMORE)  # @UndefinedVariable
+                    logging.debug("Sending message {}".format(message))
                     self._snapshot.send(message)
     
                 # route.socket.send(route.identity, zmq.SNDMORE)  # @UndefinedVariable
                 # self._snapshot.send(b'asd')
     
-                print("Sent state shapshot")
+                logging.debug("Sent state shapshot")
                 self._snapshot.send(identity, zmq.SNDMORE)  # @UndefinedVariable
-                self._snapshot.send(b'KTHXBAI')
+                self._snapshot.send(b'finished_snapshot')
     
-        print(" Interrupted")
+        print("Interrupted")
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-log",
+        "--log",
+        default="warning",
+        help=("Provide logging level. "
+              "Example '--log debug', default='warning'."
+              )
+        )
+
+    options = parser.parse_args()
+    levels = {
+        'critical': logging.CRITICAL,
+        'error': logging.ERROR,
+        'warn': logging.WARNING,
+        'warning': logging.WARNING,
+        'info': logging.INFO,
+        'debug': logging.DEBUG
+    }
+    level = levels.get(options.log.lower())
+    if level is None:
+        raise ValueError(
+            f"log level given: {options.log}"
+            f" -- must be one of: {' | '.join(levels.keys())}")
+    logging.basicConfig(format='[%(levelname)s] %(message)s', level=level)
+    
     server = Server()
     server.run()

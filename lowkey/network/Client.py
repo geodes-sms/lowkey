@@ -1,19 +1,27 @@
 #!/usr/bin/env python
+import logging
+import os
+import sys
 import time
+import uuid
 
 import zmq
-import uuid
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+
+from network.LWWAwareComponent import LWWAwareComponent 
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
 __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
 
-"""TODO: Description goes here.
+"""
+Generic client component.
 """
 
 
-class Client():
+class Client(LWWAwareComponent):
 
     def __init__(self):
         self._id = uuid.uuid1()
@@ -35,21 +43,20 @@ class Client():
         self._poller.register(self._subscriber, zmq.POLLIN)  # @UndefinedVariable
 
     def join(self):
-        msg = ""
-        self._snapshot.send(b"ICANHAZ?")
+        self._snapshot.send(b"request_snapshot")
         while True:
             try:
-                msg = self._snapshot.recv()
-                print(msg)
+                message = self._snapshot.recv()
+                logging.debug(message)
             except:
                 return  # Interrupted
-            if msg == b"KTHXBAI":
+            if message == b"finished_snapshot":
                 # sequence = kvmsg.sequence
-                print("I: Received snapshot")
+                logging.debug("Received snapshot")
                 break  # Done
-            
+
     def subscribe(self):
-        print("Receiving messages")
+        logging.debug("Receiving messages")
         
         alarm = time.time() + 1.
         while True:
@@ -65,7 +72,7 @@ class Client():
             if time.time() >= alarm:
                 self.timeoutAction()
     
-        print(" Interrupted")
+        logging.debug("Interrupted")
         
     def subscriberAction(self):
         raise NotImplementedError

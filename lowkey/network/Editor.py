@@ -2,6 +2,8 @@
 import os
 import sys
 import threading
+import logging
+import argparse
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
@@ -13,7 +15,7 @@ __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
 
 """
-Example client
+Simple command line editor as an example client.
 """
 
 
@@ -25,17 +27,19 @@ class Editor(Client):
     def run(self):
         connection_thread = threading.Thread(target=self.subscribe, args=())
         connection_thread.daemon = True
-        print("Starting connection thread")
+        logging.debug("Starting connection thread")
         connection_thread.start()
-        print("Starting editor")
+        logging.debug("Starting editor")
         self.editorThread()
     
     def subscriberAction(self):
-        msg2 = self._subscriber.recv()
-        senderId, message = self.getMessage(msg2)
+        receviedMessage = self._subscriber.recv()
+        senderId, message = self.getMessage(receviedMessage)
         
-        if not self.throwawayMessage(senderId):
-            print("Processing message {}".format(message))
+        if self.throwawayMessage(senderId):
+            logging.debug("Throwing message {}".format(message))
+        else:
+            logging.debug("Processing message {}".format(message))
         
     def getMessage(self, rawMessage):
         return rawMessage.decode(self.__encoding).split(' ', 1)        
@@ -87,6 +91,33 @@ class Editor(Client):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-log",
+        "--log",
+        default="warning",
+        help=("Provide logging level. "
+              "Example '--log debug', default='warning'."
+              )
+        )
+
+    options = parser.parse_args()
+    levels = {
+        'critical': logging.CRITICAL,
+        'error': logging.ERROR,
+        'warn': logging.WARNING,
+        'warning': logging.WARNING,
+        'info': logging.INFO,
+        'debug': logging.DEBUG
+    }
+    level = levels.get(options.log.lower())
+    if level is None:
+        raise ValueError(
+            f"log level given: {options.log}"
+            f" -- must be one of: {' | '.join(levels.keys())}")
+    
+    logging.basicConfig(format='[%(levelname)s] %(message)s', level=level)
+    
     editor = Editor()
     editor.join()
     editor.run()
