@@ -11,7 +11,7 @@ A low-level and transparent framework for collaborative modeling.
 - [/lowkey](https://github.com/david-istvan/lowkey/tree/main/lowkey) - Main project.
   -  [/collabtypes](https://github.com/david-istvan/lowkey/tree/main/lowkey/collabtypes) - Type system for collaborative modeling.
   -  [/lww](https://github.com/david-istvan/lowkey/tree/main/lowkey/lww) - Low-level CRDT system.
-  -  [/server](https://github.com/david-istvan/lowkey/tree/main/lowkey/server) - Websocket-based client-server infrastructure.
+  -  [/network](https://github.com/david-istvan/lowkey/tree/main/lowkey/network) - ZeroMQ-based distributed infrastructure.
 - [/lowkey-examples](https://github.com/david-istvan/lowkey/tree/main/lowkey-examples) - Examples.
 
 # References
