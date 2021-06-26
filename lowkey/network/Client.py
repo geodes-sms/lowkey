@@ -28,19 +28,19 @@ class Client(LWWAwareComponent):
         
         ctx = zmq.Context()
         
-        self._snapshot = ctx.socket(zmq.DEALER)  # @UndefinedVariable
+        self._snapshot = ctx.socket(zmq.DEALER)
         self._snapshot.linger = 0
         self._snapshot.connect("tcp://localhost:5556")
-        self._subscriber = ctx.socket(zmq.SUB)  # @UndefinedVariable
+        self._subscriber = ctx.socket(zmq.SUB)
         self._subscriber.linger = 0
         self._subscriber.subscribe("")
         self._subscriber.connect("tcp://localhost:5557")
-        self._publisher = ctx.socket(zmq.PUSH)  # @UndefinedVariable
+        self._publisher = ctx.socket(zmq.PUSH)
         self._publisher.linger = 0
         self._publisher.connect("tcp://localhost:5558")
         
         self._poller = zmq.Poller()
-        self._poller.register(self._subscriber, zmq.POLLIN)  # @UndefinedVariable
+        self._poller.register(self._subscriber, zmq.POLLIN)
 
     def join(self):
         self._snapshot.send(b"request_snapshot")

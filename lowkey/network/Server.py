@@ -28,16 +28,16 @@ class Server():
     def __init__(self):
         ctx = zmq.Context()
         
-        self._snapshot = ctx.socket(zmq.ROUTER)  # @UndefinedVariable
+        self._snapshot = ctx.socket(zmq.ROUTER)
         self._snapshot.bind("tcp://*:5556")
-        self._publisher = ctx.socket(zmq.PUB)  # @UndefinedVariable
+        self._publisher = ctx.socket(zmq.PUB)
         self._publisher.bind("tcp://*:5557")
-        self._collector = ctx.socket(zmq.PULL)  # @UndefinedVariable
+        self._collector = ctx.socket(zmq.PULL)
         self._collector.bind("tcp://*:5558")
         
         self._poller = zmq.Poller()
-        self._poller.register(self._collector, zmq.POLLIN)  # @UndefinedVariable
-        self._poller.register(self._snapshot, zmq.POLLIN)  # @UndefinedVariable
+        self._poller.register(self._collector, zmq.POLLIN)
+        self._poller.register(self._snapshot, zmq.POLLIN)
         
         self._memory = Memory()
     
@@ -70,15 +70,12 @@ class Server():
                     break
     
                 for message in self._memory.getMessages():
-                    self._snapshot.send(identity, zmq.SNDMORE)  # @UndefinedVariable
+                    self._snapshot.send(identity, zmq.SNDMORE)
                     logging.debug("Sending message {}".format(message))
                     self._snapshot.send(message)
     
-                # route.socket.send(route.identity, zmq.SNDMORE)  # @UndefinedVariable
-                # self._snapshot.send(b'asd')
-    
                 logging.debug("Sent state shapshot")
-                self._snapshot.send(identity, zmq.SNDMORE)  # @UndefinedVariable
+                self._snapshot.send(identity, zmq.SNDMORE)
                 self._snapshot.send(b'finished_snapshot')
     
         print("Interrupted")
