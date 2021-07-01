@@ -47,3 +47,11 @@ Source: [ZMQ: Reliable Pub-Sub with Update republishing](https://zguide.zeromq.o
 Further pointers:
 * [Ephemeral values](https://zguide.zeromq.org/docs/chapter5/#Ephemeral-Values)
 * [Reactor](https://zguide.zeromq.org/docs/chapter5/#Using-a-Reactor)
+
+## Running the components
+
+```
+python Server.py -log debug
+python Editor.py -log debug
+python Editor.py -log debug
+```
