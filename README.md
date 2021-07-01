@@ -27,7 +27,18 @@ Source: [Van Mierlo, Barroca, Vangheluwe, Syriani, Kühne. Multi-Level Modelling
 
 [Shapiro M, Preguiça N, Baquero C, Zawirski M. A comprehensive study of convergent and commutative replicated data types (Doctoral dissertation, Inria–Centre Paris-Rocquencourt; INRIA)](https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf)
 
-## Network architecture and patterns
+## Network
+
+### Command language
+
+- ```CREATE [type] [name]``` - Creates an instance with name ```[name]``` of the domain-specific type ```[type]```.
+- ```CREATE association [type] [sourceName] [targetName]``` - Creates an instance of the association type ```[type]``` between the correspondingly typed objects named ```[sourceName]``` and ```[targetName]```, respectively.
+  - Note, that both ```CREATE``` commands conform to the same abstract signtaure ```CREATE [logicalType] [domaintype] [namedReference..]```, where ```[domainType]``` is the reference to the domain-specific type, and ```[logicalType]``` is the reference to the logical level type (present at the API), with the added syntactic sugar of ```Entity``` being the default ```[logicalType]```. For details on domain-specific vs logical types, see [this overview](https://raw.githubusercontent.com/david-istvan/collabserver-example-mindmap/main/model/mapping.png).
+- ```READ``` - Returns the mindmap model in a readable form.
+- ```UPDATE [name] [property] [value]``` - Updates property ```[property]``` in object ```[name]``` to value ```[value]```.
+- ```DELETE [name]``` - Deletes object ```[name]```.
+
+### Architecture and patterns
 
 <img src="https://raw.githubusercontent.com/david-istvan/collabserver-modeling/main/docs/zmq_pattern.PNG?raw=true"/>
 
