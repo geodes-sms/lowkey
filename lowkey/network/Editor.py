@@ -7,6 +7,8 @@ import argparse
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
+from network.Session import Session
+from network.CommandParser import CommandParser
 from network.Client import Client
 
 __author__ = "Istvan David"
@@ -20,9 +22,12 @@ Simple command line editor as an example client.
 
 
 class Editor(Client):
-    
-    __commands = ["CREATE", "READ", "UPDATE", "DELETE"]
     __encoding = "utf-8"
+    
+    def __init__(self):
+        super().__init__()
+        self._session = Session()
+        self.parser = CommandParser(self._session)
     
     def run(self):
         connection_thread = threading.Thread(target=self.subscribe, args=())
@@ -32,6 +37,20 @@ class Editor(Client):
         logging.debug("Starting editor")
         self.editorThread()
     
+    def join(self):
+        self._snapshot.send(b"request_snapshot")
+        while True:
+            try:
+                receviedMessage = self._snapshot.recv()
+                _, message = self.getMessage(receviedMessage)
+                self.consumeMessage(message)
+            except:
+                return  # Interrupted
+            if message == b"finished_snapshot":
+                # sequence = kvmsg.sequence
+                logging.debug("Received snapshot")
+                break  # Done
+    
     def subscriberAction(self):
         receviedMessage = self._subscriber.recv()
         senderId, message = self.getMessage(receviedMessage)
@@ -40,9 +59,14 @@ class Editor(Client):
             logging.debug("Throwing message {}".format(message))
         else:
             logging.debug("Processing message {}".format(message))
-        
+            self.consumeMessage(message)
+    
     def getMessage(self, rawMessage):
-        return rawMessage.decode(self.__encoding).split(' ', 1)        
+        return rawMessage.decode(self.__encoding).split(' ', 1)
+    
+    def consumeMessage(self, message):
+        command = self.parser.parseMessage(message)
+        command.execute()
     
     def throwawayMessage(self, senderId):
         return senderId.replace('[', '').replace(']', '') == str(self._id)
@@ -51,37 +75,19 @@ class Editor(Client):
         pass
 
     ###################### Editor behavior ######################
-    def valid(self, command):
-        return command.upper() in self.__commands
     
-    def isCreateEntityCommand(self, arguments):
-        return arguments[0].upper() == "CREATE" and len(arguments) == 3
-    
-    def isCreateRelationshipCommand(self, arguments):
-        return arguments[0].upper() == "CREATE" and arguments[0].upper() == "association" and len(arguments) == 5
-    
-    def isReadCommand(self, arguments):
-        return arguments[0].upper() == "READ" and len(arguments) == 1
-    
-    def isUpdateCommand(self, arguments):
-        return arguments[0].upper() == "UPDATE" and len(arguments) == 4
-    
-    def isDeleteCommand(self, arguments):
-        return arguments[0].upper() == "DELETE" and len(arguments) == 2
-
     def editorThread(self):
         print("Reading user input")
         while True:
             userInput = str(input())
             if not userInput:
                 continue
-                
-            arguments = userInput.split()
-            command = arguments[0]
             
-            if self.valid(command):
-                msg = self.createMessage(userInput)
-                self._publisher.send(msg)
+            if self.parser.validCommandMessage(userInput):
+                self.consumeMessage(userInput)  # Process in current session
+                if(self.parser.tokenize(userInput)[0].upper() != "READ"):
+                    message = self.createMessage(userInput)
+                    self._publisher.send(message)  # Publish to other client sessions
             else:
                 print("Invalid command")
                 continue

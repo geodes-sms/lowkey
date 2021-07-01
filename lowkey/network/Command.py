@@ -8,5 +8,8 @@ __license__ = "GPL-3.0"
 """TODO: Description goes here.
 """
 
-class LWWAwareComponent():
-    pass
+
+class Command():
+    
+    def execute(self):
+        raise NotImplementedError

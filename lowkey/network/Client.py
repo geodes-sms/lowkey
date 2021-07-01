@@ -1,15 +1,9 @@
 #!/usr/bin/env python
 import logging
-import os
-import sys
 import time
 import uuid
 
 import zmq
-
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
-
-from network.LWWAwareComponent import LWWAwareComponent 
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -21,7 +15,7 @@ Generic client component.
 """
 
 
-class Client(LWWAwareComponent):
+class Client():
 
     def __init__(self):
         self._id = uuid.uuid1()
