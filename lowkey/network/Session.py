@@ -12,7 +12,8 @@ __copyright__ = "Copyright 2021, GEODES"
 __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
 
-"""TODO: Description goes here.
+"""
+Session object to manage local modeling data.
 """
 
 

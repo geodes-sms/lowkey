@@ -20,6 +20,8 @@ Server component, responsible for:
 -publishing the initial snapshot to joiners (via ROUTER/DEALER);
 -pulling client updates (via PULL/PUSH);
 -distributing client updates (via PUB/SUB).
+
+Run with 'python Server.py -log debug'.
 """
 
 
