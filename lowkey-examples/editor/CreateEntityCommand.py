@@ -5,7 +5,7 @@ import logging
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from network.Command import Command
+from editor.Command import Command
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

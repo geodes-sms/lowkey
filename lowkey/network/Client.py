@@ -5,6 +5,8 @@ import uuid
 
 import zmq
 
+from network.Session import Session
+
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
 __credits__ = "Eugene Syriani"
@@ -35,6 +37,8 @@ class Client():
         
         self._poller = zmq.Poller()
         self._poller.register(self._subscriber, zmq.POLLIN)
+        
+        self._session = Session()
 
     def join(self):
         self._snapshot.send(b"request_snapshot")

@@ -1,14 +1,14 @@
 #!/usr/bin/env python
+import argparse
+import logging
 import os
 import sys
 import threading
-import logging
-import argparse
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/../../lowkey")
 
-from network.Session import Session
-from network.CommandParser import CommandParser
+from editor.CommandParser import CommandParser
 from network.Client import Client
 
 __author__ = "Istvan David"
@@ -26,7 +26,6 @@ class Editor(Client):
     
     def __init__(self):
         super().__init__()
-        self._session = Session()
         self.parser = CommandParser(self._session)
     
     def run(self):

@@ -4,10 +4,11 @@ import os
 import sys
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/../../lowkey")
 
-from network.CreateRelationshipCommand import CreateRelationshipCommand
-from network.CreateEntityCommand import CreateEntityCommand
-from network.ReadCommand import ReadCommand
+from editor.CreateRelationshipCommand import CreateRelationshipCommand
+from editor.CreateEntityCommand import CreateEntityCommand
+from editor.ReadCommand import ReadCommand
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
