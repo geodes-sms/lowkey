@@ -14,6 +14,10 @@ A low-level and transparent framework for collaborative modeling.
   -  [/network](https://github.com/david-istvan/lowkey/tree/main/lowkey/network) - ZeroMQ-based distributed infrastructure.
 - [/lowkey-examples](https://github.com/david-istvan/lowkey/tree/main/lowkey-examples) - Examples.
 
+# Setup guide
+- Clone this repository.
+- Install the framework as an editable local package via ```pip install -e [path_to_the_project]```. (Use ```pip uninstall lowkey``` if not needed anymore.)
+
 # References
 
 ## Metamodeling
