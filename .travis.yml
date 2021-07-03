@@ -2,7 +2,6 @@ language: python
 python:
   - "3.8"
 # command to install dependencies
-env: PYTHONPATH=$PYTHONPATH:$TRAVIS_BUILD_DIR/lowkey:$TRAVIS_BUILD_DIR/collabtypes
 install:
   - pip install -r requirements.txt
   - pip install -e $TRAVIS_BUILD_DIR
