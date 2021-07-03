@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import unittest
 
-from network.tests.SerializationTests import SerializationTests
+from lowkey.network.tests.SerializationTests import SerializationTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

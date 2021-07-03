@@ -4,7 +4,7 @@ import logging
 import time
 import unittest
 
-from network.Session import Session
+from lowkey.network.Session import Session
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

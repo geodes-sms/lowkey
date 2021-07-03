@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import uuid
 
-from collabtypes import Literals
+from lowkey.collabtypes import Literals
 
-from collabtypes.Clock import Clock
-from lww.LWWMap import LWWMap
+from lowkey.collabtypes.Clock import Clock
+from lowkey.lww.LWWMap import LWWMap
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

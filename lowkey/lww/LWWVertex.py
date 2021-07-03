@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from lww.LWWMap import LWWMap
+from lowkey.lww.LWWMap import LWWMap
 
 
 __author__ = "Istvan David"

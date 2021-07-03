@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 import unittest
 
-from lww.LWWEdge import LWWEdge
-from lww.LWWGraph import LWWGraph
-from lww.LWWVertex import LWWVertex
+from lowkey.lww.LWWEdge import LWWEdge
+from lowkey.lww.LWWGraph import LWWGraph
+from lowkey.lww.LWWVertex import LWWVertex
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

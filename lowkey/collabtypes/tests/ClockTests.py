@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import unittest
 
-from collabtypes.Clock import Clock, ClockMode
+from lowkey.collabtypes.Clock import Clock, ClockMode
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

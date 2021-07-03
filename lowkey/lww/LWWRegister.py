@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import uuid
 
-from lww import LWWRegister
+from lowkey.lww import LWWRegister
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

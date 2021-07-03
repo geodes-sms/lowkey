@@ -1,14 +1,9 @@
 #!/usr/bin/env python
-import os
-import sys
-
 import zmq
 import logging
 import argparse
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
-
-from network.Memory import Memory
+from lowkey.network.Memory import Memory
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

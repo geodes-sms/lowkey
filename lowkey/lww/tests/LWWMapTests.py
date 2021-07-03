@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import unittest
 
-from lww.LWWMap import LWWMap
+from lowkey.lww.LWWMap import LWWMap
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

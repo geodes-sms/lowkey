@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import unittest
 
-from lww.LWWRegister import LWWRegister
+from lowkey.lww.LWWRegister import LWWRegister
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

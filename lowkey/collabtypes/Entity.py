@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from collabtypes import Literals
-from collabtypes.Relationship import Relationship
+from lowkey.collabtypes import Literals
+from lowkey.collabtypes.Relationship import Relationship
 
 from .Node import Node
 

@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import unittest
 
-from collabtypes.Entity import Entity
-from collabtypes.Relationship import Relationship
+from lowkey.collabtypes.Entity import Entity
+from lowkey.collabtypes.Relationship import Relationship
 
-from collabtypes.Clock import Clock, ClockMode
+from lowkey.collabtypes.Clock import Clock, ClockMode
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

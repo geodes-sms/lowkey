@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 import unittest
 
-from lww.LWWEdge import LWWEdge
-from lww.LWWVertex import LWWVertex
-from lww.LWWMap import LWWMap
-from lww.tests.LWWMapTests import LWWMapTests
+from lowkey.lww.LWWEdge import LWWEdge
+from lowkey.lww.LWWVertex import LWWVertex
+from lowkey.lww.LWWMap import LWWMap
+from lowkey.lww.tests.LWWMapTests import LWWMapTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

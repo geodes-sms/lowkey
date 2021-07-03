@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 import unittest
 
-from lww.tests.EmbeddingTests import EmbeddingTests
-from lww.tests.LWWGraphPartsTests import LWWGraphPartsTests
-from lww.tests.LWWGraphTests import LWWGrapTests
-from lww.tests.LWWMapTests import LWWMapTests
-from lww.tests.LWWRegisterMultiUserTests import LWWRegisterMultiUserTests
-from lww.tests.LWWRegisterTests import LWWRegisterTests
-from lww.tests.LWWSetTests import LWWSetTests
-from lww.tests.CloningTests import CloningTests
+from lowkey.lww.tests.EmbeddingTests import EmbeddingTests
+from lowkey.lww.tests.LWWGraphPartsTests import LWWGraphPartsTests
+from lowkey.lww.tests.LWWGraphTests import LWWGrapTests
+from lowkey.lww.tests.LWWMapTests import LWWMapTests
+from lowkey.lww.tests.LWWRegisterMultiUserTests import LWWRegisterMultiUserTests
+from lowkey.lww.tests.LWWRegisterTests import LWWRegisterTests
+from lowkey.lww.tests.LWWSetTests import LWWSetTests
+from lowkey.lww.tests.CloningTests import CloningTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

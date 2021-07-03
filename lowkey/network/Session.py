@@ -1,11 +1,7 @@
 #!/usr/bin/env python
-import os
-import sys
 import uuid
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
-
-from lww.LWWMap import LWWMap
+from lowkey.lww.LWWMap import LWWMap
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

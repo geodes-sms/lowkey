@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-from lww import LWWMap
-from lww.LWWSet import LWWSet
+from lowkey.lww import LWWMap
+from lowkey.lww.LWWSet import LWWSet
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

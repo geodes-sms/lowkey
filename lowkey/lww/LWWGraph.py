@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-from lww.LWWEdge import LWWEdge
-from lww.LWWMap import LWWMap
-from lww.LWWSet import LWWSet
-from lww.LWWVertex import LWWVertex
+from lowkey.lww.LWWEdge import LWWEdge
+from lowkey.lww.LWWMap import LWWMap
+from lowkey.lww.LWWSet import LWWSet
+from lowkey.lww.LWWVertex import LWWVertex
 
 _author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

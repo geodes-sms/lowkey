@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from collabtypes import Literals
+from lowkey.collabtypes import Literals
 
 from .Node import Node
 

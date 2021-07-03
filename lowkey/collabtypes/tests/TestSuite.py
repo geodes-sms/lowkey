@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import unittest
 
-from collabtypes.tests.ClockTests import ClockTests
-from collabtypes.tests.EntityTests import EntityTests
+from lowkey.collabtypes.tests.ClockTests import ClockTests
+from lowkey.collabtypes.tests.EntityTests import EntityTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
