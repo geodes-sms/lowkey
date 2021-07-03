@@ -5,7 +5,7 @@ python:
 env: PYTHONPATH=$PYTHONPATH:$TRAVIS_BUILD_DIR/lowkey:$TRAVIS_BUILD_DIR/collabtypes
 install:
   - pip install -r requirements.txt
-  - pip install -e $TRAVIS_BUILD_DIR/lowkey
+  - pip install -e $TRAVIS_BUILD_DIR
 #  - python ./lowkey-examples/setup.py install
 #  - python ./setup.py sdist
 
