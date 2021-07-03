@@ -1,12 +1,10 @@
 language: python
 python:
   - "3.8"
-# command to install dependencies
+
 install:
   - pip install -r requirements.txt
   - pip install -e $TRAVIS_BUILD_DIR
-#  - python ./lowkey-examples/setup.py install
-#  - python ./setup.py sdist
 
 addons:
   sonarcloud:
