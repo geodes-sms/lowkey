@@ -1,4 +1,4 @@
-from collabtypes.Entity import Entity
+from lowkey.collabtypes.Entity import Entity
 
 
 class Marker(Entity):

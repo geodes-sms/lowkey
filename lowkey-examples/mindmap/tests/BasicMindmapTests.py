@@ -1,11 +1,16 @@
 #!/usr/bin/env python
 import unittest
 
-from collabtypes.Clock import Clock, ClockMode
-from mindmap.metamodel.entities.CentralTopic import CentralTopic
-from mindmap.metamodel.entities.Marker import Marker
-from mindmap.metamodel.entities.MindMap import MindMap
-from mindmap.metamodel.entities.MindMapModel import MindMapModel
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+
+from lowkey.collabtypes.Clock import Clock, ClockMode
+from metamodel.entities.CentralTopic import CentralTopic
+from metamodel.entities.Marker import Marker
+from metamodel.entities.MindMap import MindMap
+from metamodel.entities.MindMapModel import MindMapModel
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

@@ -1,4 +1,4 @@
-from collabtypes.Relationship import Relationship
+from lowkey.collabtypes.Relationship import Relationship
 
 from .Topic import Topic
 

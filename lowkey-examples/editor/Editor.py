@@ -6,10 +6,10 @@ import sys
 import threading
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/../../lowkey")
 
+from mindmap.metamodel.entities.MindMap import MindMap
 from editor.CommandParser import CommandParser
-from network.Client import Client
+from lowkey.network.Client import Client
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -27,6 +27,7 @@ class Editor(Client):
     def __init__(self):
         super().__init__()
         self.parser = CommandParser(self._session)
+        m = MindMap()
     
     def run(self):
         connection_thread = threading.Thread(target=self.subscribe, args=())

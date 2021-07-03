@@ -1,7 +1,7 @@
-from collabtypes.Entity import Entity
-from collabtypes.Relationship import Relationship
+from lowkey.collabtypes.Entity import Entity
+from lowkey.collabtypes.Relationship import Relationship
 
-from mindmap.metamodel.entities.Marker import Marker
+from .Marker import Marker
 
 
 class Topic(Entity):

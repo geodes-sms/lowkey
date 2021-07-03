@@ -1,7 +1,7 @@
-from collabtypes.Entity import Entity
-from collabtypes.Relationship import Relationship
+from lowkey.collabtypes.Entity import Entity
+from lowkey.collabtypes.Relationship import Relationship
 
-from mindmap.metamodel.entities.CentralTopic import CentralTopic
+from .CentralTopic import CentralTopic
 
 
 class MindMap(Entity):

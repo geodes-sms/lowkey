@@ -1,4 +1,4 @@
-from collabtypes.Model import Model
+from lowkey.collabtypes.Model import Model
 
 
 def printMindmap(mindmap):

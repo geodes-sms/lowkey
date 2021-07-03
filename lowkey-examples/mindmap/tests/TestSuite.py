@@ -1,7 +1,13 @@
 #!/usr/bin/env python
 import unittest
 
-from mindmap.tests.BasicMindmapTests import BasicMindmapTests
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/../..")
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from .BasicMindmapTests import BasicMindmapTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
