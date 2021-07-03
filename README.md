@@ -9,13 +9,14 @@ A low-level and transparent framework for collaborative modeling.
 # Repository structure
 
 - [/lowkey](https://github.com/david-istvan/lowkey/tree/main/lowkey) - Main project.
-  -  [/collabtypes](https://github.com/david-istvan/lowkey/tree/main/lowkey/collabtypes) - Type system for collaborative modeling.
-  -  [/lww](https://github.com/david-istvan/lowkey/tree/main/lowkey/lww) - Low-level CRDT system.
-  -  [/network](https://github.com/david-istvan/lowkey/tree/main/lowkey/network) - ZeroMQ-based distributed infrastructure.
+  -  [/collabtypes](https://github.com/david-istvan/lowkey/tree/main/lowkey/collabtypes) - Type system for [collaborative modeling](#Metamodeling).
+  -  [/lww](https://github.com/david-istvan/lowkey/tree/main/lowkey/lww) - Low-level [CRDT system](#CRDT-specifications).
+  -  [/network](https://github.com/david-istvan/lowkey/tree/main/lowkey/network) - ZeroMQ-based distributed [network infrastructure](#Architecture-and-patterns).
 - [/lowkey-examples](https://github.com/david-istvan/lowkey/tree/main/lowkey-examples) - Examples.
 
 # Setup guide
 - Clone this repository.
+- Install requirements via ```pip install -r requirements.txt```.
 - Install the framework as an editable local package via ```pip install -e [path_to_the_project]```. (Use ```pip uninstall lowkey``` if not needed anymore.)
 
 # References
