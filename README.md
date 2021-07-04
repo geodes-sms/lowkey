@@ -32,17 +32,7 @@ Source: [Van Mierlo, Barroca, Vangheluwe, Syriani, Kühne. Multi-Level Modelling
 
 [Shapiro M, Preguiça N, Baquero C, Zawirski M. A comprehensive study of convergent and commutative replicated data types (Doctoral dissertation, Inria–Centre Paris-Rocquencourt; INRIA)](https://hal.inria.fr/file/index/docid/555588/filename/techreport.pdf)
 
-## Network
-
-### Command language
-
-- ```READ``` - Returns the mindmap model in a readable form.
-- ```CREATE [type] [name]``` - Creates an instance with name ```[name]``` of the domain-specific type ```[type]```.
-- ```CREATE RELATIONSHIP [name] [sourceName] [targetName]``` - Creates a relationship with name ```[name]``` between the objects named ```[sourceName]``` and ```[targetName]```, respectively.
-- ```UPDATE [name] [property] [value]``` - Updates property ```[property]``` in object ```[name]``` to value ```[value]```.
-- ```DELETE [name]``` - Deletes object ```[name]```.
-
-### Architecture and patterns
+## Network architecture and patterns
 
 <img src="https://raw.githubusercontent.com/david-istvan/collabserver-modeling/main/docs/zmq_pattern.PNG?raw=true"/>
 
@@ -51,11 +41,3 @@ Source: [ZMQ: Reliable Pub-Sub with Update republishing](https://zguide.zeromq.o
 Further pointers:
 * [Ephemeral values](https://zguide.zeromq.org/docs/chapter5/#Ephemeral-Values)
 * [Reactor](https://zguide.zeromq.org/docs/chapter5/#Using-a-Reactor)
-
-## Running the components
-
-```
-python Server.py -log debug
-python Editor.py -log debug
-python Editor.py -log debug
-```

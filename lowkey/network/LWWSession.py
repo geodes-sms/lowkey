@@ -13,7 +13,7 @@ Session object to manage local modeling data.
 """
 
 
-class Session():
+class LWWSession():
     
     def __init__(self):
         self._id = uuid.uuid1()

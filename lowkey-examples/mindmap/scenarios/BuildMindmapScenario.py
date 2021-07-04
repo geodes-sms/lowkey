@@ -5,8 +5,8 @@ import sys
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
+from scenarios import PrintHelper
 from lowkey.collabtypes.Clock import Clock, ClockMode
-import PrintHelper
 from metamodel.entities.CentralTopic import CentralTopic
 from metamodel.entities.MainTopic import MainTopic
 from metamodel.entities.Marker import Marker
@@ -49,7 +49,6 @@ s2.setMarker(markerX)
 
 # Print the MindMap
 PrintHelper.printMindmap(mindmap)
-
 
 # Assemble model
 model = MindMapModel('mindmapModel')
