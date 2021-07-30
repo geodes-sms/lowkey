@@ -9,20 +9,6 @@ class Topic(Entity):
     def __init__(self, name=""):
         super().__init__()
         self.setName(name)
-
-    # name: Attribute
-    # ========================
-    # Multiplicity: 1
-    # Type: String
-    # ========================
-    # Methods: get, set
-    def getName(self):
-        return super().getName()
-        #return self.getAttribute("name")
-
-    def setName(self, name):
-        return super().setName(name)
-        #self.setAttribute("name", name)
         
     # marker: Reference
     # ========================
@@ -53,4 +39,4 @@ class Topic(Entity):
     def removeMarker(self):  # Removes the relationship to the Marker object but not the object
         markerReference = self.getRelationship("marker")
         if markerReference:
-            self.removeRelationship(markerReference[0]) # safe due to MultiplicityToMax = 1
+            self.removeRelationship(markerReference[0])  # safe due to MultiplicityToMax = 1
