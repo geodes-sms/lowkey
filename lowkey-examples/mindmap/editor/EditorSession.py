@@ -50,12 +50,12 @@ class EditorSession():
         else:
             logging.debug("Unexpected type")
             
-    def integrateRelationship(self, relationship):
-        logging.debug(relationship)
-        relationshipName = relationship.getName()
-        fromEntity = relationship.getFrom()
-        toEntity = relationship.getTo()
-        logging.debug(" Integrating relationship '{}' between {} and {}.".format(relationshipName, fromEntity, toEntity))
+    def integrateAssociation(self, association):
+        logging.debug(association)
+        associationName = association.getName()
+        fromEntity = association.getFrom()
+        toEntity = association.getTo()
+        logging.debug(" Integrating association '{}' between {} and {}.".format(associationName, fromEntity, toEntity))
         
         print(self._tmp)
         

@@ -6,7 +6,7 @@ from editor.Command import Command
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from editor.CreateRelationshipCommand import CreateRelationshipCommand
+from editor.CreateAssociationCommand import CreateAssociationCommand
 from editor.CreateEntityCommand import CreateEntityCommand
 from editor.ReadCommand import ReadCommand
 
@@ -39,7 +39,7 @@ class CommandParser():
     def validCommand(self, tokens):
         return (
             self.isCreateEntityCommand(tokens) or
-            self.isCreateRelationshipCommand(tokens) or
+            self.isCreateAssociationCommand(tokens) or
             self.isReadCommand(tokens) or
             self.isUpdateCommand(tokens) or
             self.isDeleteCommand(tokens)
@@ -53,16 +53,16 @@ class CommandParser():
                 return ReadCommand(self._session)
             if self.isCreateEntityCommand(tokens):
                 return CreateEntityCommand(self._session, tokens)
-            if self.isCreateRelationshipCommand(tokens):
-                return CreateRelationshipCommand(self._session, tokens)
+            if self.isCreateAssociationCommand(tokens):
+                return CreateAssociationCommand(self._session, tokens)
         else:
             logging.debug("Command is invalid")
     
     def isCreateEntityCommand(self, tokens):
         return tokens[0].upper() == "CREATE" and len(tokens) == 3
     
-    def isCreateRelationshipCommand(self, tokens):
-        return tokens[0].upper() == "CREATE" and tokens[1].upper() == "RELATIONSHIP" and len(tokens) == 5
+    def isCreateAssociationCommand(self, tokens):
+        return tokens[0].upper() == "CREATE" and tokens[1].upper() == "ASSOCIATION" and len(tokens) == 5
     
     def isReadCommand(self, tokens):
         return tokens[0].upper() == "READ" and len(tokens) == 1

@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 import unittest
 
-from lowkey.collabtypes.Entity import Entity
-from lowkey.collabtypes.Relationship import Relationship
-
+from lowkey.collabtypes.Association import Association
 from lowkey.collabtypes.Clock import Clock, ClockMode
+from lowkey.collabtypes.Entity import Entity
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -41,21 +40,21 @@ class EntityTests(unittest.TestCase):
         returnValue3 = university.getAttribute(attributeName3)
         self.assertEqual(returnValue3, attributeValue3)
         
-        relationship = Relationship()
-        relationship.setFrom(person)
-        relationship.setTo(university)
-        relationship.setAggregation(False)
-        relationship.setAttribute("name", "affiliation")
-        relationship.setAttribute("directed", "target")
-        person.addRelationship(relationship)
+        association = Association()
+        association.setFrom(person)
+        association.setTo(university)
+        association.setAggregation(False)
+        association.setAttribute("name", "affiliation")
+        association.setAttribute("directed", "target")
+        person.addAssociation(association)
         
-        affiliationRelationship = person.getRelationship("affiliation")
-        affiliationRelationship = affiliationRelationship[0] if len(affiliationRelationship) == 1 else self.fail()
+        affiliationAssociation = person.getAssociation("affiliation")
+        affiliationAssociation = affiliationAssociation[0] if len(affiliationAssociation) == 1 else self.fail()
         
-        self.assertEqual(affiliationRelationship.getFrom(), person)
-        self.assertEqual(affiliationRelationship.getTo(), university)
-        self.assertFalse(affiliationRelationship.isAggregation())
-        direction = affiliationRelationship.getAttribute("directed")
+        self.assertEqual(affiliationAssociation.getFrom(), person)
+        self.assertEqual(affiliationAssociation.getTo(), university)
+        self.assertFalse(affiliationAssociation.isAggregation())
+        direction = affiliationAssociation.getAttribute("directed")
         self.assertEqual(direction, "target")
 
 

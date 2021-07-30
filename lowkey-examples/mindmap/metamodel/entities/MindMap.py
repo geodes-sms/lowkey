@@ -1,5 +1,5 @@
 from lowkey.collabtypes.Entity import Entity
-from lowkey.collabtypes.Relationship import Relationship
+from lowkey.collabtypes.Association import Association
 
 from .CentralTopic import CentralTopic
 
@@ -32,30 +32,30 @@ class MindMap(Entity):
     # ========================
     # Methods: get, set, remove
     def getTopic(self) -> CentralTopic:
-        topicReferences = self.getRelationship("topic")
-        if topicReferences:
-            return topicReferences[0].getTo()  # safe due to MultiplicityToMax = 1
+        topicAssociations = self.getAssociation("topic")
+        if topicAssociations:
+            return topicAssociations[0].getTo()  # safe due to MultiplicityToMax = 1
         return None
     
     def setTopic(self, topic: CentralTopic):  # typing due to Type: CentralTopic
-        topicReferences = self.getRelationship("topic") 
+        topicReferences = self.getAssociation("topic") 
         if topicReferences:
-            # Removes the relationship to the Marker object but not the object
+            # Removes the association to the Marker object but not the object
             # safe due to MultiplicityToMax = 1
-            self.removeRelationship(topicReferences[0])
+            self.removeAssociation(topicReferences[0])
         
-        topicReference = Relationship()
-        topicReference.setName("topic")
-        topicReference.setFrom(self)
-        topicReference.setTo(topic)
-        topicReference.setAggregation(True)
+        topicAssociation = Association()
+        topicAssociation.setName("topic")
+        topicAssociation.setFrom(self)
+        topicAssociation.setTo(topic)
+        topicAssociation.setAggregation(True)
         
-        self.addRelationship(topicReference)
+        self.addAssociation(topicAssociation)
     
     def removeTopic(self):
-        topicReferences = self.getRelationship("topic")
-        if topicReferences:
-            self.removeRelationship(topicReferences[0])  # safe due to MultiplicityToMax = 1
+        topicAssociations = self.getAssociation("topic")
+        if topicAssociations:
+            self.removeAssociation(topicAssociations[0])  # safe due to MultiplicityToMax = 1
     
     # markers: Reference
     # ========================
@@ -67,23 +67,23 @@ class MindMap(Entity):
     # Methods: get, add, remove
     def getMarkers(self):
         markers = []
-        markersReferences = self.getRelationship("markers")
-        for r in markersReferences:
-            markers.append(r.getTo())
+        markersAssociations = self.getAssociation("markers")
+        for a in markersAssociations:
+            markers.append(a.getTo())
         return markers
     
     def addMarker(self, marker):
-        markersReference = Relationship()
-        markersReference.setName("markers")
-        markersReference.setFrom(self)
-        markersReference.setTo(marker)
-        markersReference.setAggregation(True)
+        markersAssociation = Association()
+        markersAssociation.setName("markers")
+        markersAssociation.setFrom(self)
+        markersAssociation.setTo(marker)
+        markersAssociation.setAggregation(True)
         
-        self.addRelationship(markersReference)
+        self.addAssociation(markersAssociation)
         
-    def removeMarker(self, marker):  # Removes the relationship to the Marker object but not the object
-        markersReferences = self.getRelationship("markers")
-        for mr in markersReferences:
-            if mr.getTo() == marker:
-                self.removeRelationship(mr)
+    def removeMarker(self, marker):  # Removes the association to the Marker object but not the object
+        markersAssociations = self.getAssociation("markers")
+        for a in markersAssociations:
+            if a.getTo() == marker:
+                self.removeAssociation(a)
                 return

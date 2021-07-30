@@ -6,7 +6,7 @@ import logging
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from lowkey.collabtypes.Relationship import Relationship
+from lowkey.collabtypes.Association import Association
 from editor.Command import Command
 
 __author__ = "Istvan David"
@@ -18,7 +18,7 @@ __license__ = "GPL-3.0"
 """
 
 
-class CreateRelationshipCommand(Command):
+class CreateAssociationCommand(Command):
     
     def __init__(self, session, tokens):
         self._session = session
@@ -27,16 +27,16 @@ class CreateRelationshipCommand(Command):
         self._targetName = tokens[4]
     
     def execute(self):
-        logging.debug(" Executing command 'CREATE RELATIONSHIP {} from {} to {}' in session {}."
+        logging.debug(" Executing command 'CREATE ASSOCIATION {} from {} to {}' in session {}."
                       .format(self._name, self._sourceName, self._targetName, self._session._id))
         
-        relationship = Relationship()
+        association = Association()
         
-        relationship.setName(self._name)
-        relationship.setFrom(self._sourceName)
-        relationship.setTo(self._targetName)
+        association.setName(self._name)
+        association.setFrom(self._sourceName)
+        association.setTo(self._targetName)
         
-        logging.debug(" Executing command 'CREATE RELATIONSHIP {} from {} to {}' in session {}."
-                      .format(relationship.getName(), relationship.getFrom(), relationship.getTo(), self._session._id))
+        logging.debug(" Executing command 'CREATE ASSOCIATION {} from {} to {}' in session {}."
+                      .format(association.getName(), association.getFrom(), association.getTo(), self._session._id))
         
-        self._session.integrateRelationship(relationship)
+        self._session.integrateAssociation(association)

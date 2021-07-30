@@ -25,7 +25,7 @@ class LWWSession():
         lwwMap.add("name", _name, 10)
         self._lwwData.append(lwwMap)
         
-    def createRelationship(self, _name, _from, _to):
+    def createAssociation(self, _name, _from, _to):
         lwwMap = LWWMap()
         lwwMap.add("name", _name, 10)
         lwwMap.add("from", _from, 10)

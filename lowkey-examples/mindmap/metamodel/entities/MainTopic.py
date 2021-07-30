@@ -1,4 +1,4 @@
-from lowkey.collabtypes.Relationship import Relationship
+from lowkey.collabtypes.Association import Association
 
 from .Topic import Topic
 
@@ -18,19 +18,19 @@ class MainTopic(Topic):
     # Methods: get, set, remove
     def getSubTopics(self):
         subTopics = []
-        relationships = self.getRelationship("subtopics")
-        for r in relationships:
-            subTopics.append(r.getTo())
+        associations = self.getAssociation("subtopics")
+        for a in associations:
+            subTopics.append(a.getTo())
         return subTopics
     
     def addSubTopic(self, subTopic):
-        subTopic_ = Relationship()
+        subTopic_ = Association()
         subTopic_.setName("subtopics")
         subTopic_.setFrom(self)
         subTopic_.setTo(subTopic)
         subTopic_.setAggregation(True)
         
-        self.addRelationship(subTopic_)
+        self.addAssociation(subTopic_)
         
     def removeSubTopic(self, subTopic):
-        self.removeRelationship(subTopic)
+        self.removeAssociation(subTopic)

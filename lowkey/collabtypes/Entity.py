@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from lowkey.collabtypes import Literals
-from lowkey.collabtypes.Relationship import Relationship
+from lowkey.collabtypes.Association import Association
 from lowkey.lww.LWWMap import LWWMap
 
 from .Node import Node
@@ -21,7 +21,7 @@ class Entity(Node):
     def __init__(self):
         super().__init__()
         self.persistence = LWWMap()
-        self.persistence.add(Literals.RELATIONSHIPS, (), self.currentTime())
+        self.persistence.add(Literals.ASSOCIATIONS, (), self.currentTime())
                 
     """Abstract nature"""
     
@@ -39,22 +39,22 @@ class Entity(Node):
     def getInheritsFrom(self):
         return self.getFeature(Literals.INHERITS_FROM)
     
-    """Relationships CRUD"""
+    """Associations CRUD"""
     
-    def addRelationship(self, relationship:Relationship):
-        relationships = self.getFeature(Literals.RELATIONSHIPS)
-        relationships = relationships + (relationship,)
-        self.updateFeature(Literals.RELATIONSHIPS, relationships)
+    def addAssociation(self, association:Association):
+        associations = self.getFeature(Literals.ASSOCIATIONS)
+        associations = associations + (association,)
+        self.updateFeature(Literals.ASSOCIATIONS, associations)
         
-    def getRelationship(self, name):
-        relationships = self.getFeature(Literals.RELATIONSHIPS)
-        return [r for r in relationships if r.getFeature(Literals.NAME) == name]
+    def getAssociation(self, name):
+        associations = self.getFeature(Literals.ASSOCIATIONS)
+        return [a for a in associations if a.getFeature(Literals.NAME) == name]
     
-    def removeRelationship(self, relationship:Relationship):
-        relationships = self.getFeature(Literals.RELATIONSHIPS)
-        remainingRelationships = ()
-        for r in relationships:
-            if r != relationship:
-                remainingRelationships = remainingRelationships + (r,)
+    def removeAssociation(self, association:Association):
+        associations = self.getFeature(Literals.ASSOCIATIONS)
+        remainingAssociations = ()
+        for a in associations:
+            if a != association:
+                remainingAssociations = remainingAssociations + (a,)
         
-        self.updateFeature(Literals.RELATIONSHIPS, remainingRelationships)
+        self.updateFeature(Literals.ASSOCIATIONS, remainingAssociations)

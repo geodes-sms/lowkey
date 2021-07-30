@@ -1,5 +1,5 @@
 from lowkey.collabtypes.Entity import Entity
-from lowkey.collabtypes.Relationship import Relationship
+from lowkey.collabtypes.Association import Association
 
 from .Marker import Marker
 
@@ -19,7 +19,7 @@ class Topic(Entity):
     # ========================
     # Methods: get, set, remove
     def getMarker(self) -> Marker:
-        markerReference = self.getRelationship("marker")
+        markerReference = self.getAssociation("marker")
         if markerReference:
             return markerReference[0].getTo()  # safe due to MultiplicityToMax = 1
         return None
@@ -28,15 +28,15 @@ class Topic(Entity):
         if self.getMarker():  # required due to MultiplicityToMax = 1
             self.removeMarker()
         
-        markerReference = Relationship()
+        markerReference = Association()
         markerReference.setName("marker")
         markerReference.setFrom(self)
         markerReference.setTo(marker)
         markerReference.setAggregation(True)
         
-        self.addRelationship(markerReference)
+        self.addAssociation(markerReference)
         
-    def removeMarker(self):  # Removes the relationship to the Marker object but not the object
-        markerReference = self.getRelationship("marker")
+    def removeMarker(self):  # Removes the association to the Marker object but not the object
+        markerReference = self.getAssociation("marker")
         if markerReference:
-            self.removeRelationship(markerReference[0])  # safe due to MultiplicityToMax = 1
+            self.removeAssociation(markerReference[0])  # safe due to MultiplicityToMax = 1
