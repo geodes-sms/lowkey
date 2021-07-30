@@ -19,33 +19,33 @@ class Model(Node):
     def __init__(self):
         super().__init__()
         self.persistence = LWWGraph()
-        self.setAttribute(Literals.NODES, ())
+        self.setFeature(Literals.NODES, ())
     
     # Nodes CRUD
     def addNode(self, node:Node):
-        nodes = self.getAttribute(Literals.NODES)
+        nodes = self.getFeature(Literals.NODES)
         nodes = nodes + (node,)
-        return self.updateAttribute(Literals.NODES, nodes)
+        return self.updateFeature(Literals.NODES, nodes)
     
     def getNodes(self):
-        return self.getAttribute(Literals.NODES)
+        return self.getFeature(Literals.NODES)
         
     def getNodeByName(self, name:str):
         nodes = self.getNodes()
-        return next(n for n in nodes if n.getAttribute(Literals.NAME) == name)  # names should be unique
+        return next(n for n in nodes if n.getFeature(Literals.NAME) == name)  # names should be unique
     
     def getNodeById(self, identifier):
         nodes = self.getNodes()
         return next(n for n in nodes if n.getId() == identifier)  # IDs should be unique
     
     def removeNode(self, node:Node):
-        nodes = self.getAttribute(Literals.NODES)
+        nodes = self.getFeature(Literals.NODES)
         remainingNodes = ()
         for n in nodes:
             if n != node:
                 remainingNodes = remainingNodes + (n,)
         
-        self.updateAttribute(Literals.NODES, remainingNodes)
+        self.updateFeature(Literals.NODES, remainingNodes)
         
     def updateNode(self, oldNode:Node, newNode:Node):
         self.removeNode(oldNode)

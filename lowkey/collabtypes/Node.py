@@ -39,32 +39,46 @@ class Node():
     """Naming"""
 
     def setName(self, name):
-        return self.setAttribute(Literals.NAME, name)
+        return self.setFeature(Literals.NAME, name)
     
     def getName(self):
-        return self.getAttribute(Literals.NAME)
+        return self.getFeature(Literals.NAME)
     
     """Typing"""
 
     def setType(self, node):
-        return self.setAttribute(Literals.TYPED_BY, name)
+        return self.setFeature(Literals.TYPED_BY, name)
     
     def getType(self):
-        return self.getAttribute(Literals.TYPED_BY)
+        return self.getFeature(Literals.TYPED_BY)
         
     """Attributes CRUD"""
 
     def setAttribute(self, name, value):
+        return self.setFeature(name, value)
+    
+    def getAttribute(self, name):
+        return self.getFeature(name)
+    
+    def updateAttribute(self, name, value):
+        return self.updateFeature(name, value)
+    
+    def deleteAttribute(self, name):
+        self.deleteFeature(name, self.currentTime())
+
+    """Features CRUD"""
+
+    def setFeature(self, name, value):
         self._clock.sleepOneStep()
         return self.persistence.add(name, value, self.currentTime())
     
-    def getAttribute(self, name):
+    def getFeature(self, name):
         return self.persistence.query(name)
     
-    def updateAttribute(self, name, value):
+    def updateFeature(self, name, value):
         self._clock.sleepOneStep()
         return self.persistence.update(name, value, self.currentTime())
     
-    def deleteAttribute(self, name):
+    def deleteFeature(self, name):
         self._clock.sleepOneStep()
         self.persistence.remove(name, self.currentTime())

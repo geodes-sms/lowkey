@@ -26,35 +26,35 @@ class Entity(Node):
     """Abstract nature"""
     
     def setAbstract(self, isAbstract:bool):
-        self.setAttribute(Literals.IS_ABSTRACT, isAbstract)
+        self.setFeature(Literals.IS_ABSTRACT, isAbstract)
     
     def isAbstract(self) -> bool:
-        return self.getAttribute(Literals.IS_ABSTRACT)
+        return self.getFeature(Literals.IS_ABSTRACT)
     
     """Inheritance"""
 
-    def extends(self, entity):
-        self.setAttribute(Literals.EXTENDS, entity)
+    def setInheritsFrom(self, entity):
+        self.setFeature(Literals.INHERITS_FROM, entity)
     
-    def super(self):
-        return self.getAttribute(Literals.EXTENDS)
+    def getInheritsFrom(self):
+        return self.getFeature(Literals.INHERITS_FROM)
     
     """Relationships CRUD"""
     
     def addRelationship(self, relationship:Relationship):
-        relationships = self.getAttribute(Literals.RELATIONSHIPS)
+        relationships = self.getFeature(Literals.RELATIONSHIPS)
         relationships = relationships + (relationship,)
-        self.updateAttribute(Literals.RELATIONSHIPS, relationships)
+        self.updateFeature(Literals.RELATIONSHIPS, relationships)
         
     def getRelationship(self, name):
-        relationships = self.getAttribute(Literals.RELATIONSHIPS)
-        return [r for r in relationships if r.getAttribute(Literals.NAME) == name]
+        relationships = self.getFeature(Literals.RELATIONSHIPS)
+        return [r for r in relationships if r.getFeature(Literals.NAME) == name]
     
     def removeRelationship(self, relationship:Relationship):
-        relationships = self.getAttribute(Literals.RELATIONSHIPS)
+        relationships = self.getFeature(Literals.RELATIONSHIPS)
         remainingRelationships = ()
         for r in relationships:
             if r != relationship:
                 remainingRelationships = remainingRelationships + (r,)
         
-        self.updateAttribute(Literals.RELATIONSHIPS, remainingRelationships)
+        self.updateFeature(Literals.RELATIONSHIPS, remainingRelationships)

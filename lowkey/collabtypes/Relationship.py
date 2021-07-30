@@ -22,49 +22,49 @@ class Relationship(Node):
         self.persistence = LWWMap()
     
     def setFrom(self, entity):
-        self.setAttribute(Literals.RELATIONSHIP_FROM, entity)
+        self.setFeature(Literals.RELATIONSHIP_FROM, entity)
         
     def getFrom(self):
-        return self.getAttribute(Literals.RELATIONSHIP_FROM)
+        return self.getFeature(Literals.RELATIONSHIP_FROM)
     
     def setTo(self, entity):
-        self.setAttribute(Literals.RELATIONSHIP_TO, entity)
+        self.setFeature(Literals.RELATIONSHIP_TO, entity)
         
     def getTo(self):
-        return self.getAttribute(Literals.RELATIONSHIP_TO)
+        return self.getFeature(Literals.RELATIONSHIP_TO)
     
     def setFromMin(self, fromMin):
-        self.setAttribute(Literals.RELATIONSHIP_FROM_MIN, fromMin)
+        self.setFeature(Literals.RELATIONSHIP_FROM_MIN, fromMin)
         
     def getFromMin(self):
-        return self.getAttribute(Literals.RELATIONSHIP_FROM_MIN)
+        return self.getFeature(Literals.RELATIONSHIP_FROM_MIN)
     
     def setFromMax(self, fromMax):
-        self.setAttribute(Literals.RELATIONSHIP_FROM_MAX, fromMax)
+        self.setFeature(Literals.RELATIONSHIP_FROM_MAX, fromMax)
         
     def getFromMax(self):
-        return self.getAttribute(Literals.RELATIONSHIP_FROM_MAX)
+        return self.getFeature(Literals.RELATIONSHIP_FROM_MAX)
     
     def setToMin(self, toMin):
-        self.setAttribute(Literals.RELATIONSHIP_TO_MIN, toMin)
+        self.setFeature(Literals.RELATIONSHIP_TO_MIN, toMin)
         
     def getToMin(self):
-        return self.getAttribute(Literals.RELATIONSHIP_TO_MIN)
+        return self.getFeature(Literals.RELATIONSHIP_TO_MIN)
     
     def setToMax(self, toMax):
-        self.setAttribute(Literals.RELATIONSHIP_TO_MAX, toMax)
+        self.setFeature(Literals.RELATIONSHIP_TO_MAX, toMax)
         
     def getToMax(self):
-        return self.getAttribute(Literals.RELATIONSHIP_TO_MAX)
+        return self.getFeature(Literals.RELATIONSHIP_TO_MAX)
 
     def setComposition(self, isComposition):
-        self.setAttribute(Literals.RELATIONSHIP_ISCOMPOSITION, isComposition)
+        self.setFeature(Literals.RELATIONSHIP_IS_COMPOSITION, isComposition)
         
     def isComposition(self):
-        return self.getAttribute(Literals.RELATIONSHIP_ISCOMPOSITION)
+        return self.getFeature(Literals.RELATIONSHIP_IS_COMPOSITION)
     
     def setAggregation(self, isAggregation):
-        self.setAttribute(Literals.RELATIONSHIP_ISAGGREGATION, isAggregation)
+        self.setFeature(Literals.RELATIONSHIP_IS_AGGREGATION, isAggregation)
         
     def isAggregation(self):
-        return self.getAttribute(Literals.RELATIONSHIP_ISAGGREGATION)
+        return self.getFeature(Literals.RELATIONSHIP_IS_AGGREGATION)
