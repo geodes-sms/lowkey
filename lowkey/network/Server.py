@@ -1,9 +1,11 @@
 #!/usr/bin/env python
-import zmq
-import logging
 import argparse
+import logging
+
+import zmq
 
 from lowkey.network.Memory import Memory
+
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -39,6 +41,8 @@ class Server():
         self._memory = Memory()
     
     def run(self):
+        logging.debug("Server running.")
+        
         while True:
             try:
                 items = dict(self._poller.poll(1000))
@@ -75,7 +79,7 @@ class Server():
                 self._snapshot.send(identity, zmq.SNDMORE)
                 self._snapshot.send(b'finished_snapshot')
     
-        print("Interrupted")
+        logging.debug("Server interrupted. Shutting down.")
 
 
 if __name__ == '__main__':
