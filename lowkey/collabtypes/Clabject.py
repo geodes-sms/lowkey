@@ -12,11 +12,11 @@ __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
 
 """
-Entity type for the general logical type model level.
+Clabject type for the general logical type model level.
 """
 
 
-class Entity(Node):
+class Clabject(Node):
     
     def __init__(self):
         super().__init__()
@@ -33,8 +33,8 @@ class Entity(Node):
     
     """Inheritance"""
 
-    def setInheritsFrom(self, entity):
-        self.setFeature(Literals.INHERITS_FROM, entity)
+    def setInheritsFrom(self, clabject):
+        self.setFeature(Literals.INHERITS_FROM, clabject)
     
     def getInheritsFrom(self):
         return self.getFeature(Literals.INHERITS_FROM)

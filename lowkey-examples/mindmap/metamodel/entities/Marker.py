@@ -1,7 +1,7 @@
-from lowkey.collabtypes.Entity import Entity
+from lowkey.collabtypes.Clabject import Clabject
 
 
-class Marker(Entity):
+class Marker(Clabject):
     
     def __init__(self, symbol=""):
         super().__init__()

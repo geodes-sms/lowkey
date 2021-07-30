@@ -34,7 +34,7 @@ class IntegrationTests(unittest.TestCase):
         """
         time.sleep(.5)
         
-        session.createEntity("entity1")
+        session.createClabject("entity1")
         
 
 if __name__ == "__main__":

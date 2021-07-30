@@ -3,7 +3,7 @@ import unittest
 
 from lowkey.collabtypes.Association import Association
 from lowkey.collabtypes.Clock import Clock, ClockMode
-from lowkey.collabtypes.Entity import Entity
+from lowkey.collabtypes.Clabject import Clabject
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -11,12 +11,12 @@ __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
 
 
-class EntityTests(unittest.TestCase):
+class ClabjectTests(unittest.TestCase):
 
-    def testEntityCreation(self):
+    def testClabjectCreation(self):
         Clock.setUp(ClockMode.DEBUG)
         
-        person = Entity()
+        person = Clabject()
         
         attributeName1 = "name"
         attributeValue1 = "Istvan"
@@ -34,7 +34,7 @@ class EntityTests(unittest.TestCase):
         
         attributeName3 = "name"
         attributeValue3 = "University of Montreal"
-        university = Entity()
+        university = Clabject()
         university.setAttribute(attributeName3, attributeValue3)
         
         returnValue3 = university.getAttribute(attributeName3)

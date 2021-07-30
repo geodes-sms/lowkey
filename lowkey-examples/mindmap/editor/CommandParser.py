@@ -7,7 +7,7 @@ from editor.Command import Command
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 from editor.CreateAssociationCommand import CreateAssociationCommand
-from editor.CreateEntityCommand import CreateEntityCommand
+from editor.CreateClabjectCommand import CreateClabjectCommand
 from editor.ReadCommand import ReadCommand
 
 __author__ = "Istvan David"
@@ -38,7 +38,7 @@ class CommandParser():
     
     def validCommand(self, tokens):
         return (
-            self.isCreateEntityCommand(tokens) or
+            self.isCreateClabjectCommand(tokens) or
             self.isCreateAssociationCommand(tokens) or
             self.isReadCommand(tokens) or
             self.isUpdateCommand(tokens) or
@@ -51,14 +51,14 @@ class CommandParser():
             logging.debug("Command is valid")
             if self.isReadCommand(tokens):
                 return ReadCommand(self._session)
-            if self.isCreateEntityCommand(tokens):
-                return CreateEntityCommand(self._session, tokens)
+            if self.isCreateClabjectCommand(tokens):
+                return CreateClabjectCommand(self._session, tokens)
             if self.isCreateAssociationCommand(tokens):
                 return CreateAssociationCommand(self._session, tokens)
         else:
             logging.debug("Command is invalid")
     
-    def isCreateEntityCommand(self, tokens):
+    def isCreateClabjectCommand(self, tokens):
         return tokens[0].upper() == "CREATE" and len(tokens) == 3
     
     def isCreateAssociationCommand(self, tokens):

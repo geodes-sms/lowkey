@@ -1,10 +1,10 @@
-from lowkey.collabtypes.Entity import Entity
+from lowkey.collabtypes.Clabject import Clabject
 from lowkey.collabtypes.Association import Association
 
 from .CentralTopic import CentralTopic
 
 
-class MindMap(Entity):
+class MindMap(Clabject):
     
     def __init__(self, title=""):
         super().__init__()

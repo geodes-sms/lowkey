@@ -1,10 +1,10 @@
-from lowkey.collabtypes.Entity import Entity
+from lowkey.collabtypes.Clabject import Clabject
 from lowkey.collabtypes.Association import Association
 
 from .Marker import Marker
 
 
-class Topic(Entity):
+class Topic(Clabject):
     
     def __init__(self, name=""):
         super().__init__()

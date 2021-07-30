@@ -19,7 +19,7 @@ class LWWSession():
         self._id = uuid.uuid1()
         self._lwwData = []
         
-    def createEntity(self, _type, _name):
+    def createClabject(self, _type, _name):
         lwwMap = LWWMap()
         lwwMap.add("type", _type, 10)
         lwwMap.add("name", _name, 10)

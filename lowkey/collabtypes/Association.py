@@ -21,14 +21,14 @@ class Association(Node):
         super().__init__()
         self.persistence = LWWMap()
     
-    def setFrom(self, entity):
-        self.setFeature(Literals.ASSOCIATION_FROM, entity)
+    def setFrom(self, clabject):
+        self.setFeature(Literals.ASSOCIATION_FROM, clabject)
         
     def getFrom(self):
         return self.getFeature(Literals.ASSOCIATION_FROM)
     
-    def setTo(self, entity):
-        self.setFeature(Literals.ASSOCIATION_TO, entity)
+    def setTo(self, clabject):
+        self.setFeature(Literals.ASSOCIATION_TO, clabject)
         
     def getTo(self):
         return self.getFeature(Literals.ASSOCIATION_TO)

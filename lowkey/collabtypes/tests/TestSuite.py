@@ -2,7 +2,7 @@
 import unittest
 
 from lowkey.collabtypes.tests.ClockTests import ClockTests
-from lowkey.collabtypes.tests.EntityTests import EntityTests
+from lowkey.collabtypes.tests.ClabjectTests import ClabjectTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -15,7 +15,7 @@ Full test suite for the modeling layer.
 
 
 def create_suite():
-    testCases = [EntityTests, ClockTests]
+    testCases = [ClabjectTests, ClockTests]
     loadedCases = []
     
     for case in testCases:
