@@ -6,6 +6,7 @@ import logging
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 from editor.Command import Command
+from scenarios import PrintHelper
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -23,9 +24,10 @@ class ReadCommand(Command):
     
     def execute(self):
         logging.debug(" Executing command 'READ' in session {}.".format(self._session._id))
-        lwwData = self._session._lwwData
+        root = self._session._mindmap
         
-        for lwwMap in lwwData:
-            entrySet = lwwMap.entrySet()
-            for (key, value), _ in entrySet:
-                print("{} : {}".format(key, value))
+        #print("Root: {}".format(root))
+        # ct = root.getTopic()
+        # print("Central topic: {}".format(ct.getName()))
+        
+        PrintHelper.printMindmap(root)

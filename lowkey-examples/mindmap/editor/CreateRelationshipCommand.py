@@ -3,8 +3,10 @@ import os
 import sys
 import logging
 
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
+from lowkey.collabtypes.Relationship import Relationship
 from editor.Command import Command
 
 __author__ = "Istvan David"
@@ -27,4 +29,14 @@ class CreateRelationshipCommand(Command):
     def execute(self):
         logging.debug(" Executing command 'CREATE RELATIONSHIP {} from {} to {}' in session {}."
                       .format(self._name, self._sourceName, self._targetName, self._session._id))
-        self._session.createRelationship(self._name, self._sourceName, self._targetName)
+        
+        relationship = Relationship()
+        
+        relationship.setName(self._name)
+        relationship.setFrom(self._sourceName)
+        relationship.setTo(self._targetName)
+        
+        logging.debug(" Executing command 'CREATE RELATIONSHIP {} from {} to {}' in session {}."
+                      .format(relationship.getName(), relationship.getFrom(), relationship.getTo(), self._session._id))
+        
+        self._session.integrateRelationship(relationship)
