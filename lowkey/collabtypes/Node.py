@@ -47,7 +47,7 @@ class Node():
     """Typing"""
 
     def setType(self, node):
-        return self.setFeature(Literals.TYPED_BY, name)
+        return self.setFeature(Literals.TYPED_BY, node)
     
     def getType(self):
         return self.getFeature(Literals.TYPED_BY)
@@ -64,7 +64,7 @@ class Node():
         return self.updateFeature(name, value)
     
     def deleteAttribute(self, name):
-        self.deleteFeature(name, self.currentTime())
+        self.deleteFeature(name)
 
     """Features CRUD"""
 
