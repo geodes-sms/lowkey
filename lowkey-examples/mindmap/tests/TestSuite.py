@@ -4,7 +4,7 @@ import unittest
 import os
 import sys
 
-from BasicMindmapTests import BasicMindmapTests
+from mindmap.tests.BasicMindmapTests import BasicMindmapTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
