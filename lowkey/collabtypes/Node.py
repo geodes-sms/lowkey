@@ -1,9 +1,8 @@
 #!/usr/bin/env python
-import uuid
 import time
+import uuid
 
 from lowkey.collabtypes import Literals
-
 from lowkey.collabtypes.Clock import Clock
 from lowkey.lww.LWWMap import LWWMap
 
@@ -40,12 +39,10 @@ class Node():
     """Naming"""
 
     def setName(self, name):
-        # print("Node: setting name to {}".format(name))
         self._clock.sleepOneStep()
         return self.persistence.add(Literals.NAME, name, self.currentTime())
     
     def getName(self):
-        # print("Node: returning name {}".format(self.query(Literals.NAME)))
         return self.persistence.query(Literals.NAME)
     
     """Typing"""

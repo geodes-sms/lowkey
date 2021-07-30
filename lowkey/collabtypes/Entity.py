@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-
 from lowkey.collabtypes import Literals
 from lowkey.collabtypes.Relationship import Relationship
 from lowkey.lww.LWWMap import LWWMap
 
 from .Node import Node
+
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -42,21 +42,19 @@ class Entity(Node):
     """Relationships CRUD"""
     
     def addRelationship(self, relationship:Relationship):
-        self._clock.sleepOneStep()
-        relationships = self.persistence.query(Literals.RELATIONSHIPS)
+        relationships = self.getAttribute(Literals.RELATIONSHIPS)
         relationships = relationships + (relationship,)
-        self.persistence.update(Literals.RELATIONSHIPS, relationships, self.currentTime())
+        self.updateAttribute(Literals.RELATIONSHIPS, relationships)
         
     def getRelationship(self, name):
-        relationships = self.persistence.query(Literals.RELATIONSHIPS)
+        relationships = self.getAttribute(Literals.RELATIONSHIPS)
         return [r for r in relationships if r.getAttribute(Literals.NAME) == name]
     
     def removeRelationship(self, relationship:Relationship):
-        self._clock.sleepOneStep()
-        relationships = self.persistence.query(Literals.RELATIONSHIPS)
+        relationships = self.getAttribute(Literals.RELATIONSHIPS)
         remainingRelationships = ()
         for r in relationships:
             if r != relationship:
                 remainingRelationships = remainingRelationships + (r,)
         
-        self.persistence.update(Literals.RELATIONSHIPS, remainingRelationships, self.currentTime())
+        self.updateAttribute(Literals.RELATIONSHIPS, remainingRelationships)

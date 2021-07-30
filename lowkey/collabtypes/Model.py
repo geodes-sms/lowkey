@@ -19,16 +19,16 @@ class Model(Node):
     def __init__(self):
         super().__init__()
         self.persistence = LWWGraph()
-        self.persistence.add(Literals.NODES, (), self.currentTime())
+        self.setAttribute(Literals.NODES, ())
     
     # Nodes CRUD
     def addNode(self, node:Node):
-        nodes = self.persistence.query(Literals.NODES)
+        nodes = self.getAttribute(Literals.NODES)
         nodes = nodes + (node,)
-        return self.persistence.update(Literals.NODES, nodes, self.currentTime())
+        return self.updateAttribute(Literals.NODES, nodes)
     
     def getNodes(self):
-        return self.persistence.query(Literals.NODES)
+        return self.getAttribute(Literals.NODES)
         
     def getNodeByName(self, name:str):
         nodes = self.getNodes()
@@ -39,12 +39,13 @@ class Model(Node):
         return next(n for n in nodes if n.getId() == identifier)  # IDs should be unique
     
     def removeNode(self, node:Node):
-        nodes = self.persistence.query(Literals.NODES)
+        nodes = self.getAttribute(Literals.NODES)
+        remainingNodes = ()
         for n in nodes:
-            if n == node:
-                self.persistence.remove(n, self.currentTime())
-        # Here, this should trigger a cascade delete on every reference,
-        # since this is the composite aggregation that contains the node in the model.
+            if n != node:
+                remainingNodes = remainingNodes + (n,)
+        
+        self.updateAttribute(Literals.NODES, remainingNodes)
         
     def updateNode(self, oldNode:Node, newNode:Node):
         self.removeNode(oldNode)
