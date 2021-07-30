@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from lowkey.collabtypes import Literals
+from lowkey.lww.LWWGraph import LWWGraph
 
 from .Node import Node
 
@@ -17,16 +18,17 @@ class Model(Node):
     
     def __init__(self):
         super().__init__()
-        self.add(Literals.NODES, (), self.currentTime())
+        self.persistence = LWWGraph()
+        self.persistence.add(Literals.NODES, (), self.currentTime())
     
     # Nodes CRUD
     def addNode(self, node:Node):
-        nodes = self.query(Literals.NODES)
+        nodes = self.persistence.query(Literals.NODES)
         nodes = nodes + (node,)
-        return self.update(Literals.NODES, nodes, self.currentTime())
+        return self.persistence.update(Literals.NODES, nodes, self.currentTime())
     
     def getNodes(self):
-        return self.query(Literals.NODES)
+        return self.persistence.query(Literals.NODES)
         
     def getNodeByName(self, name:str):
         nodes = self.getNodes()
@@ -37,10 +39,10 @@ class Model(Node):
         return next(n for n in nodes if n.getId() == identifier)  # IDs should be unique
     
     def removeNode(self, node:Node):
-        nodes = self.query(Literals.NODES)
+        nodes = self.persistence.query(Literals.NODES)
         for n in nodes:
             if n == node:
-                self.remove(n, self.currentTime())
+                self.persistence.remove(n, self.currentTime())
         # Here, this should trigger a cascade delete on every reference,
         # since this is the composite aggregation that contains the node in the model.
         

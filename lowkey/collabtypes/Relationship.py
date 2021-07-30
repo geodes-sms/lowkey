@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from lowkey.collabtypes import Literals
+from lowkey.lww.LWWMap import LWWMap
 
 from .Node import Node
 
@@ -18,6 +19,7 @@ class Relationship(Node):
 
     def __init__(self):
         super().__init__()
+        self.persistence = LWWMap()
     
     def setFrom(self, entity):
         self.setAttribute(Literals.RELATIONSHIP_FROM, entity)

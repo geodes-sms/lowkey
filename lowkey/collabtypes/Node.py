@@ -19,7 +19,7 @@ Serves as a common abstraction to the other logical types.
 """
 
 
-class Node(LWWMap):
+class Node():
     
     def __init__(self):
         super().__init__()
@@ -32,39 +32,44 @@ class Node(LWWMap):
     def currentTime(self):
         return self._clock.currentTime()
     
+    """CRDT persistence"""
+
+    def getPersistence(self):
+        return self.persistence
+    
     """Naming"""
 
     def setName(self, name):
-        #print("Node: setting name to {}".format(name))
+        # print("Node: setting name to {}".format(name))
         self._clock.sleepOneStep()
-        return self.add(Literals.NAME, name, self.currentTime())
+        return self.persistence.add(Literals.NAME, name, self.currentTime())
     
     def getName(self):
-        #print("Node: returning name {}".format(self.query(Literals.NAME)))
-        return self.query(Literals.NAME)
+        # print("Node: returning name {}".format(self.query(Literals.NAME)))
+        return self.persistence.query(Literals.NAME)
     
     """Typing"""
 
     def setType(self, node):
         self._clock.sleepOneStep()
-        return self.add(Literals.TYPED_BY, node, self.currentTime())
+        return self.persistence.add(Literals.TYPED_BY, node, self.currentTime())
     
     def getType(self):
-        return self.query(Literals.TYPED_BY)
+        return self.persistence.query(Literals.TYPED_BY)
         
     """Attributes CRUD"""
 
     def setAttribute(self, name, value):
         self._clock.sleepOneStep()
-        return self.add(name, value, self.currentTime())
+        return self.persistence.add(name, value, self.currentTime())
     
     def getAttribute(self, name):
-        return self.query(name)
+        return self.persistence.query(name)
     
     def updateAttribute(self, name, value):
         self._clock.sleepOneStep()
-        return self.update(name, value, self.currentTime())
+        return self.persistence.update(name, value, self.currentTime())
     
     def deleteAttribute(self, name):
         self._clock.sleepOneStep()
-        self.remove(name, self.currentTime())
+        self.persistence.remove(name, self.currentTime())
