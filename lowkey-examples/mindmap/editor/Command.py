@@ -8,8 +8,11 @@ __license__ = "GPL-3.0"
 """TODO: Description goes here.
 """
 
+import logging
+
 
 class Command():
     
     def execute(self):
-        raise NotImplementedError
+        logging.debug("Executing abstract command")
+        #raise NotImplementedError
