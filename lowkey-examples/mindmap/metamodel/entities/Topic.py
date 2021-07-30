@@ -17,10 +17,12 @@ class Topic(Entity):
     # ========================
     # Methods: get, set
     def getName(self):
-        return self.getAttribute("name")
+        return super().getName()
+        #return self.getAttribute("name")
 
     def setName(self, name):
-        self.setAttribute("name", name)
+        return super().setName(name)
+        #self.setAttribute("name", name)
         
     # marker: Reference
     # ========================
