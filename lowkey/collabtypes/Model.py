@@ -32,11 +32,11 @@ class Model(Node):
         
     def getNodeByName(self, name:str):
         nodes = self.getNodes()
-        return next(n for n in nodes if n.getFeature(Literals.NAME) == name)  # names should be unique
+        return next(n for n in nodes if n.getFeature(Literals.NAME) == name)  # safe since names must be unique
     
     def getNodeById(self, identifier):
         nodes = self.getNodes()
-        return next(n for n in nodes if n.getId() == identifier)  # IDs should be unique
+        return next(n for n in nodes if n.getId() == identifier)  # safe since IDs must be unique
     
     def removeNode(self, node:Node):
         nodes = self.getFeature(Literals.NODES)
