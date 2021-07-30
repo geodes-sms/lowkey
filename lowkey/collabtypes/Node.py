@@ -39,20 +39,18 @@ class Node():
     """Naming"""
 
     def setName(self, name):
-        self._clock.sleepOneStep()
-        return self.persistence.add(Literals.NAME, name, self.currentTime())
+        return self.setAttribute(Literals.NAME, name)
     
     def getName(self):
-        return self.persistence.query(Literals.NAME)
+        return self.getAttribute(Literals.NAME)
     
     """Typing"""
 
     def setType(self, node):
-        self._clock.sleepOneStep()
-        return self.persistence.add(Literals.TYPED_BY, node, self.currentTime())
+        return self.setAttribute(Literals.TYPED_BY, name)
     
     def getType(self):
-        return self.persistence.query(Literals.TYPED_BY)
+        return self.getAttribute(Literals.TYPED_BY)
         
     """Attributes CRUD"""
 
