@@ -2,6 +2,7 @@
 import logging
 import os
 import sys
+from editor.Command import Command
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
@@ -44,7 +45,7 @@ class CommandParser():
             self.isDeleteCommand(tokens)
         )
     
-    def parseMessage(self, message):
+    def parseMessage(self, message) -> Command:
         tokens = self.tokenize(message)
         if self.validCommand(tokens):
             logging.debug("Command is valid")
