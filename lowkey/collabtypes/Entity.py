@@ -26,20 +26,18 @@ class Entity(Node):
     """Abstract nature"""
     
     def setAbstract(self, isAbstract:bool):
-        self._clock.sleepOneStep()
-        return self.persistence.add(Literals.IS_ABSTRACT, isAbstract, self.currentTime())
+        self.setAttribute(Literals.IS_ABSTRACT, isAbstract)
     
     def isAbstract(self) -> bool:
-        return self.persistence.query(Literals.IS_ABSTRACT)
+        return self.getAttribute(Literals.IS_ABSTRACT)
     
     """Inheritance"""
 
     def extends(self, entity):
-        self._clock.sleepOneStep()
-        return self.persistence.add(Literals.EXTENDS, entity, self.currentTime())
+        self.setAttribute(Literals.EXTENDS, entity)
     
     def super(self):
-        return self.persistence.query(Literals.EXTENDS)
+        return self.getAttribute(Literals.EXTENDS)
     
     """Relationships CRUD"""
     
@@ -55,7 +53,7 @@ class Entity(Node):
     
     def removeRelationship(self, relationship:Relationship):
         self._clock.sleepOneStep()
-        relationships = self.query(Literals.RELATIONSHIPS)
+        relationships = self.persistence.query(Literals.RELATIONSHIPS)
         remainingRelationships = ()
         for r in relationships:
             if r != relationship:
