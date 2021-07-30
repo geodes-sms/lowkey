@@ -1,10 +1,10 @@
 #!/usr/bin/env python
-from entities.CentralTopic import CentralTopic
-from entities.MainTopic import MainTopic
-from entities.Marker import Marker
-from entities.MindMap import MindMap
-from entities.SubTopic import SubTopic
-from entities.Topic import Topic
+from metamodel.entities.CentralTopic import CentralTopic
+from metamodel.entities.MainTopic import MainTopic
+from metamodel.entities.Marker import Marker
+from metamodel.entities.MindMap import MindMap
+from metamodel.entities.SubTopic import SubTopic
+from metamodel.entities.Topic import Topic
 
 
 __author__ = "Istvan David"
@@ -21,5 +21,5 @@ Factory module for the MindMap metamodel.
 def factory(classname, name=""):
     if classname.lower() not in [k.lower() for k in globals().keys()]:
         return None
-    klass = {k.lower():v for k, v in globals().items()}[classname]
+    klass = {k.lower():v for k, v in globals().items()}[classname.lower()]
     return klass()
