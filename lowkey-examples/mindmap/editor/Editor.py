@@ -44,6 +44,7 @@ class Editor(Client):
         while True:
             try:
                 receviedMessage = self._snapshot.recv()
+                logging.debug("Received message {}".format(receviedMessage))
                 _, message = self.getMessage(receviedMessage)
                 self.consumeMessage(message)
             except:
