@@ -6,11 +6,12 @@ def printMindmap(mindmap):
     print('===============================')
     print(mindmap.getTitle())
     centralTopic = mindmap.getTopic()
-    __printTopic(0, centralTopic)
-    for mainTopic in centralTopic.getMainTopics():
-        __printTopic(1, mainTopic)
-        for subTopic in mainTopic.getSubTopics():
-            __printTopic(2, subTopic)
+    if(centralTopic):
+        __printTopic(0, centralTopic)
+        for mainTopic in centralTopic.getMainTopics():
+            __printTopic(1, mainTopic)
+            for subTopic in mainTopic.getSubTopics():
+                __printTopic(2, subTopic)
 
     
 def __printTopic(depth, topic):
