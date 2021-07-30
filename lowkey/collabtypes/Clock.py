@@ -46,6 +46,9 @@ class Clock:
     def getStep(self):
         return self.__step
     
+    def sleepOneStep(self):
+        time.sleep(1/self.__step)
+    
     def currentTime(self):
         if self.__mode == ClockMode.REAL:
             return self.__currentRealTime()
