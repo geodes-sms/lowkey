@@ -56,6 +56,12 @@ class Relationship(Node):
         
     def getToMax(self):
         return self.getAttribute(Literals.RELATIONSHIP_TO_MAX)
+
+    def setComposition(self, isComposition):
+        self.setAttribute(Literals.RELATIONSHIP_ISCOMPOSITION, isComposition)
+        
+    def isComposition(self):
+        return self.getAttribute(Literals.RELATIONSHIP_ISCOMPOSITION)
     
     def setAggregation(self, isAggregation):
         self.setAttribute(Literals.RELATIONSHIP_ISAGGREGATION, isAggregation)
