@@ -22,3 +22,8 @@
 - ```CREATE RELATIONSHIP [name] [sourceName] [targetName]``` - Creates a relationship with name ```[name]``` between the objects named ```[sourceName]``` and ```[targetName]```, respectively.
 - ```UPDATE [name] [property] [value]``` - Updates property ```[property]``` in object ```[name]``` to value ```[value]```.
 - ```DELETE [name]``` - Deletes object ```[name]```.
+
+### Command language v2
+- ```READ``` - Returns the mindmap model in a readable form.
+- ```CREATE [type] [name]``` - Creates an instance with name ```[name]``` of the domain-specific type ```[type]```.
+- ```ADD [name1] TO [name2]``` - Adds object ```[name1]``` under object ```[name1]```.
