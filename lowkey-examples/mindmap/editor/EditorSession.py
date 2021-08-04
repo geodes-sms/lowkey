@@ -28,7 +28,7 @@ class EditorSession():
         self._id = uuid.uuid1()
         self._mindmapmodel = MindMapModel()
         self._mindmap = MindMap()
-        self._mindmap.setContext(self._mindmapmodel)
+        self._mindmap.addToModel(self._mindmapmodel)
         self._tmp = []
     
     def classFactory(self, classname):
@@ -42,16 +42,16 @@ class EditorSession():
         logging.debug(" Integrating entity {} ({})'.".format(entity.getName(), entity.getType()))
         if(isinstance(entity, CentralTopic)):
             logging.debug(">>integrating as centraltopic")
-            entity.setContext(self._mindmapmodel)
+            entity.addToModel(self._mindmapmodel)
             self._mindmap.setTopic(entity)
         elif(isinstance(entity, MainTopic)):
             logging.debug(">>integrating as maintopic")
-            entity.setContext(self._mindmapmodel)
+            entity.addToModel(self._mindmapmodel)
             centralTopic = self._mindmap.getTopic()
             centralTopic.addMainTopic(entity)
         elif(isinstance(entity, SubTopic)):
             logging.debug(">>integrating as subtopic")
-            entity.setContext(self._mindmapmodel)
+            entity.addToModel(self._mindmapmodel)
             self._tmp.append(entity)
             print(self._tmp)
             logging.debug("entity added to _tmp")
