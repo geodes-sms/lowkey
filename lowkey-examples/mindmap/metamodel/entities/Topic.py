@@ -1,11 +1,14 @@
 from lowkey.collabtypes.Clabject import Clabject
-from lowkey.collabtypes.Entity import Entity
 from lowkey.collabtypes.Association import Association
 
 from .Marker import Marker
 
 
-class Topic(Entity):
+class TopicLiterals():
+    ASSOCIATION_MARKER = "marker"
+
+
+class Topic(Clabject):
     
     def __init__(self, name=""):
         super().__init__()
@@ -16,28 +19,36 @@ class Topic(Entity):
     # Type: Marker
     # MultiplicityFrom: 0..1
     # MultiplicityTo: 0..1
-    # IsAggregation: False
+    # IsComposition: False
     # ========================
     # Methods: get, set, remove
     def getMarker(self) -> Marker:
-        markerReference = self.getAssociationsByName("marker")
-        if markerReference:
-            return markerReference[0].getTo()  # safe due to MultiplicityToMax = 1
+        markerAssociations = [a for a in self.getModel().getAssociationsByName(TopicLiterals.ASSOCIATION_MARKER) if a.getFrom() == self]
+        
+        if markerAssociations:
+            return markerAssociations[0].getTo()  # safe due to MultiplicityToMax = 1
         return None
     
     def setMarker(self, marker: Marker):  # typing due to Type: Marker
-        if self.getMarker():  # required due to MultiplicityToMax = 1
-            self.removeMarker()
+        model = self.getModel()
+        markerAssociations = [a for a in model.getAssociationsByName(TopicLiterals.ASSOCIATION_MARKER) if a.getFrom() == self]
         
-        markerReference = Association()
-        markerReference.setName("marker")
-        markerReference.setFrom(self)
-        markerReference.setTo(marker)
-        markerReference.setAggregation(True)
+        if markerAssociations:
+            # Removes the association to the Marker object but not the object
+            # safe due to MultiplicityToMax = 1
+            model.removeNode(markerAssociations[0])
         
-        self.addAssociation(markerReference)
+        markerAssociation = Association()
+        markerAssociation.setName(TopicLiterals.ASSOCIATION_MARKER)
+        markerAssociation.setFrom(self)
+        markerAssociation.setTo(marker)
+        markerAssociation.setComposition(True)
+        
+        model.addNode(markerAssociation)
         
     def removeMarker(self):  # Removes the association to the Marker object but not the object
-        markerReference = self.getAssociationsByName("marker")
-        if markerReference:
-            self.removeAssociation(markerReference[0])  # safe due to MultiplicityToMax = 1
+        model = self.getModel()
+        markerAssociations = [a for a in model.getAssociationsByName(TopicLiterals.ASSOCIATION_MARKER) if a.getFrom() == self]
+
+        for a in markerAssociations:
+            model.removeNode(markerAssociations[0])  # safe due to MultiplicityToMax = 1

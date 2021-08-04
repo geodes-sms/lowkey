@@ -2,16 +2,19 @@ from lowkey.collabtypes.Model import Model
 
 
 def printMindmap(mindmap):
-    print("\nPrinting Mindmap")
+    print("\nPrinting Mindmap {}".format(mindmap.getTitle()))
     print('===============================')
-    print(mindmap.getTitle())
     centralTopic = mindmap.getTopic()
     if(centralTopic):
         __printTopic(0, centralTopic)
-        for mainTopic in centralTopic.getMainTopics():
-            __printTopic(1, mainTopic)
-            for subTopic in mainTopic.getSubTopics():
-                __printTopic(2, subTopic)
+        mainTopics = centralTopic.getMainTopics()
+        if(mainTopics):
+            for mainTopic in mainTopics:
+                __printTopic(1, mainTopic)
+                subTopics = mainTopic.getSubTopics()
+                if(subTopics):
+                    for subTopic in mainTopic.getSubTopics():
+                        __printTopic(2, subTopic)
 
     
 def __printTopic(depth, topic):
@@ -23,7 +26,7 @@ def __printTopic(depth, topic):
 
         
 def printModel(model: Model):
-    print("\nPrinting model nodes")
+    print("\nPrinting the nodes of Mindmap model {}".format(model.getTitle()))
     print('===============================')
     for n in model.getNodes():
         print('-"{0}" of type {1}. (ID: {2})'.format(n.getName(), n.__class__.__name__, n.getId()))

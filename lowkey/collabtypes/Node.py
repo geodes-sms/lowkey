@@ -51,6 +51,23 @@ class Node():
     
     def getType(self):
         return self.getFeature(Literals.TYPED_BY)
+    
+    """Model CRUD"""
+
+    def addToModel(self, model):
+        self._model = model
+        model.addNode(self)
+    
+    def getModel(self):
+        return self._model
+        
+    def changeModel(self, oldModel, newModel):
+        self.removeFromModel(oldModel)
+        self.addToModel(newModel)
+        
+    def removeFromModel(self, model):
+        model.removeNode(self)
+        del(self._model)
         
     """Attributes CRUD"""
 

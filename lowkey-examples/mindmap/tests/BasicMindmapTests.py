@@ -28,7 +28,7 @@ class BasicMindmapTests(unittest.TestCase):
         title1 = "improveTeachingRecord"
         
         mindmap = MindMap(title1)
-        mindmap.setModel(mindmapModel)
+        mindmap.addToModel(mindmapModel)
         
         self.assertEqual(mindmapModel.getNodeById(mindmap.getId()), mindmap)
     
@@ -37,7 +37,7 @@ class BasicMindmapTests(unittest.TestCase):
         title1 = "improveTeachingRecord"
         
         mindmap = MindMap(title1)
-        mindmap.setModel(mindmapModel)
+        mindmap.addToModel(mindmapModel)
         
         self.assertEqual(mindmap.getTitle(), title1)
         
@@ -49,10 +49,10 @@ class BasicMindmapTests(unittest.TestCase):
         mindmapModel = MindMapModel()
         
         mindmap = MindMap("improveTeachingRecord")
-        mindmap.setModel(mindmapModel)
+        mindmap.addToModel(mindmapModel)
         
         centralTopic = CentralTopic("publishPaper")
-        centralTopic.setModel(mindmapModel)
+        centralTopic.addToModel(mindmapModel)
         
         mindmap.setTopic(centralTopic)
         
@@ -85,18 +85,18 @@ class BasicMindmapTests(unittest.TestCase):
         mindmapModel = MindMapModel()
                 
         mindmap = MindMap("improveTeachingRecord")
-        mindmap.setModel(mindmapModel)
+        mindmap.addToModel(mindmapModel)
         
         topicName = "publishPaper"
         centralTopic = CentralTopic(topicName)
-        centralTopic.setModel(mindmapModel)
+        centralTopic.addToModel(mindmapModel)
         
         mindmap.setTopic(centralTopic)
         self.assertEqual(mindmap.getTopic().getName(), topicName)
         
         topicName2 = "goToVacation"
         centralTopic2 = CentralTopic(topicName2)
-        centralTopic.setModel(mindmapModel)
+        centralTopic.addToModel(mindmapModel)
         
         mindmap.setTopic(centralTopic2)
         

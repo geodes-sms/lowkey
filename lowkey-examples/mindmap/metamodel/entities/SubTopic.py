@@ -3,6 +3,10 @@ from lowkey.collabtypes.Association import Association
 from .Topic import Topic
 
 
+class SubTopicLiterals():
+    ASSOCIATION_SUBTOPICS = "subtopics"
+
+
 class SubTopic(Topic):
     
     def __init__(self, name=""):
@@ -13,24 +17,32 @@ class SubTopic(Topic):
     # Type: SubTopic
     # MultiplicityFrom: 0..1
     # MultiplicityTo: 1..*
-    # IsAggregation: True
+    # IsComposition: True
     # ========================
     # Methods: get, set, remove
     def getSubTopics(self):
+        subTopicsAssociations = [a for a in self.getModel().getAssociationsByName(SubTopicLiterals.ASSOCIATION_SUBTOPICS) if a.getFrom() == self]
+        
         subTopics = []
-        associations = self.getAssociationsByName("subtopics")
-        for a in associations:
+        for a in subTopicsAssociations:
             subTopics.append(a.getTo())
         return subTopics
     
     def addSubTopic(self, subTopic):
-        subTopic_ = Association()
-        subTopic_._setName("subtopics")
-        subTopic_.setFrom(self)
-        subTopic_.setTo(subTopic)
-        subTopic_.setAggregation(True)
+        subTopicAssociation = Association()
+        subTopicAssociation.setName(SubTopicLiterals.ASSOCIATION_SUBTOPICS)
+        subTopicAssociation.setFrom(self)
+        subTopicAssociation.setTo(subTopic)
+        subTopicAssociation.setComposition(True)
         
-        self.addAssociation(subTopic_)
+        self.getModel().addNode(subTopicAssociation)
         
     def removeSubTopic(self, subTopic):
-        self.removeAssociation(subTopic)
+        model = self.getModel()
+        subTopicAssociations = [a for a in model.getAssociationsByName(SubTopicLiterals.ASSOCIATION_SUBTOPICS) if a.getFrom() == self]
+
+        for a in subTopicAssociations:
+            if a.getTo() == subTopic:
+                model.removeNode(a)
+                return
+

@@ -1,5 +1,8 @@
 from lowkey.collabtypes.Clabject import Clabject
 
+class MarkerLiterals():
+    SYMBOL = "symbol"
+
 
 class Marker(Clabject):
     
@@ -15,7 +18,7 @@ class Marker(Clabject):
     # ========================
     # Methods: get, set
     def getSymbol(self):
-        return self.getAttribute("symbol")
+        return self.getAttribute(MarkerLiterals.SYMBOL)
 
     def setSymbol(self, symbol):
-        self.setAttribute("symbol", symbol)
+        self.setAttribute(MarkerLiterals.SYMBOL, symbol)
