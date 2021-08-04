@@ -31,15 +31,6 @@ class Model(Node):
     
     def getNodes(self):
         return self.getFeature(Literals.NODES)
-    
-    def getAssociations(self):
-        return [n for n in self.getNodes() if isinstance(n, Association)]
-    
-    def getAssociationsByName(self, name):
-        return [a for a in self.getAssociations() if a.getName() == name]
-    
-    def getClabjects(self):
-        return [n for n in self.getNodes() if isinstance(n, Clabject)]
         
     def getNodeByName(self, name:str):
         nodes = self.getNodes()
@@ -61,3 +52,14 @@ class Model(Node):
     def updateNode(self, oldNode:Node, newNode:Node):
         self.removeNode(oldNode)
         self.addNode(newNode)
+    
+    def getClabjects(self):
+        return [n for n in self.getNodes() if isinstance(n, Clabject)]
+    
+    def getAssociations(self):
+        return [n for n in self.getNodes() if isinstance(n, Association)]
+    
+    def getAssociationsByName(self, name):
+        return [a for a in self.getAssociations() if a.getName() == name]
+    
+    
