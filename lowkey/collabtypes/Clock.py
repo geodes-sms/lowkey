@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import enum
+import logging
 import time
+
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -37,8 +39,9 @@ class Clock:
             Clock.__instance = self
             Clock.__mode = mode
             if mode == ClockMode.DEBUG:
+                logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.DEBUG)
                 self.__debugTime = self.__currentRealTime()
-                print("Clock in DEBUG mode")
+                logging.debug("Clock in DEBUG mode")
     
     def getMode(self):
         return self.__mode
@@ -47,7 +50,7 @@ class Clock:
         return self.__step
     
     def sleepOneStep(self):
-        time.sleep(1/self.__step)
+        time.sleep(1 / self.__step)
     
     def currentTime(self):
         if self.__mode == ClockMode.REAL:
