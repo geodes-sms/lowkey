@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-
 from lowkey.collabtypes import Literals
 from lowkey.lww.LWWMap import LWWMap
 
+from .Clabject import Clabject
 from .Node import Node
 
 __author__ = "Istvan David"
@@ -15,7 +15,7 @@ Association type for the general logical type model level.
 """
 
 
-class Association(Node):
+class Association(Clabject):
 
     def __init__(self):
         super().__init__()

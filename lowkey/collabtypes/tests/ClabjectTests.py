@@ -4,6 +4,7 @@ import unittest
 from lowkey.collabtypes.Association import Association
 from lowkey.collabtypes.Clock import Clock, ClockMode
 from lowkey.collabtypes.Clabject import Clabject
+from lowkey.collabtypes.Model import Model
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -16,7 +17,14 @@ class ClabjectTests(unittest.TestCase):
     def testClabjectCreation(self):
         Clock.setUp(ClockMode.DEBUG)
         
+        model = Model()
+        
         person = Clabject()
+        model.addNode(person)
+        self.assertEqual(len(model.getNodes()), 1)
+        
+        personAsClabject = model.getClabjects()[0]
+        self.assertEqual(personAsClabject, person)
         
         attributeName1 = "name"
         attributeValue1 = "Istvan"
@@ -46,16 +54,34 @@ class ClabjectTests(unittest.TestCase):
         association.setAggregation(False)
         association.setAttribute("name", "affiliation")
         association.setAttribute("directed", "target")
-        person.addAssociation(association)
+        model.addNode(association)
+        self.assertEqual(len(model.getNodes()), 2)
         
-        affiliationAssociation = person.getAssociation("affiliation")
-        affiliationAssociation = affiliationAssociation[0] if len(affiliationAssociation) == 1 else self.fail()
+        affiliationLinkAsNode = model.getNodeByName("affiliation")
+        self.assertEqual(affiliationLinkAsNode.getFrom(), person)
+        
+        affiliationLinkAsAssociation = model.getAssociations()[0]
+        self.assertEqual(affiliationLinkAsAssociation.getFrom(), person)
+        
+        affiliationAssociation = affiliationLinkAsAssociation
         
         self.assertEqual(affiliationAssociation.getFrom(), person)
         self.assertEqual(affiliationAssociation.getTo(), university)
         self.assertFalse(affiliationAssociation.isAggregation())
         direction = affiliationAssociation.getAttribute("directed")
         self.assertEqual(direction, "target")
+        
+        man = Clabject()
+        person.setInheritsFrom(man)
+        self.assertEqual(person.getInheritsFrom(), man)
+        
+        employment = Association()
+        association.setInheritsFrom(employment)
+        self.assertEqual(association.getInheritsFrom(), employment)
+        
+        with self.assertRaises(AssertionError):
+            association.setInheritsFrom(man)
+        self.assertEqual(association.getInheritsFrom(), employment)
 
 
 if __name__ == "__main__":

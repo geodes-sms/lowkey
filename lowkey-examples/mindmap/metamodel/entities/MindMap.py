@@ -1,10 +1,12 @@
+from lowkey.collabtypes.Model import Model
 from lowkey.collabtypes.Clabject import Clabject
+from lowkey.collabtypes.Entity import Entity
 from lowkey.collabtypes.Association import Association
 
 from .CentralTopic import CentralTopic
 
 
-class MindMap(Clabject):
+class MindMap(Entity):
     
     def __init__(self, title=""):
         super().__init__()
@@ -32,13 +34,13 @@ class MindMap(Clabject):
     # ========================
     # Methods: get, set, remove
     def getTopic(self) -> CentralTopic:
-        topicAssociations = self.getAssociation("topic")
+        topicAssociations = self.getAssociationsByName("topic")
         if topicAssociations:
             return topicAssociations[0].getTo()  # safe due to MultiplicityToMax = 1
         return None
     
     def setTopic(self, topic: CentralTopic):  # typing due to Type: CentralTopic
-        topicReferences = self.getAssociation("topic") 
+        topicReferences = self.getAssociationsByName("topic") 
         if topicReferences:
             # Removes the association to the Marker object but not the object
             # safe due to MultiplicityToMax = 1
@@ -53,7 +55,7 @@ class MindMap(Clabject):
         self.addAssociation(topicAssociation)
     
     def removeTopic(self):
-        topicAssociations = self.getAssociation("topic")
+        topicAssociations = self.getAssociationsByName("topic")
         if topicAssociations:
             self.removeAssociation(topicAssociations[0])  # safe due to MultiplicityToMax = 1
     
@@ -67,7 +69,7 @@ class MindMap(Clabject):
     # Methods: get, add, remove
     def getMarkers(self):
         markers = []
-        markersAssociations = self.getAssociation("markers")
+        markersAssociations = self.getAssociationsByName("markers")
         for a in markersAssociations:
             markers.append(a.getTo())
         return markers
@@ -82,7 +84,7 @@ class MindMap(Clabject):
         self.addAssociation(markersAssociation)
         
     def removeMarker(self, marker):  # Removes the association to the Marker object but not the object
-        markersAssociations = self.getAssociation("markers")
+        markersAssociations = self.getAssociationsByName("markers")
         for a in markersAssociations:
             if a.getTo() == marker:
                 self.removeAssociation(a)

@@ -18,7 +18,7 @@ class CentralTopic(Topic):
     # Methods: get, set, remove
     def getMainTopics(self):
         mainTopics = []
-        mainTopicsAssociations = self.getAssociation("maintopics")
+        mainTopicsAssociations = self.getAssociationsByName("maintopics")
         for a in mainTopicsAssociations:
             mainTopics.append(a.getTo())
         return mainTopics

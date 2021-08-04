@@ -2,6 +2,8 @@
 from lowkey.collabtypes import Literals
 from lowkey.lww.LWWGraph import LWWGraph
 
+from .Association import Association
+from .Clabject import Clabject
 from .Node import Node
 
 __author__ = "Istvan David"
@@ -29,6 +31,15 @@ class Model(Node):
     
     def getNodes(self):
         return self.getFeature(Literals.NODES)
+    
+    def getAssociations(self):
+        return [n for n in self.getNodes() if isinstance(n, Association)]
+    
+    def getAssociationsByName(self, name):
+        return [a for a in self.getAssociations() if a.getName() == name]
+    
+    def getClabjects(self):
+        return [n for n in self.getNodes() if isinstance(n, Clabject)]
         
     def getNodeByName(self, name:str):
         nodes = self.getNodes()

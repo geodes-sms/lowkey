@@ -21,25 +21,33 @@ __license__ = "GPL-3.0"
 
 Clock.setUp(ClockMode.DEBUG)
 
+mindmapModel= MindMapModel()
+
 mindmap = MindMap('improvePublicationRecord')
+mindmap.setModel(mindmapModel)
 
 # Create CentralTopic and add to the MindMap
 centralTopic = CentralTopic('publishPaper')
+centralTopic.setModel(mindmapModel)
 mindmap.setTopic(centralTopic)
 
 # Create two MainTopics and add them to the CentralTopic
 mt1 = MainTopic('experiment')
+mt1.setModel(mindmapModel)
 centralTopic.addMainTopic(mt1)
 
 # Create this one with a missing argument
 mt2 = MainTopic()
 mt2.setName('writePaper')
+mt2.setModel(mindmapModel)
 centralTopic.addMainTopic(mt2)
 
 # Create two SubTopics and add them to one of the MainTopics
 s1 = SubTopic('relatedWork')
+s1.setModel(mindmapModel)
 mt2.addSubTopic(s1)
 s2 = SubTopic('contributions')
+s2.setModel(mindmapModel)
 mt2.addSubTopic(s2)
 
 # Create a Marker

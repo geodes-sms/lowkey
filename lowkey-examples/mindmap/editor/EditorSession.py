@@ -1,13 +1,16 @@
 #!/usr/bin/env python
+import logging
 import uuid
 
-from metamodel.entities.MindMap import MindMap
-from metamodel.entities.CentralTopic import CentralTopic
-import logging
-from lowkey.collabtypes.Clabject import Clabject
-from metamodel.entities.MainTopic import MainTopic
-from metamodel.entities.SubTopic import SubTopic
+from metamodel.entities.MindMapModel import MindMapModel
+
 from editor import MindMapPackage
+from lowkey.collabtypes.Clabject import Clabject
+from metamodel.entities.CentralTopic import CentralTopic
+from metamodel.entities.MainTopic import MainTopic
+from metamodel.entities.MindMap import MindMap
+from metamodel.entities.SubTopic import SubTopic
+
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -23,7 +26,9 @@ class EditorSession():
     
     def __init__(self):
         self._id = uuid.uuid1()
+        self._mindmapmodel = MindMapModel()
         self._mindmap = MindMap()
+        self._mindmap.setContext(self._mindmapmodel)
         self._tmp = []
     
     def classFactory(self, classname):
@@ -32,30 +37,33 @@ class EditorSession():
         klass = {k.lower():v for k, v in globals().items()}[classname.lower()]
         return klass()
     
-    def integrateClabject(self, clabject):
-        logging.debug(clabject)
-        logging.debug(" Integrating clabject {} ({})'.".format(clabject.getName(), clabject.getType()))
-        if(isinstance(clabject, CentralTopic)):
+    def integrateEntity(self, entity):
+        logging.debug(entity)
+        logging.debug(" Integrating entity {} ({})'.".format(entity.getName(), entity.getType()))
+        if(isinstance(entity, CentralTopic)):
             logging.debug(">>integrating as centraltopic")
-            self._mindmap.setTopic(clabject)
-        elif(isinstance(clabject, MainTopic)):
+            entity.setContext(self._mindmapmodel)
+            self._mindmap.setTopic(entity)
+        elif(isinstance(entity, MainTopic)):
             logging.debug(">>integrating as maintopic")
+            entity.setContext(self._mindmapmodel)
             centralTopic = self._mindmap.getTopic()
-            centralTopic.addMainTopic(clabject)
-        elif(isinstance(clabject, SubTopic)):
+            centralTopic.addMainTopic(entity)
+        elif(isinstance(entity, SubTopic)):
             logging.debug(">>integrating as subtopic")
-            self._tmp.append(clabject)
+            entity.setContext(self._mindmapmodel)
+            self._tmp.append(entity)
             print(self._tmp)
-            logging.debug("Clabject added to _tmp")
+            logging.debug("entity added to _tmp")
         else:
             logging.debug("Unexpected type")
             
     def integrateAssociation(self, association):
         logging.debug(association)
         associationName = association.getName()
-        fromClabject = association.getFrom()
-        toClabject = association.getTo()
-        logging.debug(" Integrating association '{}' between {} and {}.".format(associationName, fromClabject, toClabject))
+        fromEntity = association.getFrom()
+        toEntity = association.getTo()
+        logging.debug(" Integrating association '{}' between {} and {}.".format(associationName, fromEntity, toEntity))
         
         print(self._tmp)
         
@@ -65,8 +73,8 @@ class EditorSession():
             print("printing e")
             print(e)
             print(e.getName())
-            print(toClabject)
-            if e.getName() == toClabject:
+            print(toEntity)
+            if e.getName() == toEntity:
                 st = e
                 break
         
@@ -74,6 +82,6 @@ class EditorSession():
         
         ct = self._mindmap.getTopic()
         for mt in ct.getMainTopics():
-            if mt.getName() == fromClabject:
+            if mt.getName() == fromEntity:
                 mt.addSubTopic(st)
                 self._tmp.remove(st)

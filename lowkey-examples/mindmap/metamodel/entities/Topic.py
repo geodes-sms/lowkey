@@ -1,10 +1,11 @@
 from lowkey.collabtypes.Clabject import Clabject
+from lowkey.collabtypes.Entity import Entity
 from lowkey.collabtypes.Association import Association
 
 from .Marker import Marker
 
 
-class Topic(Clabject):
+class Topic(Entity):
     
     def __init__(self, name=""):
         super().__init__()
@@ -19,7 +20,7 @@ class Topic(Clabject):
     # ========================
     # Methods: get, set, remove
     def getMarker(self) -> Marker:
-        markerReference = self.getAssociation("marker")
+        markerReference = self.getAssociationsByName("marker")
         if markerReference:
             return markerReference[0].getTo()  # safe due to MultiplicityToMax = 1
         return None
@@ -37,6 +38,6 @@ class Topic(Clabject):
         self.addAssociation(markerReference)
         
     def removeMarker(self):  # Removes the association to the Marker object but not the object
-        markerReference = self.getAssociation("marker")
+        markerReference = self.getAssociationsByName("marker")
         if markerReference:
             self.removeAssociation(markerReference[0])  # safe due to MultiplicityToMax = 1

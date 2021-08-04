@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from lowkey.collabtypes import Literals
-from lowkey.collabtypes.Association import Association
 from lowkey.lww.LWWMap import LWWMap
 
 from .Node import Node
@@ -34,13 +33,14 @@ class Clabject(Node):
     """Inheritance"""
 
     def setInheritsFrom(self, clabject):
+        assert type(self) is type(clabject)
         self.setFeature(Literals.INHERITS_FROM, clabject)
     
     def getInheritsFrom(self):
         return self.getFeature(Literals.INHERITS_FROM)
     
     """Associations CRUD"""
-    
+    '''
     def addAssociation(self, association:Association):
         associations = self.getFeature(Literals.ASSOCIATIONS)
         associations = associations + (association,)
@@ -58,3 +58,4 @@ class Clabject(Node):
                 remainingAssociations = remainingAssociations + (a,)
         
         self.updateFeature(Literals.ASSOCIATIONS, remainingAssociations)
+    '''

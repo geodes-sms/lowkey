@@ -33,33 +33,33 @@ class CreateClabjectCommand(Command):
     def execute(self):
         logging.debug(" Executing command 'CREATE {} {}'.".format(self._type, self._name))
         
-        clabject = None
+        entity = None
         
         if self._type.lower() == MindMapPackage.TYPE_CENTRAL_TOPIC.lower():
             logging.debug("Instantiating {} with name {}".format(MindMapPackage.TYPE_CENTRAL_TOPIC, self._name))
-            clabject = CentralTopic()
-            clabject.setName(self._name)
-            clabject.setType(MindMapPackage.TYPE_CENTRAL_TOPIC)
+            entity = CentralTopic()
+            entity.setName(self._name)
+            entity.setType(MindMapPackage.TYPE_CENTRAL_TOPIC)
         elif self._type.lower() == MindMapPackage.TYPE_MAIN_TOPIC.lower():
             logging.debug("Instantiating {} with name {}".format(MindMapPackage.TYPE_MAIN_TOPIC, self._name))
-            clabject = MainTopic()
-            clabject.setName(self._name)
-            clabject.setType(MindMapPackage.TYPE_MAIN_TOPIC)
+            entity = MainTopic()
+            entity.setName(self._name)
+            entity.setType(MindMapPackage.TYPE_MAIN_TOPIC)
         elif self._type.lower() == MindMapPackage.TYPE_SUBTOPIC.lower():
             logging.debug("Instantiating {} with name {}".format(MindMapPackage.TYPE_SUBTOPIC, self._name))
-            clabject = SubTopic()
-            clabject.setName(self._name)
-            clabject.setType(MindMapPackage.TYPE_SUBTOPIC)
+            entity = SubTopic()
+            entity.setName(self._name)
+            entity.setType(MindMapPackage.TYPE_SUBTOPIC)
         elif self._type.lower() == MindMapPackage.TYPE_MARKER.lower():
             logging.debug("Instantiating {} with name {}".format(MindMapPackage.TYPE_MARKER, self._name))
-            clabject = Marker()
-            clabject.setName(self._name)
-            clabject.setType(MindMapPackage.TYPE_MARKER)
+            entity = Marker()
+            entity.setName(self._name)
+            entity.setType(MindMapPackage.TYPE_MARKER)
         else:
             logging.error("Unexpected type {}.".format(self._type))
             
-        logging.debug(clabject)
+        logging.debug(entity)
 
-        logging.debug(" {} with name {} has been created. Integrating into session {}.".format(clabject.getType(), clabject.getName(), self._session._id))
+        logging.debug(" {} with name {} has been created. Integrating into session {}.".format(entity.getType(), entity.getName(), self._session._id))
         
-        self._session.integrateClabject(clabject)
+        self._session.integrateEntity(entity)

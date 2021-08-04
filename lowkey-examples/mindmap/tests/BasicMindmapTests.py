@@ -26,22 +26,34 @@ class BasicMindmapTests(unittest.TestCase):
     def testCreateModelWithContent(self):
         mindmapModel = MindMapModel()
         title1 = "improveTeachingRecord"
+        
         mindmap = MindMap(title1)
-        mindmapModel.addNode(mindmap)
+        mindmap.setModel(mindmapModel)
+        
         self.assertEqual(mindmapModel.getNodeById(mindmap.getId()), mindmap)
-
+    
     def testCreateUpdateRoot(self):
+        mindmapModel = MindMapModel()
         title1 = "improveTeachingRecord"
+        
         mindmap = MindMap(title1)
+        mindmap.setModel(mindmapModel)
+        
         self.assertEqual(mindmap.getTitle(), title1)
         
         title2 = "improvePublicationRecord"
         mindmap.setTitle(title2)
         self.assertEqual(mindmap.getTitle(), title2)
+
+    def testCreateRemoveNonCompositionReference(self):
+        mindmapModel = MindMapModel()
         
-    def testCreateRemoveNonAggregationReference(self):
         mindmap = MindMap("improveTeachingRecord")
+        mindmap.setModel(mindmapModel)
+        
         centralTopic = CentralTopic("publishPaper")
+        centralTopic.setModel(mindmapModel)
+        
         mindmap.setTopic(centralTopic)
         
         x = Marker("x")
@@ -52,6 +64,7 @@ class BasicMindmapTests(unittest.TestCase):
         
         centralTopic.removeMarker()
         self.assertFalse(centralTopic.getMarker())
+    
     
     @unittest.skip("Design choice pending")    
     def testCreateRemoveAggregationReference(self):
@@ -69,21 +82,25 @@ class BasicMindmapTests(unittest.TestCase):
         self.assertFalse(centralTopic.getMarker())  # TODO: design choice -- should the Marker exist here?
         
     def testCreateUpdateContainedReferenceTarget(self):
-        Clock.setUp(ClockMode.DEBUG)
-        
+        mindmapModel = MindMapModel()
+                
         mindmap = MindMap("improveTeachingRecord")
+        mindmap.setModel(mindmapModel)
+        
         topicName = "publishPaper"
         centralTopic = CentralTopic(topicName)
-        mindmap.setTopic(centralTopic)
+        centralTopic.setModel(mindmapModel)
         
+        mindmap.setTopic(centralTopic)
         self.assertEqual(mindmap.getTopic().getName(), topicName)
         
         topicName2 = "goToVacation"
         centralTopic2 = CentralTopic(topicName2)
+        centralTopic.setModel(mindmapModel)
+        
         mindmap.setTopic(centralTopic2)
         
         self.assertEqual(mindmap.getTopic().getName(), topicName2)
-
         
 if __name__ == "__main__":
     unittest.main()
