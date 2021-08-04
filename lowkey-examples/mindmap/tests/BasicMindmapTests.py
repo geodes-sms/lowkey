@@ -22,22 +22,24 @@ class BasicMindmapTests(unittest.TestCase):
     
     def setUp(self):
         Clock.setUp(ClockMode.DEBUG)
+        self._mindMapModel = MindMapModel()
+        
+    def tearDown(self):
+        del(self._mindMapModel)
         
     def testCreateModelWithContent(self):
-        mindmapModel = MindMapModel()
         title1 = "improveTeachingRecord"
         
         mindmap = MindMap(title1)
-        mindmap.addToModel(mindmapModel)
+        mindmap.addToModel(self._mindMapModel)
         
-        self.assertEqual(mindmapModel.getNodeById(mindmap.getId()), mindmap)
+        self.assertEqual(self._mindMapModel.getNodeById(mindmap.getId()), mindmap)
     
     def testCreateUpdateRoot(self):
-        mindmapModel = MindMapModel()
         title1 = "improveTeachingRecord"
         
         mindmap = MindMap(title1)
-        mindmap.addToModel(mindmapModel)
+        mindmap.addToModel(self._mindMapModel)
         
         self.assertEqual(mindmap.getTitle(), title1)
         
@@ -46,13 +48,11 @@ class BasicMindmapTests(unittest.TestCase):
         self.assertEqual(mindmap.getTitle(), title2)
 
     def testCreateRemoveNonCompositionReference(self):
-        mindmapModel = MindMapModel()
-        
         mindmap = MindMap("improveTeachingRecord")
-        mindmap.addToModel(mindmapModel)
+        mindmap.addToModel(self._mindMapModel)
         
         centralTopic = CentralTopic("publishPaper")
-        centralTopic.addToModel(mindmapModel)
+        centralTopic.addToModel(self._mindMapModel)
         
         mindmap.setTopic(centralTopic)
         
@@ -65,38 +65,44 @@ class BasicMindmapTests(unittest.TestCase):
         centralTopic.removeMarker()
         self.assertFalse(centralTopic.getMarker())
     
-    
-    @unittest.skip("Design choice pending")    
+    @unittest.skip("Design choice pending")
     def testCreateRemoveAggregationReference(self):
         mindmap = MindMap("improveTeachingRecord")
+        mindmap.addToModel(self._mindMapModel)
+        
         centralTopic = CentralTopic("publishPaper")
+        centralTopic.addToModel(self._mindMapModel)
         mindmap.setTopic(centralTopic)
         
         x = Marker("x")
+        x.addToModel(self._mindMapModel)
         mindmap.addMarker(x)
         centralTopic.setMarker(x)
         
         self.assertEqual(centralTopic.getMarker().getSymbol(), "x")
         
         mindmap.removeMarker(x)
-        self.assertFalse(centralTopic.getMarker())  # TODO: design choice -- should the Marker exist here?
+        
+        
+        markerAssociationsOnCurrentMindmap = [a for a in self._mindMapModel.getAssociationsByName("markers") if a.getFrom() == mindmap]
+        self.assertFalse(markerAssociationsOnCurrentMindmap)
+        self.assertFalse(centralTopic.getMarker())  # TODO: should be False if cascade removal is supported
+        
         
     def testCreateUpdateContainedReferenceTarget(self):
-        mindmapModel = MindMapModel()
-                
         mindmap = MindMap("improveTeachingRecord")
-        mindmap.addToModel(mindmapModel)
+        mindmap.addToModel(self._mindMapModel)
         
         topicName = "publishPaper"
         centralTopic = CentralTopic(topicName)
-        centralTopic.addToModel(mindmapModel)
+        centralTopic.addToModel(self._mindMapModel)
         
         mindmap.setTopic(centralTopic)
         self.assertEqual(mindmap.getTopic().getName(), topicName)
         
         topicName2 = "goToVacation"
         centralTopic2 = CentralTopic(topicName2)
-        centralTopic.addToModel(mindmapModel)
+        centralTopic.addToModel(self._mindMapModel)
         
         mindmap.setTopic(centralTopic2)
         
