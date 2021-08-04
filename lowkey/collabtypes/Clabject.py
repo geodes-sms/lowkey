@@ -4,7 +4,6 @@ from lowkey.lww.LWWMap import LWWMap
 
 from .Node import Node
 
-
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
 __credits__ = "Eugene Syriani"
@@ -38,24 +37,3 @@ class Clabject(Node):
     
     def getInheritsFrom(self):
         return self.getFeature(Literals.INHERITS_FROM)
-    
-    """Associations CRUD"""
-    '''
-    def addAssociation(self, association:Association):
-        associations = self.getFeature(Literals.ASSOCIATIONS)
-        associations = associations + (association,)
-        self.updateFeature(Literals.ASSOCIATIONS, associations)
-        
-    def getAssociation(self, name):
-        associations = self.getFeature(Literals.ASSOCIATIONS)
-        return [a for a in associations if a.getFeature(Literals.NAME) == name]
-    
-    def removeAssociation(self, association:Association):
-        associations = self.getFeature(Literals.ASSOCIATIONS)
-        remainingAssociations = ()
-        for a in associations:
-            if a != association:
-                remainingAssociations = remainingAssociations + (a,)
-        
-        self.updateFeature(Literals.ASSOCIATIONS, remainingAssociations)
-    '''

@@ -14,16 +14,27 @@ __license__ = "GPL-3.0"
 
 
 class EntityTests(unittest.TestCase):
-
-    def testEntityCreation(self):
+    
+    def setUp(self):
         Clock.setUp(ClockMode.DEBUG)
-        
-        model = Model()
-        
+        self._model = Model()
+    
+    def testEntityCreation(self):
         person = Entity()
-        person.setModel(model)
-        self.assertEqual(len(model.getNodes()), 1)
-        self.assertEqual(person.getModel(), model)
+        person.addToModel(self._model)
+        self.assertEqual(len(self._model.getNodes()), 1)
+        self.assertEqual(person.getModel(), self._model)
+
+    def testEntityCreationViaConstructor(self):
+        person = Entity(self._model)
+        self.assertEqual(len(self._model.getNodes()), 1)
+        self.assertEqual(person.getModel(), self._model)
+
+    def testFullEntity(self):
+        person = Entity()
+        person.addToModel(self._model)
+        self.assertEqual(len(self._model.getNodes()), 1)
+        self.assertEqual(person.getModel(), self._model)
         
         attributeName1 = "name"
         attributeValue1 = "Istvan"

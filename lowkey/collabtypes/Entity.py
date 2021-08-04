@@ -15,21 +15,25 @@ from .Model import Model
 
 class Entity(Clabject):
 
-    def __init__(self):
+    def __init__(self, model:Model=None):
         super().__init__()
-    
-    def setModel(self, model:Model):
-        self._model = model
-        model.addNode(self)
-    
-    def getModel(self) -> Model:
-        return self._model
+        if model:
+            self.addToModel(model)
     
     def getAssociations(self):
         return [a for a in self._model.getAssociations() if (a.getFrom() == self or a.getTo() == self)]
     
     def getAssociationsByName(self, name):
         return [a for a in self.getAssociations() if a.getName() == name]
+    
+    def getOutgoingAssociations(self):
+        raise NotImplementedError
+    
+    def getIncomingAssociations(self):
+        raise NotImplementedError
+    
+    def getContainedNodes(self):
+        raise NotImplementedError
     
     def addAssociation(self, association):
         assert association.getFrom() == self or association.getTo() == self
