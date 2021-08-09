@@ -4,7 +4,7 @@ from .Topic import Topic
 
 
 class CentralTopicLiterals():
-    ASSOCIATION_MAINTOPICS = "maintopic"
+    ASSOCIATION_MAINTOPICS = "maintopics"
 
 
 class CentralTopic(Topic):
