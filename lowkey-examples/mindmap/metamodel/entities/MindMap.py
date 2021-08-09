@@ -16,7 +16,7 @@ class MindMap(Clabject):
     def __init__(self, title=""):
         super().__init__()
         self.setTitle(title)
-        self.setName(title + "_mindmap")
+        self.setName(title)
 
     # title: Attribute
     # ========================
@@ -41,6 +41,10 @@ class MindMap(Clabject):
     def getTopic(self) -> CentralTopic:
         topicAssociations = [a for a in self.getModel().getAssociationsByName(MindMapLiterals.ASSOCIATION_TOPIC) if a.getFrom() == self]
         
+        '''
+        for a in [a for a in self.getModel().getAssociationsByName(MindMapLiterals.ASSOCIATION_TOPIC)]:
+            print(a.getFrom())
+        '''
         if topicAssociations:
             return topicAssociations[0].getTo()  # safe due to MultiplicityToMax = 1
         return None
