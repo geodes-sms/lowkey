@@ -10,6 +10,7 @@ from lowkey.collabtypes.Clock import Clock, ClockMode
 from metamodel.entities.CentralTopic import CentralTopic
 from metamodel.entities.Marker import Marker
 from metamodel.entities.MindMap import MindMap
+from metamodel.entities.MainTopic import MainTopic
 from metamodel.entities.MindMapModel import MindMapModel
 
 __author__ = "Istvan David"
@@ -107,6 +108,34 @@ class BasicMindmapTests(unittest.TestCase):
         mindmap.setTopic(centralTopic2)
         
         self.assertEqual(mindmap.getTopic().getName(), topicName2)
+        
+    def testCreateMainTopic(self):
+        mindmap = MindMap("improveTeachingRecord")
+        mindmap.addToModel(self._mindMapModel)
+        
+        topicName = "publishPaper"
+        centralTopic = CentralTopic(topicName)
+        centralTopic.addToModel(self._mindMapModel)
+        
+        mindmap.setTopic(centralTopic)
+        self.assertEqual(mindmap.getTopic().getName(), topicName)
+        
+        
+        mainTopicName = "processRelatedWork"
+        mainTopic = MainTopic(mainTopicName)
+        mainTopic.addToModel(self._mindMapModel)
+        
+        centralTopic.addMainTopic(mainTopic)
+        self.assertEqual(centralTopic.getMainTopics()[0].getName(), mainTopicName)
+        
+        
+        mainTopicName2 = "doTheExperiment"
+        mainTopic2 = MainTopic(mainTopicName2)
+        mainTopic2.addToModel(self._mindMapModel)
+        
+        centralTopic.addMainTopic(mainTopic2)
+        self.assertEqual(centralTopic.getMainTopics()[1].getName(), mainTopicName2)
+        
         
 if __name__ == "__main__":
     unittest.main()
