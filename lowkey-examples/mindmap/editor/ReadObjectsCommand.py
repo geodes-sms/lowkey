@@ -26,10 +26,6 @@ class ReadObjectsCommand(Command):
         logging.debug(" Executing command 'OBJECTS' in session {}.".format(self._session._id))
         root = self._session._mindmapmodel
         
-        # print("Root: {}".format(root))
-        # ct = root.getTopic()
-        # print("Central topic: {}".format(ct.getName()))
-        
         nodes = root.getNodes()
         
         if nodes:

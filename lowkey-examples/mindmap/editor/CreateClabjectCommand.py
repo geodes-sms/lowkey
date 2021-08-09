@@ -34,31 +34,33 @@ class CreateClabjectCommand(Command):
     def execute(self):
         logging.debug(" Executing command 'CREATE {} {}'.".format(self._type, self._name))
         
+        logmessage = "Instantiating {} with name {}"
+        
         entity = None
         
         if self._type.lower() == MindMapPackage.TYPE_MINDMAP.lower():
-            logging.debug("Instantiating {} with name {}".format(MindMapPackage.TYPE_MINDMAP, self._name))
+            logging.debug(logmessage.format(MindMapPackage.TYPE_MINDMAP, self._name))
             entity = MindMap()
             entity.setTitle(self._name)
             entity.setName(self._name)
             entity.setType(MindMapPackage.TYPE_MINDMAP)
         elif self._type.lower() == MindMapPackage.TYPE_CENTRAL_TOPIC.lower():
-            logging.debug("Instantiating {} with name {}".format(MindMapPackage.TYPE_CENTRAL_TOPIC, self._name))
+            logging.debug(logmessage.format(MindMapPackage.TYPE_CENTRAL_TOPIC, self._name))
             entity = CentralTopic()
             entity.setName(self._name)
             entity.setType(MindMapPackage.TYPE_CENTRAL_TOPIC)
         elif self._type.lower() == MindMapPackage.TYPE_MAIN_TOPIC.lower():
-            logging.debug("Instantiating {} with name {}".format(MindMapPackage.TYPE_MAIN_TOPIC, self._name))
+            logging.debug(logmessage.format(MindMapPackage.TYPE_MAIN_TOPIC, self._name))
             entity = MainTopic()
             entity.setName(self._name)
             entity.setType(MindMapPackage.TYPE_MAIN_TOPIC)
         elif self._type.lower() == MindMapPackage.TYPE_SUBTOPIC.lower():
-            logging.debug("Instantiating {} with name {}".format(MindMapPackage.TYPE_SUBTOPIC, self._name))
+            logging.debug(logmessage.format(MindMapPackage.TYPE_SUBTOPIC, self._name))
             entity = SubTopic()
             entity.setName(self._name)
             entity.setType(MindMapPackage.TYPE_SUBTOPIC)
         elif self._type.lower() == MindMapPackage.TYPE_MARKER.lower():
-            logging.debug("Instantiating {} with name {}".format(MindMapPackage.TYPE_MARKER, self._name))
+            logging.debug(logmessage.format(MindMapPackage.TYPE_MARKER, self._name))
             entity = Marker()
             entity.setName(self._name)
             entity.setSymbol(self._name)
@@ -70,5 +72,4 @@ class CreateClabjectCommand(Command):
 
         logging.debug(" {} with name {} has been created. Integrating into session {}.".format(entity.getType(), entity.getName(), self._session._id))
         
-        #self._session.integrateEntity(entity)
         self._session.integrateNode(entity)

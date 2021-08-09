@@ -50,7 +50,6 @@ class Editor(Client):
             except:
                 return  # Interrupted
             if message == b"finished_snapshot":
-                # sequence = kvmsg.sequence
                 logging.debug("Received snapshot")
                 break  # Done
     

@@ -38,13 +38,9 @@ class MindMap(Clabject):
     # IsComposition: True
     # ========================
     # Methods: get, set, remove
-    def getTopic(self) -> CentralTopic:
+    def getTopic(self):
         topicAssociations = [a for a in self.getModel().getAssociationsByName(MindMapLiterals.ASSOCIATION_TOPIC) if a.getFrom() == self]
         
-        '''
-        for a in [a for a in self.getModel().getAssociationsByName(MindMapLiterals.ASSOCIATION_TOPIC)]:
-            print(a.getFrom())
-        '''
         if topicAssociations:
             return topicAssociations[0].getTo()  # safe due to MultiplicityToMax = 1
         return None

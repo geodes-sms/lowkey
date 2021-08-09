@@ -22,7 +22,7 @@ class Topic(Clabject):
     # IsComposition: False
     # ========================
     # Methods: get, set, remove
-    def getMarker(self) -> Marker:
+    def getMarker(self):
         markerAssociations = [a for a in self.getModel().getAssociationsByName(TopicLiterals.ASSOCIATION_MARKER) if a.getFrom() == self]
         
         if markerAssociations:

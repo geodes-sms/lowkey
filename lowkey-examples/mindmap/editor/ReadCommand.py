@@ -26,10 +26,6 @@ class ReadCommand(Command):
         logging.debug(" Executing command 'READ' in session {}.".format(self._session._id))
         root = self._session._mindmapmodel
         
-        # print("Root: {}".format(root))
-        # ct = root.getTopic()
-        # print("Central topic: {}".format(ct.getName()))
-        
         mindmaps = root.getMindmaps()
         
         if mindmaps:

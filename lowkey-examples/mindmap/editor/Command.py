@@ -15,4 +15,3 @@ class Command():
     
     def execute(self):
         logging.debug("Executing abstract command")
-        #raise NotImplementedError
