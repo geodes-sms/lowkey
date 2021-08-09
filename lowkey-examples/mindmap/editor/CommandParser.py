@@ -9,6 +9,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 from editor.CreateAssociationCommand import CreateAssociationCommand
 from editor.CreateClabjectCommand import CreateClabjectCommand
 from editor.ReadCommand import ReadCommand
+from editor.ReadObjectsCommand import ReadObjectsCommand
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -21,7 +22,7 @@ __license__ = "GPL-3.0"
 
 class CommandParser():
     
-    __commands = ["CREATE", "READ", "UPDATE", "DELETE"]
+    __commands = ["CREATE", "READ", "OBJECTS", "LINK", "UPDATE", "DELETE"]
     
     def __init__(self, session):
         self._session = session
@@ -39,9 +40,10 @@ class CommandParser():
     def validCommand(self, tokens):
         return (
             self.isCreateClabjectCommand(tokens) or
-            self.isCreateAssociationCommand(tokens) or
+            self.isLinkCommand(tokens) or
             self.isReadCommand(tokens) or
             self.isUpdateCommand(tokens) or
+            self.isObjectsCommand(tokens) or
             self.isDeleteCommand(tokens)
         )
     
@@ -51,9 +53,11 @@ class CommandParser():
             logging.debug("Command is valid")
             if self.isReadCommand(tokens):
                 return ReadCommand(self._session)
+            if self.isObjectsCommand(tokens):
+                return ReadObjectsCommand(self._session)
             if self.isCreateClabjectCommand(tokens):
                 return CreateClabjectCommand(self._session, tokens)
-            if self.isCreateAssociationCommand(tokens):
+            if self.isLinkCommand(tokens):
                 return CreateAssociationCommand(self._session, tokens)
         else:
             logging.debug("Command is invalid")
@@ -61,11 +65,14 @@ class CommandParser():
     def isCreateClabjectCommand(self, tokens):
         return tokens[0].upper() == "CREATE" and len(tokens) == 3
     
-    def isCreateAssociationCommand(self, tokens):
-        return tokens[0].upper() == "CREATE" and tokens[1].upper() == "ASSOCIATION" and len(tokens) == 5
+    def isLinkCommand(self, tokens):
+        return tokens[0].upper() == "LINK" and tokens[2].upper() == "TO" and len(tokens) == 4
     
     def isReadCommand(self, tokens):
         return tokens[0].upper() == "READ" and len(tokens) == 1
+    
+    def isObjectsCommand(self, tokens):
+        return tokens[0].upper() == "OBJECTS" and len(tokens) == 1
     
     def isUpdateCommand(self, tokens):
         return tokens[0].upper() == "UPDATE" and len(tokens) == 4

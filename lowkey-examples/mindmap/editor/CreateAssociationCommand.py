@@ -3,7 +3,6 @@ import os
 import sys
 import logging
 
-
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 from lowkey.collabtypes.Association import Association
@@ -22,21 +21,23 @@ class CreateAssociationCommand(Command):
     
     def __init__(self, session, tokens):
         self._session = session
-        self._name = tokens[2]
-        self._sourceName = tokens[3]
-        self._targetName = tokens[4]
+        self._targetName = tokens[1]
+        self._sourceName = tokens[3].split('.')[0]
+        self._linkName = tokens[3].split('.')[1]
     
     def execute(self):
-        logging.debug(" Executing command 'CREATE ASSOCIATION {} from {} to {}' in session {}."
-                      .format(self._name, self._sourceName, self._targetName, self._session._id))
+        logging.debug(" Executing command 'LINK {} TO {}.{}' in session {}."
+                      .format(self._targetName, self._sourceName, self._linkName, self._session._id))
         
         association = Association()
         
-        association.setName(self._name)
+        association.setName(self._linkName)
         association.setFrom(self._sourceName)
         association.setTo(self._targetName)
         
-        logging.debug(" Executing command 'CREATE ASSOCIATION {} from {} to {}' in session {}."
-                      .format(association.getName(), association.getFrom(), association.getTo(), self._session._id))
+        logging.debug(" Executing command 'LINK {} TO {}.{}' in session {}."
+                      .format(association.getTo(), association.getFrom(), association.getName(), self._session._id))
         
-        self._session.integrateAssociation(association)
+        # self._session.integrateAssociation(association)
+        # self._session.integrateNode(association)
+        self._session.integrateAssociation(self._linkName, self._sourceName, self._targetName)

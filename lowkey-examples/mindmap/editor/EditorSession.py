@@ -6,6 +6,7 @@ from metamodel.entities.MindMapModel import MindMapModel
 
 from editor import MindMapPackage
 from lowkey.collabtypes.Clabject import Clabject
+from lowkey.collabtypes.Association import Association
 from metamodel.entities.CentralTopic import CentralTopic
 from metamodel.entities.MainTopic import MainTopic
 from metamodel.entities.MindMap import MindMap
@@ -27,8 +28,6 @@ class EditorSession():
     def __init__(self):
         self._id = uuid.uuid1()
         self._mindmapmodel = MindMapModel()
-        self._mindmap = MindMap()
-        self._mindmap.addToModel(self._mindmapmodel)
         self._tmp = []
     
     def classFactory(self, classname):
@@ -36,6 +35,9 @@ class EditorSession():
             return None
         klass = {k.lower():v for k, v in globals().items()}[classname.lower()]
         return klass()
+    
+    def integrateNode(self, node):
+        node.addToModel(self._mindmapmodel)
     
     def integrateEntity(self, entity):
         logging.debug(entity)
@@ -58,30 +60,22 @@ class EditorSession():
         else:
             logging.debug("Unexpected type")
             
-    def integrateAssociation(self, association):
-        logging.debug(association)
-        associationName = association.getName()
-        fromEntity = association.getFrom()
-        toEntity = association.getTo()
-        logging.debug(" Integrating association '{}' between {} and {}.".format(associationName, fromEntity, toEntity))
+    def integrateAssociation(self, associationName, fromEntityName, toEntityName):
+        logging.debug(" Integrating association '{}' between {} and {}.".format(associationName, fromEntityName, toEntityName))
         
-        print(self._tmp)
+        fromEntity = self._mindmapmodel.getNodeByName(fromEntityName)
+        toEntity = self._mindmapmodel.getNodeByName(toEntityName)
         
-        st = None
+        association = Association()
         
-        for e in self._tmp:
-            print("printing e")
-            print(e)
-            print(e.getName())
-            print(toEntity)
-            if e.getName() == toEntity:
-                st = e
-                break
+        association.setName(associationName)
+        association.setFrom(fromEntity)
+        association.setTo(toEntity)
         
-        print(st)
+        logging.debug(" Integrating association {} from {} to {}."
+                      .format(association.getName(), association.getFrom(), association.getTo()))
         
-        ct = self._mindmap.getTopic()
-        for mt in ct.getMainTopics():
-            if mt.getName() == fromEntity:
-                mt.addSubTopic(st)
-                self._tmp.remove(st)
+        self.integrateNode(association)
+        
+        
+        

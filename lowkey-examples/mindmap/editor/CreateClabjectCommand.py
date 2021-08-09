@@ -7,6 +7,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 from editor import MindMapPackage
 from lowkey.collabtypes.Clabject import Clabject
+from metamodel.entities.MindMap import MindMap
 from metamodel.entities.CentralTopic import CentralTopic
 from metamodel.entities.MainTopic import MainTopic
 from metamodel.entities.SubTopic import SubTopic
@@ -35,7 +36,13 @@ class CreateClabjectCommand(Command):
         
         entity = None
         
-        if self._type.lower() == MindMapPackage.TYPE_CENTRAL_TOPIC.lower():
+        if self._type.lower() == MindMapPackage.TYPE_MINDMAP.lower():
+            logging.debug("Instantiating {} with name {}".format(MindMapPackage.TYPE_MINDMAP, self._name))
+            entity = MindMap()
+            entity.setTitle(self._name)
+            entity.setName(self._name)
+            entity.setType(MindMapPackage.TYPE_MINDMAP)
+        elif self._type.lower() == MindMapPackage.TYPE_CENTRAL_TOPIC.lower():
             logging.debug("Instantiating {} with name {}".format(MindMapPackage.TYPE_CENTRAL_TOPIC, self._name))
             entity = CentralTopic()
             entity.setName(self._name)
@@ -54,6 +61,7 @@ class CreateClabjectCommand(Command):
             logging.debug("Instantiating {} with name {}".format(MindMapPackage.TYPE_MARKER, self._name))
             entity = Marker()
             entity.setName(self._name)
+            entity.setSymbol(self._name)
             entity.setType(MindMapPackage.TYPE_MARKER)
         else:
             logging.error("Unexpected type {}.".format(self._type))
@@ -62,4 +70,5 @@ class CreateClabjectCommand(Command):
 
         logging.debug(" {} with name {} has been created. Integrating into session {}.".format(entity.getType(), entity.getName(), self._session._id))
         
-        self._session.integrateEntity(entity)
+        #self._session.integrateEntity(entity)
+        self._session.integrateNode(entity)

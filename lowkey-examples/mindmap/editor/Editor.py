@@ -87,13 +87,17 @@ class Editor(Client):
                 continue
             
             if self.parser.validCommandMessage(userInput):
+                command = self.parser.tokenize(userInput)[0].upper()
                 self.consumeMessage(userInput)  # Process in current session
-                if(self.parser.tokenize(userInput)[0].upper() != "READ"):
+                if(self.messageToBeForwarded(command)):
                     message = self.createMessage(userInput)
                     self._publisher.send(message)  # Publish to other client sessions
             else:
                 print("Invalid command")
                 continue
+            
+    def messageToBeForwarded(self, command):
+        return command != "READ" and command != "OBJECTS"
 
     def createMessage(self, body):
         return bytes('[{}] {}'.format(self._id, body), self.__encoding)
