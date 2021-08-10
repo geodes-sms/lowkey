@@ -42,9 +42,9 @@ class Model(Node):
         nodes = self.getNodes()
         return next(n for n in nodes if n.getId() == identifier)  # safe since IDs must be unique
     
-    def getNodeByType(self, name:str):
+    def getNodesByType(self, name:str):
         nodes = self.getNodes()
-        return next(n for n in nodes if n.getType() == name)  # assumes no multi-typing
+        return [n for n in nodes if n.getType() == name]  # assumes no multi-typing
     
     def removeNode(self, node:Node):
         nodes = self.getFeature(Literals.NODES)

@@ -110,8 +110,8 @@ class ClabjectTests(unittest.TestCase):
         self.assertEqual(len(model.getNodes()), 1)
         self.assertEqual(model.getNodes()[0], person)
         
-        queryByTypeResult = model.getNodeByType(personType)
-        self.assertEqual(queryByTypeResult, person)
+        queryByTypeResult = model.getNodesByType(personType)
+        self.assertEqual(queryByTypeResult[0], person)
         
     def testQueryByNodeType(self):
         Clock.setUp(ClockMode.DEBUG)
@@ -129,8 +129,35 @@ class ClabjectTests(unittest.TestCase):
         model.addNode(steve)
         self.assertEqual(len(model.getNodes()), 2)
         
-        queryByTypeResult = model.getNodeByType(person)
-        self.assertEqual(queryByTypeResult, steve)
+        queryByTypeResult = model.getNodesByType(person)
+        self.assertEqual(queryByTypeResult[0], steve)
+        
+    def testQueryByNodeReturnsEveryInstance(self):
+        Clock.setUp(ClockMode.DEBUG)
+        
+        model = Model()
+        
+        #type
+        person = Clabject()
+        model.addNode(person)
+        self.assertEqual(len(model.getNodes()), 1)
+        
+        #instance
+        steve = Clabject()
+        steve.setType(person)
+        model.addNode(steve)
+        self.assertEqual(len(model.getNodes()), 2)
+        
+        #instance
+        alice = Clabject()
+        alice.setType(person)
+        model.addNode(alice)
+        self.assertEqual(len(model.getNodes()), 3)
+        
+        queryByTypeResult = model.getNodesByType(person)
+        self.assertEqual(len(queryByTypeResult), 2)
+        self.assertTrue(steve in queryByTypeResult)
+        self.assertTrue(alice in queryByTypeResult)
 
 
 if __name__ == "__main__":
