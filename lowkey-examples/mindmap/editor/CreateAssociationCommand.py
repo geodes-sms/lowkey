@@ -29,13 +29,4 @@ class CreateAssociationCommand(Command):
         logging.debug(" Executing command 'LINK {} TO {}.{}' in session {}."
                       .format(self._targetName, self._sourceName, self._linkName, self._session._id))
         
-        association = Association()
-        
-        association.setName(self._linkName)
-        association.setFrom(self._sourceName)
-        association.setTo(self._targetName)
-        
-        logging.debug(" Executing command 'LINK {} TO {}.{}' in session {}."
-                      .format(association.getTo(), association.getFrom(), association.getName(), self._session._id))
-        
         self._session.integrateAssociation(self._linkName, self._sourceName, self._targetName)
