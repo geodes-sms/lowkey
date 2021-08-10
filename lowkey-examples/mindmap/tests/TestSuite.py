@@ -5,6 +5,7 @@ import os
 import sys
 
 from mindmap.tests.BasicMindmapTests import BasicMindmapTests
+from mindmap.tests.CollabtypesMindmapTests import CollabtypesMindmapTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -17,7 +18,7 @@ Full test suite for the Mindmap example.
 
 
 def create_suite():
-    testCases = [BasicMindmapTests]
+    testCases = [BasicMindmapTests, CollabtypesMindmapTests]
     loadedCases = []
     
     for case in testCases:

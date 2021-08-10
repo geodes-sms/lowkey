@@ -103,7 +103,7 @@ class BasicMindmapTests(unittest.TestCase):
         
         topicName2 = "goToVacation"
         centralTopic2 = CentralTopic(topicName2)
-        centralTopic.addToModel(self._mindMapModel)
+        centralTopic2.addToModel(self._mindMapModel)
         
         mindmap.setTopic(centralTopic2)
         
