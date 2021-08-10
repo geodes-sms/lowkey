@@ -32,7 +32,7 @@ class Clabject(Node):
     """Inheritance"""
 
     def setInheritsFrom(self, clabject):
-        assert type(self) is type(clabject)
+        assert type(self) is type(clabject)  # TODO what's this???
         self.setFeature(Literals.INHERITS_FROM, clabject)
     
     def getInheritsFrom(self):
