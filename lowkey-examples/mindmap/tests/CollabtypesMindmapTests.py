@@ -3,8 +3,6 @@ import unittest
 
 import os
 import sys
-from mindmap.editor import MindMapPackage
-from mindmap.metamodel.entities import CentralTopic
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
@@ -15,6 +13,7 @@ from lowkey.collabtypes.Association import Association
 from lowkey.collabtypes.Model import Model
 from metamodel.entities.MindMap import MindMapLiterals
 from metamodel.entities.CentralTopic import CentralTopicLiterals
+from mindmap.editor import MindMapPackage
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
