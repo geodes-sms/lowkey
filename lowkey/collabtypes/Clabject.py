@@ -19,7 +19,7 @@ class Clabject(Node):
     def __init__(self):
         super().__init__()
         self.persistence = LWWMap()
-        self.persistence.add(Literals.ASSOCIATIONS, (), self.currentTime())
+        self.persistence.add(Literals.ASSOCIATIONS, (), self.currentTime())  # TODO: is this still needed, or is it enough to introduce in the Entity class?
                 
     """Abstract nature"""
     
