@@ -20,31 +20,50 @@ class EntityTests(unittest.TestCase):
         self._model = Model()
     
     def testEntityCreation(self):
-        person = Entity()
+        person = Clabject()
         person.addToModel(self._model)
         self.assertEqual(len(self._model.getNodes()), 1)
         self.assertEqual(person.getModel(), self._model)
+        
+        personEntity = Entity(person)
+        self.assertNotEqual(personEntity, None)
 
-    def testFullEntity(self):
-        person = Entity()
-        person.addToModel(self._model)
+    def testEntityQuery(self):
+        #type
+        person = Clabject()
+        self._model.addNode(person)
         self.assertEqual(len(self._model.getNodes()), 1)
-        self.assertEqual(person.getModel(), self._model)
         
-        attributeName1 = "name"
-        attributeValue1 = "Istvan"
-        person.setAttribute(attributeName1, attributeValue1)
+        #instance
+        steve = Clabject()
+        steve.setType(person)
+        steve.addToModel(self._model)
+        self.assertEqual(len(self._model.getNodes()), 2)
         
-        attributeName2 = "profession"
-        attributeValue2 = "Researcher"
-        person.setAttribute(attributeName2, attributeValue2)
+        #instance
+        alice = Clabject()
+        alice.setType(person)
+        alice.addToModel(self._model)
+        self.assertEqual(len(self._model.getNodes()), 3)
         
-        returnValue1 = person.getAttribute(attributeName1)
-        returnValue2 = person.getAttribute(attributeName2)
+        queryByTypeResult = self._model.getNodesByType(person)
+        self.assertEqual(len(queryByTypeResult), 2)
+        self.assertTrue(steve in queryByTypeResult)
+        self.assertTrue(alice in queryByTypeResult)
         
-        self.assertEqual(returnValue1, attributeValue1)
-        self.assertEqual(returnValue2, attributeValue2)
+        personLink = Association()
+        personLink.setFrom(steve)
+        personLink.setTo(alice)
+        personLink.setName("colleague")
+        personLink.addToModel(self._model)
+        self.assertEqual(len(self._model.getNodes()), 4)
+        self.assertTrue(personLink in self._model.getAssociations())
         
+        steveEntity = Entity(steve)
+        aliceEntity = Entity(alice)
+        
+        self.assertEqual(len(steveEntity.getAssociations()), 1)
+        self.assertTrue(personLink in steveEntity.getAssociations())
 
 if __name__ == "__main__":
     unittest.main()

@@ -13,16 +13,18 @@ from .Clabject import Clabject
 from .Model import Model
 
 
-class Entity(Clabject):
+class Entity():
 
-    def __init__(self):
+    def __init__(self, clabject: Clabject):
         super().__init__()
+        self._clabject = clabject
     
     def getAssociations(self):
-        return [a for a in self._model.getAssociations() if (a.getFrom() == self or a.getTo() == self)]
+        associations = self._clabject.getModel().getAssociations()
+        return [a for a in associations if (a.getFrom() == self._clabject or a.getTo() == self._clabject)]
     
     def getAssociationsByName(self, name):
-        return [a for a in self.getAssociations() if a.getName() == name]
+        return [a for a in self.getAssociations() if a.getName() == self._clabject.getName()]
     
     def getOutgoingAssociations(self):
         raise NotImplementedError
@@ -32,11 +34,3 @@ class Entity(Clabject):
     
     def getContainedNodes(self):
         raise NotImplementedError
-    
-    def addAssociation(self, association):
-        assert association.getFrom() == self or association.getTo() == self
-        self._model.addNode(association)
-        
-    def removeAssociation(self, association):
-        assert association.getFrom() == self or association.getTo() == self
-        self._model.removeNode(association)
