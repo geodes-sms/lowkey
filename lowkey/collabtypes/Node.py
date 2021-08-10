@@ -55,7 +55,7 @@ class Node():
     """Model CRUD"""
 
     def addToModel(self, model):
-        if self.getModel() == None or model:
+        if self.getModel() == model:
             raise Exception('Node already in the model.')
             
         self._model = model
