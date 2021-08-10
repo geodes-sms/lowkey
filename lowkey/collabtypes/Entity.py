@@ -15,10 +15,8 @@ from .Model import Model
 
 class Entity(Clabject):
 
-    def __init__(self, model:Model=None):
+    def __init__(self):
         super().__init__()
-        if model:
-            self.addToModel(model)
     
     def getAssociations(self):
         return [a for a in self._model.getAssociations() if (a.getFrom() == self or a.getTo() == self)]

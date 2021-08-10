@@ -25,11 +25,6 @@ class EntityTests(unittest.TestCase):
         self.assertEqual(len(self._model.getNodes()), 1)
         self.assertEqual(person.getModel(), self._model)
 
-    def testEntityCreationViaConstructor(self):
-        person = Entity(self._model)
-        self.assertEqual(len(self._model.getNodes()), 1)
-        self.assertEqual(person.getModel(), self._model)
-
     def testFullEntity(self):
         person = Entity()
         person.addToModel(self._model)
@@ -49,7 +44,6 @@ class EntityTests(unittest.TestCase):
         
         self.assertEqual(returnValue1, attributeValue1)
         self.assertEqual(returnValue2, attributeValue2)
-        
         
 
 if __name__ == "__main__":
