@@ -96,6 +96,42 @@ class ClabjectTests(unittest.TestCase):
             person.addToModel(model)
         self.assertEqual(len(model.getNodes()), 1)
         
+    def testQueryByStringType(self):
+        Clock.setUp(ClockMode.DEBUG)
+        
+        model = Model()
+        
+        personType = "PERSON"
+        
+        person = Clabject()
+        person.setType(personType)
+        model.addNode(person)
+        
+        self.assertEqual(len(model.getNodes()), 1)
+        self.assertEqual(model.getNodes()[0], person)
+        
+        queryByTypeResult = model.getNodeByType(personType)
+        self.assertEqual(queryByTypeResult, person)
+        
+    def testQueryByNodeType(self):
+        Clock.setUp(ClockMode.DEBUG)
+        
+        model = Model()
+        
+        #type
+        person = Clabject()
+        model.addNode(person)
+        self.assertEqual(len(model.getNodes()), 1)
+        
+        #instance
+        steve = Clabject()
+        steve.setType(person)
+        model.addNode(steve)
+        self.assertEqual(len(model.getNodes()), 2)
+        
+        queryByTypeResult = model.getNodeByType(person)
+        self.assertEqual(queryByTypeResult, steve)
+
 
 if __name__ == "__main__":
     unittest.main()

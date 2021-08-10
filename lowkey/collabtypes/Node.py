@@ -46,8 +46,8 @@ class Node():
     
     """Typing"""
 
-    def setType(self, node):
-        return self.setFeature(Literals.TYPED_BY, node)
+    def setType(self, type):
+        return self.setFeature(Literals.TYPED_BY, type)
     
     def getType(self):
         return self.getFeature(Literals.TYPED_BY)

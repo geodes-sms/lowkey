@@ -42,6 +42,10 @@ class Model(Node):
         nodes = self.getNodes()
         return next(n for n in nodes if n.getId() == identifier)  # safe since IDs must be unique
     
+    def getNodeByType(self, name:str):
+        nodes = self.getNodes()
+        return next(n for n in nodes if n.getType() == name)  # assumes no multi-typing
+    
     def removeNode(self, node:Node):
         nodes = self.getFeature(Literals.NODES)
         remainingNodes = ()
@@ -63,5 +67,4 @@ class Model(Node):
     
     def getAssociationsByName(self, name):
         return [a for a in self.getAssociations() if a.getName() == name]
-    
     
