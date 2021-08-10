@@ -1,10 +1,11 @@
-from lowkey.collabtypes.Model import Model
-from lowkey.collabtypes.Clabject import Clabject
+from mindmap.editor import MindMapPackage
+
 from lowkey.collabtypes.Association import Association
+from lowkey.collabtypes.Clabject import Clabject
 from lowkey.collabtypes.Entity import Entity
+from lowkey.collabtypes.Model import Model
 
 from .CentralTopic import CentralTopic
-from mindmap.editor import MindMapPackage
 
 
 class MindMapLiterals():

@@ -1,7 +1,7 @@
-from collabtypes.Clabject import Clabject
 from mindmap.editor import MindMapPackage
 
 from lowkey.collabtypes.Association import Association
+from lowkey.collabtypes.Clabject import Clabject
 
 from .Topic import Topic
 

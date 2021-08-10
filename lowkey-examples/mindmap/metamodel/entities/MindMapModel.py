@@ -2,6 +2,7 @@ from lowkey.collabtypes.Model import Model
 
 from .MindMap import MindMap
 
+
 class MindMapModelLiterals():
     TITLE = "title"
 
