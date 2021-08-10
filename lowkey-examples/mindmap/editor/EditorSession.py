@@ -12,7 +12,6 @@ from metamodel.entities.MainTopic import MainTopic
 from metamodel.entities.MindMap import MindMap
 from metamodel.entities.SubTopic import SubTopic
 
-
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
 __credits__ = "Eugene Syriani"
@@ -38,44 +37,22 @@ class EditorSession():
     
     def integrateNode(self, node):
         node.addToModel(self._mindmapmodel)
-    
-    def integrateEntity(self, entity):
-        logging.debug(entity)
-        logging.debug(" Integrating entity {} ({})'.".format(entity.getName(), entity.getType()))
-        if(isinstance(entity, CentralTopic)):
-            logging.debug(">>integrating as centraltopic")
-            entity.addToModel(self._mindmapmodel)
-            self._mindmap.setTopic(entity)
-        elif(isinstance(entity, MainTopic)):
-            logging.debug(">>integrating as maintopic")
-            entity.addToModel(self._mindmapmodel)
-            centralTopic = self._mindmap.getTopic()
-            centralTopic.addMainTopic(entity)
-        elif(isinstance(entity, SubTopic)):
-            logging.debug(">>integrating as subtopic")
-            entity.addToModel(self._mindmapmodel)
-            self._tmp.append(entity)
-            print(self._tmp)
-            logging.debug("entity added to _tmp")
-        else:
-            logging.debug("Unexpected type")
             
-    def integrateAssociation(self, associationName, fromEntityName, toEntityName):
-        logging.debug(" Integrating association '{}' between {} and {}.".format(associationName, fromEntityName, toEntityName))
+    def integrateAssociation(self, associationName, fromClabjectName, toClabjectName):
+        logging.debug(" Integrating association '{}' between {} and {}.".format(associationName, fromClabjectName, toClabjectName))
         
-        fromEntity = self._mindmapmodel.getNodeByName(fromEntityName)
-        toEntity = self._mindmapmodel.getNodeByName(toEntityName)
+        fromClabject = self._mindmapmodel.getNodeByName(fromClabjectName)
+        toClabject = self._mindmapmodel.getNodeByName(toClabjectName)
         
         association = Association()
         
         association.setName(associationName)
-        association.setFrom(fromEntity)
-        association.setTo(toEntity)
+        association.setFrom(fromClabject)
+        association.setTo(toClabject)
         
         logging.debug(" Integrating association {} from {} to {}."
                       .format(association.getName(), association.getFrom(), association.getTo()))
         
         self.integrateNode(association)
-        
         
         
