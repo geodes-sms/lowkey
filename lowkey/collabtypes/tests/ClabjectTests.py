@@ -13,17 +13,20 @@ __license__ = "GPL-3.0"
 
 
 class ClabjectTests(unittest.TestCase):
+    
+    def setUp(self):
+        Clock.setUp(ClockMode.DEBUG)
+        self._model = Model()
+        
+    def tearDown(self):
+        del(self._model)
 
     def testClabjectCreation(self):
-        Clock.setUp(ClockMode.DEBUG)
-        
-        model = Model()
-        
         person = Clabject()
-        model.addNode(person)
-        self.assertEqual(len(model.getNodes()), 1)
+        self._model.addNode(person)
+        self.assertEqual(len(self._model.getNodes()), 1)
         
-        personAsClabject = model.getClabjects()[0]
+        personAsClabject = self._model.getClabjects()[0]
         self.assertEqual(personAsClabject, person)
         
         attributeName1 = "name"
@@ -54,13 +57,13 @@ class ClabjectTests(unittest.TestCase):
         association.setAggregation(False)
         association.setAttribute("name", "affiliation")
         association.setAttribute("directed", "target")
-        model.addNode(association)
-        self.assertEqual(len(model.getNodes()), 2)
+        self._model.addNode(association)
+        self.assertEqual(len(self._model.getNodes()), 2)
         
-        affiliationLinkAsNode = model.getNodeByName("affiliation")
+        affiliationLinkAsNode = self._model.getNodeByName("affiliation")
         self.assertEqual(affiliationLinkAsNode.getFrom(), person)
         
-        affiliationLinkAsAssociation = model.getAssociations()[0]
+        affiliationLinkAsAssociation = self._model.getAssociations()[0]
         self.assertEqual(affiliationLinkAsAssociation.getFrom(), person)
         
         affiliationAssociation = affiliationLinkAsAssociation
@@ -84,77 +87,61 @@ class ClabjectTests(unittest.TestCase):
         self.assertEqual(association.getInheritsFrom(), employment)
     
     def testNodeCannotBeAddedToModelTwice(self):
-        Clock.setUp(ClockMode.DEBUG)
-        
-        model = Model()
-        
         person = Clabject()
-        model.addNode(person)
-        self.assertEqual(len(model.getNodes()), 1)
+        self._model.addNode(person)
+        self.assertEqual(len(self._model.getNodes()), 1)
         
         with self.assertRaises(Exception):
-            person.addToModel(model)
-        self.assertEqual(len(model.getNodes()), 1)
+            person.addToModel(self._model)
+        self.assertEqual(len(self._model.getNodes()), 1)
         
     def testQueryByStringType(self):
-        Clock.setUp(ClockMode.DEBUG)
-        
-        model = Model()
-        
         personType = "PERSON"
         
         person = Clabject()
         person.setType(personType)
-        model.addNode(person)
+        self._model.addNode(person)
         
-        self.assertEqual(len(model.getNodes()), 1)
-        self.assertEqual(model.getNodes()[0], person)
+        self.assertEqual(len(self._model.getNodes()), 1)
+        self.assertEqual(self._model.getNodes()[0], person)
         
-        queryByTypeResult = model.getNodesByType(personType)
+        queryByTypeResult = self._model.getNodesByType(personType)
         self.assertEqual(queryByTypeResult[0], person)
         
     def testQueryByNodeType(self):
-        Clock.setUp(ClockMode.DEBUG)
-        
-        model = Model()
-        
         #type
         person = Clabject()
-        model.addNode(person)
-        self.assertEqual(len(model.getNodes()), 1)
+        self._model.addNode(person)
+        self.assertEqual(len(self._model.getNodes()), 1)
         
         #instance
         steve = Clabject()
         steve.setType(person)
-        model.addNode(steve)
-        self.assertEqual(len(model.getNodes()), 2)
+        self._model.addNode(steve)
+        self.assertEqual(len(self._model.getNodes()), 2)
         
-        queryByTypeResult = model.getNodesByType(person)
+        queryByTypeResult = self._model.getNodesByType(person)
         self.assertEqual(queryByTypeResult[0], steve)
         
     def testQueryByNodeReturnsEveryInstance(self):
-        Clock.setUp(ClockMode.DEBUG)
-        
-        model = Model()
-        
         #type
         person = Clabject()
-        model.addNode(person)
-        self.assertEqual(len(model.getNodes()), 1)
+        self._model.addNode(person)
+        self.assertEqual(len(self._model.getNodes()), 1)
         
         #instance
         steve = Clabject()
         steve.setType(person)
-        model.addNode(steve)
-        self.assertEqual(len(model.getNodes()), 2)
+        self._model.addNode(steve)
+        self.assertEqual(len(self._model.getNodes()), 2)
         
         #instance
         alice = Clabject()
         alice.setType(person)
-        model.addNode(alice)
-        self.assertEqual(len(model.getNodes()), 3)
+        self._model.addNode(alice)
+        self.assertEqual(len(self._model.getNodes()), 3)
         
-        queryByTypeResult = model.getNodesByType(person)
+        queryByTypeResult = self._model.getNodesByType(person)
         self.assertEqual(len(queryByTypeResult), 2)
         self.assertTrue(steve in queryByTypeResult)
         self.assertTrue(alice in queryByTypeResult)
