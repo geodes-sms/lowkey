@@ -82,7 +82,20 @@ class ClabjectTests(unittest.TestCase):
         with self.assertRaises(AssertionError):
             association.setInheritsFrom(man)
         self.assertEqual(association.getInheritsFrom(), employment)
-
+    
+    def testNodeCannotBeAddedToModelTwice(self):
+        Clock.setUp(ClockMode.DEBUG)
+        
+        model = Model()
+        
+        person = Clabject()
+        model.addNode(person)
+        self.assertEqual(len(model.getNodes()), 1)
+        
+        with self.assertRaises(Exception):
+            person.addToModel(model)
+        self.assertEqual(len(model.getNodes()), 1)
+        
 
 if __name__ == "__main__":
     unittest.main()

@@ -25,6 +25,8 @@ class Model(Node):
     
     # Nodes CRUD
     def addNode(self, node:Node):
+        if node in self.getNodes():
+            raise Exception('Node already in the model.')
         nodes = self.getFeature(Literals.NODES)
         nodes = nodes + (node,)
         return self.updateFeature(Literals.NODES, nodes)

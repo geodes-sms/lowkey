@@ -55,11 +55,14 @@ class Node():
     """Model CRUD"""
 
     def addToModel(self, model):
+        if self.getModel() == None or model:
+            raise Exception('Node already in the model.')
+            
         self._model = model
         model.addNode(self)
     
     def getModel(self):
-        return self._model
+        return self._model if hasattr(self, '_model') else None
         
     def changeModel(self, oldModel, newModel):
         self.removeFromModel(oldModel)
