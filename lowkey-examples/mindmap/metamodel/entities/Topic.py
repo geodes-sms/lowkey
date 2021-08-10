@@ -1,5 +1,6 @@
-from lowkey.collabtypes.Clabject import Clabject
 from lowkey.collabtypes.Association import Association
+from lowkey.collabtypes.Clabject import Clabject
+from lowkey.collabtypes.Entity import Entity
 
 from .Marker import Marker
 
@@ -8,10 +9,11 @@ class TopicLiterals():
     ASSOCIATION_MARKER = "marker"
 
 
-class Topic(Clabject):
+class Topic(Entity):
     
-    def __init__(self, name=""):
-        super().__init__()
+    def __init__(self, name="", clabject:Clabject=None):
+        assert clabject
+        super().__init__(clabject)
         self.setName(name)
         
     # marker: Reference

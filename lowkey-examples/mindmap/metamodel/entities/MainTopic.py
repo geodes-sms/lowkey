@@ -1,3 +1,6 @@
+from collabtypes.Clabject import Clabject
+from mindmap.editor import MindMapPackage
+
 from lowkey.collabtypes.Association import Association
 
 from .Topic import Topic
@@ -9,8 +12,11 @@ class MainTopicLiterals():
 
 class MainTopic(Topic):
     
-    def __init__(self, name=""):
-        super().__init__(name)
+    def __init__(self, name="", clabject:Clabject=None):
+        if not clabject:
+            clabject = Clabject()
+            clabject.setType(MindMapPackage.TYPE_MAIN_TOPIC)
+        super().__init__(name, clabject)
         
     # subTopics: Reference
     # ========================

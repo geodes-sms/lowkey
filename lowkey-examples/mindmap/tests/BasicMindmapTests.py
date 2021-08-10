@@ -34,7 +34,7 @@ class BasicMindmapTests(unittest.TestCase):
         mindmap = MindMap(title1)
         mindmap.addToModel(self._mindMapModel)
         
-        self.assertEqual(self._mindMapModel.getNodeById(mindmap.getId()), mindmap)
+        self.assertEqual(self._mindMapModel.getNodeById(mindmap.getId()), mindmap._clabject)
     
     def testCreateUpdateRoot(self):
         title1 = "improveTeachingRecord"
@@ -47,7 +47,7 @@ class BasicMindmapTests(unittest.TestCase):
         title2 = "improvePublicationRecord"
         mindmap.setTitle(title2)
         self.assertEqual(mindmap.getTitle(), title2)
-
+    
     def testCreateRemoveNonCompositionReference(self):
         mindmap = MindMap("improveTeachingRecord")
         mindmap.addToModel(self._mindMapModel)
@@ -89,7 +89,7 @@ class BasicMindmapTests(unittest.TestCase):
         self.assertFalse(markerAssociationsOnCurrentMindmap)
         self.assertFalse(centralTopic.getMarker())  # TODO: should be False if cascade removal is supported
         
-        
+    
     def testCreateUpdateContainedReferenceTarget(self):
         mindmap = MindMap("improveTeachingRecord")
         mindmap.addToModel(self._mindMapModel)
@@ -135,7 +135,6 @@ class BasicMindmapTests(unittest.TestCase):
         
         centralTopic.addMainTopic(mainTopic2)
         self.assertEqual(centralTopic.getMainTopics()[1].getName(), mainTopicName2)
-        
         
 if __name__ == "__main__":
     unittest.main()

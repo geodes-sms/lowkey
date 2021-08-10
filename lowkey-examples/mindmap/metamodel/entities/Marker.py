@@ -1,13 +1,20 @@
+from mindmap.editor import MindMapPackage
+
 from lowkey.collabtypes.Clabject import Clabject
+from lowkey.collabtypes.Entity import Entity
+
 
 class MarkerLiterals():
     SYMBOL = "symbol"
 
 
-class Marker(Clabject):
+class Marker(Entity):
     
-    def __init__(self, symbol=""):
-        super().__init__()
+    def __init__(self, symbol="", clabject:Clabject=None):
+        if not clabject:
+            clabject = Clabject()
+            clabject.setType(MindMapPackage.TYPE_MARKER)
+        super().__init__(clabject)
         self.setSymbol(symbol)
         self.setName(symbol+"_marker")
         

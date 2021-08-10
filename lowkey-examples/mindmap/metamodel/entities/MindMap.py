@@ -1,8 +1,10 @@
 from lowkey.collabtypes.Model import Model
 from lowkey.collabtypes.Clabject import Clabject
 from lowkey.collabtypes.Association import Association
+from lowkey.collabtypes.Entity import Entity
 
 from .CentralTopic import CentralTopic
+from mindmap.editor import MindMapPackage
 
 
 class MindMapLiterals():
@@ -11,12 +13,15 @@ class MindMapLiterals():
     ASSOCIATION_MARKER = "markers"
 
 
-class MindMap(Clabject):
+class MindMap(Entity):
     
-    def __init__(self, title=""):
-        super().__init__()
-        self.setTitle(title)
+    def __init__(self, title="", clabject:Clabject=None):
+        if not clabject:
+            clabject = Clabject()
+            clabject.setType(MindMapPackage.TYPE_MINDMAP)
+        super().__init__(clabject)
         self.setName(title)
+        self.setTitle(title)
 
     # title: Attribute
     # ========================
