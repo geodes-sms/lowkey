@@ -19,6 +19,9 @@ class EntityTests(unittest.TestCase):
         Clock.setUp(ClockMode.DEBUG)
         self._model = Model()
     
+    def tearDown(self):
+        del(self._model)
+    
     def testEntityCreation(self):
         person = Clabject()
         person.addToModel(self._model)
