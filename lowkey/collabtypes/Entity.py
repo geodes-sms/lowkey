@@ -18,6 +18,9 @@ class Entity():
     def __init__(self, clabject: Clabject):
         super().__init__()
         self._clabject = clabject
+        
+    def update(self):
+        raise NotImplementedError
     
     def getAssociations(self):
         associations = self._clabject.getModel().getAssociations()
@@ -34,15 +37,6 @@ class Entity():
     
     def getContainedNodes(self):
         raise NotImplementedError
-    
-    def addToModel(self, model):
-        self._clabject.addToModel(model)
-    
-    def getModel(self):
-        return self._clabject.getModel()
-        
-    def setName(self, name):
-        self._clabject.setName(name)
     
     def getName(self):
         return self._clabject.getName()
