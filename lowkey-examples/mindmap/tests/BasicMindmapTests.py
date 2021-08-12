@@ -138,7 +138,7 @@ class BasicMindmapTests(unittest.TestCase):
         
         self.assertEqual(mindmap.getTopic().getName(), centralTopicName)
         self.assertEqual(centralTopic.getMainTopics()[0].getName(), mainTopic1Name)
-        self.assertEqual(centralTopic.getMainTopics()[0].getName(), mainTopic2Name)
+        self.assertEqual(centralTopic.getMainTopics()[1].getName(), mainTopic2Name)
 
     '''
     @unittest.skip("Design choice pending")
