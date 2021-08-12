@@ -29,7 +29,7 @@ class Editor(Client):
         
         self._session = EditorSession()
         
-        self.parser = CommandParser(self._session)
+        self.parser = CommandParser()
     
     def run(self):
         connection_thread = threading.Thread(target=self.subscribe, args=())
@@ -68,7 +68,7 @@ class Editor(Client):
     
     def consumeMessage(self, message):
         command = self.parser.parseMessage(message)
-        command.execute()
+        command.execute(self._session)
     
     def throwawayMessage(self, senderId):
         return senderId.replace('[', '').replace(']', '') == str(self._id)
@@ -86,8 +86,8 @@ class Editor(Client):
                 continue
             
             if self.parser.validCommandMessage(userInput):
-                command = self.parser.tokenize(userInput)[0].upper()
                 self.consumeMessage(userInput)  # Process in current session
+                command = self.parser.tokenize(userInput)[0].upper()
                 if(self.messageToBeForwarded(command)):
                     message = self.createMessage(userInput)
                     self._publisher.send(message)  # Publish to other client sessions

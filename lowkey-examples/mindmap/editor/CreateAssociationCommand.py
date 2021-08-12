@@ -19,14 +19,13 @@ __license__ = "GPL-3.0"
 
 class CreateAssociationCommand(Command):
     
-    def __init__(self, session, tokens):
-        self._session = session
+    def __init__(self, tokens):
         self._targetName = tokens[1]
         self._sourceName = tokens[3].split('.')[0]
         self._linkName = tokens[3].split('.')[1]
     
-    def execute(self):
+    def execute(self, session):
         logging.debug(" Executing command 'LINK {} TO {}.{}' in session {}."
-                      .format(self._targetName, self._sourceName, self._linkName, self._session._id))
+                      .format(self._targetName, self._sourceName, self._linkName, session._id))
         
-        self._session.integrateAssociation(self._linkName, self._sourceName, self._targetName)
+        session.integrateAssociation(self._linkName, self._sourceName, self._targetName)

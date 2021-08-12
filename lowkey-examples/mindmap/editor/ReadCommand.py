@@ -7,6 +7,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 from editor.Command import Command
 from scenarios import PrintHelper
+from metamodel.entities.MindMap import MindMap
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -19,17 +20,15 @@ __license__ = "GPL-3.0"
 
 class ReadCommand(Command):
     
-    def __init__(self, session):
-        self._session = session
-    
-    def execute(self):
-        logging.debug(" Executing command 'READ' in session {}.".format(self._session._id))
-        root = self._session._mindmapmodel
+    def execute(self, session):
+        logging.debug(" Executing command 'READ' in session {}.".format(session._id))
+        root = session._mindmapmodel
         
-        mindmaps = root.getMindmaps()
+        mindmapClabjects = root.getMindmaps()
         
-        if mindmaps:
-            for m in mindmaps:
+        if mindmapClabjects:
+            for mc in mindmapClabjects:
+                m = MindMap(clabject=mc)
                 PrintHelper.printMindmap(m)
         else:
             print("No mindmaps defined yet")

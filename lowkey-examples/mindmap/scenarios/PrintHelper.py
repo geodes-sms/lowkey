@@ -1,4 +1,11 @@
+import os
+import sys
+
 from lowkey.collabtypes.Model import Model
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+
+from metamodel.entities.Topic import Topic
 
 
 def printMindmap(mindmap):
@@ -17,7 +24,7 @@ def printMindmap(mindmap):
                         __printTopic(2, subTopic)
 
     
-def __printTopic(depth, topic):
+def __printTopic(depth, topic:Topic):
     line = depth * 2 * ' ' + '|_{}'.format(topic.getName())
     marker = topic.getMarker()
     if marker:

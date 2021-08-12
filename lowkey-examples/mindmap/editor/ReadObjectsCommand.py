@@ -19,12 +19,9 @@ __license__ = "GPL-3.0"
 
 class ReadObjectsCommand(Command):
     
-    def __init__(self, session):
-        self._session = session
-    
-    def execute(self):
-        logging.debug(" Executing command 'OBJECTS' in session {}.".format(self._session._id))
-        root = self._session._mindmapmodel
+    def execute(self, session):
+        logging.debug(" Executing command 'OBJECTS' in session {}.".format(session._id))
+        root = session._mindmapmodel
         
         nodes = root.getNodes()
         
