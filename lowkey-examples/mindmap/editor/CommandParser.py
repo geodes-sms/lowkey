@@ -7,7 +7,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 from editor.Command import Command
 from editor.CreateAssociationCommand import CreateAssociationCommand
-from editor.CreateClabjectCommand2 import CreateClabjectCommand2
+from editor.CreateClabjectCommand import CreateClabjectCommand
 from editor.ReadCommand import ReadCommand
 from editor.ReadObjectsCommand import ReadObjectsCommand
 
@@ -53,7 +53,7 @@ class CommandParser():
             if self.isObjectsCommand(tokens):
                 return ReadObjectsCommand()
             if self.isCreateClabjectCommand(tokens):
-                return CreateClabjectCommand2(tokens)
+                return CreateClabjectCommand(tokens)
             if self.isLinkCommand(tokens):
                 return CreateAssociationCommand(tokens)
         else:

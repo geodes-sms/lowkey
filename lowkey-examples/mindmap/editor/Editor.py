@@ -8,7 +8,7 @@ import threading
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 from editor.CommandParser import CommandParser
-from editor.EditorSession import EditorSession
+from editor.CollabSession import CollabSession
 from lowkey.network.Client import Client
 
 __author__ = "Istvan David"
@@ -26,9 +26,7 @@ class Editor(Client):
     
     def __init__(self):
         super().__init__()
-        
-        self._session = EditorSession()
-        
+        self._session = CollabSession()
         self.parser = CommandParser()
     
     def run(self):

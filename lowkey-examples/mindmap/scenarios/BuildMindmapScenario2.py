@@ -14,7 +14,7 @@ from metamodel.entities.MindMapModel import MindMapModel
 from metamodel.entities.SubTopic import SubTopic
 from scenarios import PrintHelper
 from editor.CommandParser import CommandParser
-from editor.EditorSession import EditorSession
+from editor.CollabSession import CollabSession
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -25,8 +25,8 @@ Clock.setUp(ClockMode.DEBUG)
 
 parser = CommandParser()
 
-session1 = EditorSession()
-session2 = EditorSession()
+session1 = CollabSession()
+session2 = CollabSession()
 
 commandStack = []
 

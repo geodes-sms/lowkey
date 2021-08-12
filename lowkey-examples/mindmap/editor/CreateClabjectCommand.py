@@ -23,7 +23,7 @@ __license__ = "GPL-3.0"
 """
 
 
-class CreateClabjectCommand2(Command):
+class CreateClabjectCommand(Command):
     
     def __init__(self, tokens):
         self._type = self.findType(tokens[1])

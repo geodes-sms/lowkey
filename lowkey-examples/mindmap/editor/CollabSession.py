@@ -22,7 +22,7 @@ Session object to manage local modeling data.
 """
 
 
-class EditorSession():
+class CollabSession():
     
     def __init__(self):
         self._id = uuid.uuid1()
