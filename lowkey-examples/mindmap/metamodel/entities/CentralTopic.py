@@ -1,4 +1,4 @@
-from mindmap.editor import MindMapPackage
+from editor import MindMapPackage
 
 from lowkey.collabtypes.Association import Association
 from lowkey.collabtypes.Clabject import Clabject
@@ -12,11 +12,11 @@ class CentralTopicLiterals():
 
 class CentralTopic(Topic):
     
-    def __init__(self, name="", clabject:Clabject=None):
+    def __init__(self, clabject:Clabject=None):
         if not clabject:
             clabject = Clabject()
             clabject.setType(MindMapPackage.TYPE_CENTRAL_TOPIC)
-        super().__init__(name, clabject)
+        super().__init__(clabject)
     
     # mainTopics: Reference
     # ========================
@@ -27,7 +27,7 @@ class CentralTopic(Topic):
     # ========================
     # Methods: get, set, remove
     def getMainTopics(self):
-        mainTopicsAssociations = [a for a in self.getModel().getAssociationsByName(CentralTopicLiterals.ASSOCIATION_MAINTOPICS) if a.getFrom() == self]
+        mainTopicsAssociations = [a for a in self.getModel().getAssociationsByName(CentralTopicLiterals.ASSOCIATION_MAINTOPICS) if a.getFrom() == self._clabject]
         
         mainTopics = []
         for a in mainTopicsAssociations:
@@ -45,7 +45,7 @@ class CentralTopic(Topic):
 
     def removeMainTopic(self, mainTopic):
         model = self.getModel()
-        mainTopicAssociations = [a for a in model.getAssociationsByName(CentralTopicLiterals.ASSOCIATION_MAINTOPICS) if a.getFrom() == self]
+        mainTopicAssociations = [a for a in model.getAssociationsByName(CentralTopicLiterals.ASSOCIATION_MAINTOPICS) if a.getFrom() == self._clabject]
 
         for a in mainTopicAssociations:
             if a.getTo() == mainTopic:

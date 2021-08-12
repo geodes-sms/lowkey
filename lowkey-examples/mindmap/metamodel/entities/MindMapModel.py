@@ -1,3 +1,4 @@
+from editor import MindMapPackage
 from lowkey.collabtypes.Model import Model
 
 from .MindMap import MindMap
@@ -26,4 +27,4 @@ class MindMapModel(Model):
         self.setAttribute(MindMapModelLiterals.TITLE, title)
         
     def getMindmaps(self):
-        return [c for c in self.getClabjects() if isinstance(c, MindMap)]
+        return [c for c in self.getClabjects() if c.getType() == MindMapPackage.TYPE_MINDMAP]

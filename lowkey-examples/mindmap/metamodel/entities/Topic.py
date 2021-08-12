@@ -11,10 +11,12 @@ class TopicLiterals():
 
 class Topic(Entity):
     
-    def __init__(self, name="", clabject:Clabject=None):
+    def __init__(self, clabject:Clabject=None):
         assert clabject
         super().__init__(clabject)
-        self.setName(name)
+        
+    def update(self):
+        self.getPersistence()
         
     # marker: Reference
     # ========================
@@ -25,7 +27,7 @@ class Topic(Entity):
     # ========================
     # Methods: get, set, remove
     def getMarker(self):
-        markerAssociations = [a for a in self.getModel().getAssociationsByName(TopicLiterals.ASSOCIATION_MARKER) if a.getFrom() == self]
+        markerAssociations = [a for a in self.getModel().getAssociationsByName(TopicLiterals.ASSOCIATION_MARKER) if a.getFrom() == self._clabject]
         
         if markerAssociations:
             return markerAssociations[0].getTo()  # safe due to MultiplicityToMax = 1
@@ -33,7 +35,7 @@ class Topic(Entity):
     
     def setMarker(self, marker: Marker):  # typing due to Type: Marker
         model = self.getModel()
-        markerAssociations = [a for a in model.getAssociationsByName(TopicLiterals.ASSOCIATION_MARKER) if a.getFrom() == self]
+        markerAssociations = [a for a in model.getAssociationsByName(TopicLiterals.ASSOCIATION_MARKER) if a.getFrom() == self._clabject]
         
         if markerAssociations:
             # Removes the association to the Marker object but not the object
@@ -50,7 +52,7 @@ class Topic(Entity):
         
     def removeMarker(self):  # Removes the association to the Marker object but not the object
         model = self.getModel()
-        markerAssociations = [a for a in model.getAssociationsByName(TopicLiterals.ASSOCIATION_MARKER) if a.getFrom() == self]
+        markerAssociations = [a for a in model.getAssociationsByName(TopicLiterals.ASSOCIATION_MARKER) if a.getFrom() == self._clabject]
 
         for a in markerAssociations:
             model.removeNode(markerAssociations[0])  # safe due to MultiplicityToMax = 1

@@ -38,9 +38,6 @@ class Entity():
     def getContainedNodes(self):
         raise NotImplementedError
     
-    def getName(self):
-        return self._clabject.getName()
-    
     """ From Clabject """
 
     def setAbstract(self, isAbstract:bool):

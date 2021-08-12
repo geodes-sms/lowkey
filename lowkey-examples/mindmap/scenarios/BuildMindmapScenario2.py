@@ -32,20 +32,36 @@ commandStack = []
 
 commandStack.extend([
         parser.parseMessage("create mindmap mm1"),
-        parser.parseMessage("read")
+        #parser.parseMessage("read")
     ])
 
 for command in commandStack:
     command.execute(session1)
-
+'''
 for command in commandStack:
     command.execute(session2)
-
+'''
 
 commandStack = []
 commandStack.extend([
         parser.parseMessage("create centraltopic c1"),
         parser.parseMessage("link c1 to mm1.topic"),
+        #parser.parseMessage("objects"),
+        #parser.parseMessage("read")
+    ])
+
+for command in commandStack:
+    command.execute(session1)
+    
+    
+commandStack = []
+commandStack.extend([
+        parser.parseMessage("create maintopic m1"),
+        parser.parseMessage("link m1 to c1.maintopics"),
+        parser.parseMessage("create subtopic s1"),
+        parser.parseMessage("link s1 to m1.subtopics"),
+        parser.parseMessage("create marker x"),
+        parser.parseMessage("link x to s1.marker"),
         parser.parseMessage("read")
     ])
 

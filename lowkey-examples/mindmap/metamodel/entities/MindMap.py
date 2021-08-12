@@ -1,5 +1,4 @@
-from mindmap.editor import MindMapPackage
-
+from editor import MindMapPackage
 from lowkey.collabtypes.Association import Association
 from lowkey.collabtypes.Clabject import Clabject
 from lowkey.collabtypes.Entity import Entity
@@ -16,13 +15,11 @@ class MindMapLiterals():
 
 class MindMap(Entity):
     
-    def __init__(self, title="", clabject:Clabject=None):
+    def __init__(self, clabject:Clabject=None):
         if not clabject:
             clabject = Clabject()
             clabject.setType(MindMapPackage.TYPE_MINDMAP)
         super().__init__(clabject)
-        self.setName(title)
-        self.setTitle(title)
 
     # title: Attribute
     # ========================
@@ -45,7 +42,11 @@ class MindMap(Entity):
     # ========================
     # Methods: get, set, remove
     def getTopic(self):
-        topicAssociations = [a for a in self.getModel().getAssociationsByName(MindMapLiterals.ASSOCIATION_TOPIC) if a.getFrom() == self]
+        model = self.getModel()
+        if not model:
+            return None
+        
+        topicAssociations = [a for a in model.getAssociationsByName(MindMapLiterals.ASSOCIATION_TOPIC) if a.getFrom() == self._clabject]
         
         if topicAssociations:
             return topicAssociations[0].getTo()  # safe due to MultiplicityToMax = 1
@@ -53,7 +54,10 @@ class MindMap(Entity):
     
     def setTopic(self, topic: CentralTopic):  # typing due to Type: CentralTopic
         model = self.getModel()
-        topicAssociations = [a for a in model.getAssociationsByName(MindMapLiterals.ASSOCIATION_TOPIC) if a.getFrom() == self]
+        if not model:
+            return None
+        
+        topicAssociations = [a for a in model.getAssociationsByName(MindMapLiterals.ASSOCIATION_TOPIC) if a.getFrom() == self._clabject]
         
         if topicAssociations:
             # Removes the association to the Marker object but not the object
@@ -70,7 +74,10 @@ class MindMap(Entity):
     
     def removeTopic(self):
         model = self.getModel()
-        topicAssociations = [a for a in model.getAssociationsByName(MindMapLiterals.ASSOCIATION_TOPIC) if a.getFrom() == self]
+        if not model:
+            return None
+        
+        topicAssociations = [a for a in model.getAssociationsByName(MindMapLiterals.ASSOCIATION_TOPIC) if a.getFrom() == self._clabject]
 
         if topicAssociations:
             model.removeNode(topicAssociations[0])  # safe due to MultiplicityToMax = 1
@@ -84,7 +91,11 @@ class MindMap(Entity):
     # ========================
     # Methods: get, add, remove
     def getMarkers(self):
-        markerAssociations = [a for a in self.getModel().getAssociationsByName(MindMapLiterals.ASSOCIATION_MARKER) if a.getFrom() == self]
+        model = self.getModel()
+        if not model:
+            return None
+        
+        markerAssociations = [a for a in self.getModel().getAssociationsByName(MindMapLiterals.ASSOCIATION_MARKER) if a.getFrom() == self._clabject]
         
         markers = []
         for a in markersAssociations:
@@ -102,7 +113,10 @@ class MindMap(Entity):
         
     def removeMarker(self, marker):  # Removes the association to the Marker object but not the object
         model = self.getModel()
-        markersAssociations = [a for a in model.getAssociationsByName(MindMapLiterals.ASSOCIATION_MARKER) if a.getFrom() == self]
+        if not model:
+            return None
+        
+        markersAssociations = [a for a in model.getAssociationsByName(MindMapLiterals.ASSOCIATION_MARKER) if a.getFrom() == self._clabject]
             
         for a in markersAssociations:
             if a.getTo() == marker:

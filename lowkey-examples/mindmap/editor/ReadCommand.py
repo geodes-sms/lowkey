@@ -6,8 +6,7 @@ import logging
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 from editor.Command import Command
-from scenarios import PrintHelper
-from metamodel.entities.MindMap import MindMap
+from scenarios import PrintHelper2
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -28,7 +27,6 @@ class ReadCommand(Command):
         
         if mindmapClabjects:
             for mc in mindmapClabjects:
-                m = MindMap(clabject=mc)
-                PrintHelper.printMindmap(m)
+                PrintHelper2.printMindmap(mc)
         else:
             print("No mindmaps defined yet")

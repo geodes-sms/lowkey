@@ -18,7 +18,7 @@ Full test suite for the Mindmap example.
 
 
 def create_suite():
-    testCases = [BasicMindmapTests, CollabtypesMindmapTests]
+    testCases = [CollabtypesMindmapTests]
     loadedCases = []
     
     for case in testCases:
