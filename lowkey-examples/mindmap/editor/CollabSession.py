@@ -1,6 +1,10 @@
 #!/usr/bin/env python
+import os
+import sys
 import logging
 import uuid
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 from metamodel.entities.MindMapModel import MindMapModel
 
@@ -50,5 +54,4 @@ class CollabSession():
                       .format(association.getName(), association.getFrom(), association.getTo()))
         
         self.integrateNode(association)
-        
         
