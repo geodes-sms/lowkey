@@ -66,10 +66,16 @@ class Editor(Client):
     def getMessage(self, rawMessage):
         return rawMessage.decode(self.__encoding).split(' ', 1)
     
-    def consumeMessage(self, message):
-        command = self.parser.parseMessage(message)
-        command.execute(self._session)
+    def getCommand(self, message):
+        return self.parser.parseMessage(message)
     
+    def executeCommand(self, command):
+        command.execute(self._session)
+        
+    def consumeMessage(self, message):
+        command = self.getCommand(message)
+        self.executeCommand(command)
+   
     def throwawayMessage(self, senderId):
         return senderId.replace('[', '').replace(']', '') == str(self._id)
     
@@ -87,8 +93,8 @@ class Editor(Client):
             
             if self.parser.validCommandMessage(userInput):
                 self.consumeMessage(userInput)  # Process in current session
-                command = self.parser.tokenize(userInput)[0].upper()
-                if(self.messageToBeForwarded(command)):
+                commandKeyWord = self.parser.tokenize(userInput)[0].upper()
+                if(self.messageToBeForwarded(commandKeyWord)):
                     message = self.createMessage(userInput)
                     self._publisher.send(message)  # Publish to other client sessions
             else:
