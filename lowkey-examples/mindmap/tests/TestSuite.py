@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-import unittest
-
 import os
 import sys
+import unittest
 
 from mindmap.tests.BasicMindmapTests import BasicMindmapTests
 from mindmap.tests.CollabtypesMindmapTests import CollabtypesMindmapTests
@@ -18,7 +17,7 @@ Full test suite for the Mindmap example.
 
 
 def create_suite():
-    testCases = [CollabtypesMindmapTests]
+    testCases = [BasicMindmapTests, CollabtypesMindmapTests]
     loadedCases = []
     
     for case in testCases:
