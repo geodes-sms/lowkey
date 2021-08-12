@@ -40,3 +40,14 @@ for command in commandStack:
 
 for command in commandStack:
     command.execute(session2)
+
+
+commandStack = []
+commandStack.extend([
+        parser.parseMessage("create centraltopic c1"),
+        parser.parseMessage("link c1 to mm1.topic"),
+        parser.parseMessage("read")
+    ])
+
+for command in commandStack:
+    command.execute(session1)
