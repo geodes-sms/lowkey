@@ -45,8 +45,6 @@ class CreateClabjectCommand(Command):
         elif self._type == MindMapPackage.TYPE_MARKER:
             logging.debug("Setting attribute {} with value {}".format(MarkerLiterals.SYMBOL, self._name))
             clabject.setAttribute(MarkerLiterals.SYMBOL, self._name)
-        else:
-            logging.error("Unexpected type {}.".format(self._type))
             
         logging.debug(" {} with name {} has been created. Integrating into session {}.".format(clabject.getType(), clabject.getName(), session._id))
         
