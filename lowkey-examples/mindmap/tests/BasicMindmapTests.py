@@ -13,6 +13,7 @@ from metamodel.entities.MainTopic import MainTopic
 from metamodel.entities.Marker import Marker
 from metamodel.entities.MindMap import MindMap
 from metamodel.entities.MindMapModel import MindMapModel
+from mindmap.editor import MindMapPackage
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
@@ -39,7 +40,7 @@ class BasicMindmapTests(unittest.TestCase):
         del(self._mindMapModel)
         
     def testCreateModelWithContent(self):
-        title1 = "improveTeachingRecord"
+        title1 = "improvePublicationRecord"
         
         command = self._parser.parseMessage("create mindmap {}".format(title1))
         command.execute(self._session)
@@ -48,46 +49,98 @@ class BasicMindmapTests(unittest.TestCase):
         mindmap = MindMap(self._session._mindmapmodel.getNodes()[0])
         self.assertEqual(mindmap.getTitle(), title1)
         
-    '''
-    def testCreateModelWithContent(self):
-        title1 = "improveTeachingRecord"
-        
-        mindmap = MindMap(title1)
-        mindmap.addToModel(self._mindMapModel)
-        
-        self.assertEqual(self._mindMapModel.getNodeById(mindmap.getId()), mindmap._clabject)
-    
-    
     def testCreateUpdateRoot(self):
-        title1 = "improveTeachingRecord"
+        title1 = "improvePublicationRecord"
         
-        mindmap = MindMap(title1)
-        mindmap.addToModel(self._mindMapModel)
+        command = self._parser.parseMessage("create mindmap {}".format(title1))
+        command.execute(self._session)
         
+        self.assertEqual(len(self._session._mindmapmodel.getNodes()), 1)
+        mindmap = MindMap(self._session._mindmapmodel.getNodes()[0])
         self.assertEqual(mindmap.getTitle(), title1)
         
-        title2 = "improvePublicationRecord"
+        title2 = "improveTeachingRecord"
         mindmap.setTitle(title2)
         self.assertEqual(mindmap.getTitle(), title2)
     
     def testCreateRemoveNonCompositionReference(self):
-        mindmap = MindMap("improveTeachingRecord")
-        mindmap.addToModel(self._mindMapModel)
+        commands = []
         
-        centralTopic = CentralTopic("publishPaper")
-        centralTopic.addToModel(self._mindMapModel)
+        commands.extend([
+            self._parser.parseMessage("create mindmap improvePublicationRecord"),
+            self._parser.parseMessage("create centraltopic publishPaper"),
+            self._parser.parseMessage("link publishPaper to improvePublicationRecord.topic"),
+            self._parser.parseMessage("create marker x"),
+            self._parser.parseMessage("link x to publishPaper.marker"),
+            ])
         
-        mindmap.setTopic(centralTopic)
+        for command in commands:
+            command.execute(self._session)
         
-        x = Marker("x")
-        mindmap.addMarker(x)
-        centralTopic.setMarker(x)
+        centralTopic = CentralTopic(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPE_CENTRAL_TOPIC)[0])
         
-        self.assertEqual(centralTopic.getMarker().getSymbol(), "x")
+        self.assertEqual(Marker(centralTopic.getMarker()).getSymbol(), "x")
         
         centralTopic.removeMarker()
         self.assertFalse(centralTopic.getMarker())
     
+    @unittest.skip("The DSL should be fixed by adding the UpdateAssociationCommand")
+    def testCreateUpdateContainedReferenceTarget(self):
+        commands = []
+        
+        topic1Name = "publishPaper"
+        
+        commands.extend([
+            self._parser.parseMessage("create mindmap improvePublicationRecord"),
+            self._parser.parseMessage("create centraltopic {}".format(topic1Name)),
+            self._parser.parseMessage("link {} to improvePublicationRecord.topic".format(topic1Name))
+            ])
+        
+        for command in commands:
+            command.execute(self._session)
+        
+        mindmap = MindMap(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPE_MINDMAP)[0])
+        self.assertEqual(mindmap.getTopic().getName(), topic1Name)
+        
+        commands = []
+        
+        topic2Name = "goToVacation"
+        
+        commands.extend([
+            self._parser.parseMessage("create centraltopic {}".format(topic2Name)),
+            self._parser.parseMessage("link {} to improvePublicationRecord.topic".format(topic2Name))
+        ])
+        
+        self.assertEqual(mindmap.getTopic().getName(), topic2Name)
+    
+    def testCreateMainTopic(self):
+        commands = []
+        
+        centralTopicName = "publishPaper"
+        mainTopic1Name = "processRelatedWork"
+        mainTopic2Name = "doTheExperiment"
+        
+        commands.extend([
+            self._parser.parseMessage("create mindmap improvePublicationRecord"),
+            self._parser.parseMessage("create centraltopic {}".format(centralTopicName)),
+            self._parser.parseMessage("link {} to improvePublicationRecord.topic".format(centralTopicName)),
+            self._parser.parseMessage("create maintopic {}".format(mainTopic1Name)),
+            self._parser.parseMessage("create maintopic {}".format(mainTopic2Name)),
+            self._parser.parseMessage("link {} to {}.maintopics".format(mainTopic1Name, centralTopicName)),
+            self._parser.parseMessage("link {} to {}.maintopics".format(mainTopic2Name, centralTopicName)),
+            ])
+        
+        for command in commands:
+            command.execute(self._session)
+            
+        mindmap = MindMap(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPE_MINDMAP)[0])
+        centralTopic = CentralTopic(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPE_CENTRAL_TOPIC)[0])
+        
+        self.assertEqual(mindmap.getTopic().getName(), centralTopicName)
+        self.assertEqual(centralTopic.getMainTopics()[0].getName(), mainTopic1Name)
+        self.assertEqual(centralTopic.getMainTopics()[0].getName(), mainTopic2Name)
+
+    '''
     @unittest.skip("Design choice pending")
     def testCreateRemoveAggregationReference(self):
         mindmap = MindMap("improveTeachingRecord")
@@ -111,52 +164,6 @@ class BasicMindmapTests(unittest.TestCase):
         self.assertFalse(markerAssociationsOnCurrentMindmap)
         self.assertFalse(centralTopic.getMarker())  # TODO: should be False if cascade removal is supported
         
-    
-    def testCreateUpdateContainedReferenceTarget(self):
-        mindmap = MindMap("improveTeachingRecord")
-        mindmap.addToModel(self._mindMapModel)
-        
-        topicName = "publishPaper"
-        centralTopic = CentralTopic(topicName)
-        centralTopic.addToModel(self._mindMapModel)
-        
-        mindmap.setTopic(centralTopic)
-        self.assertEqual(mindmap.getTopic().getName(), topicName)
-        
-        topicName2 = "goToVacation"
-        centralTopic2 = CentralTopic(topicName2)
-        centralTopic2.addToModel(self._mindMapModel)
-        
-        mindmap.setTopic(centralTopic2)
-        
-        self.assertEqual(mindmap.getTopic().getName(), topicName2)
-        
-    def testCreateMainTopic(self):
-        mindmap = MindMap("improveTeachingRecord")
-        mindmap.addToModel(self._mindMapModel)
-        
-        topicName = "publishPaper"
-        centralTopic = CentralTopic(topicName)
-        centralTopic.addToModel(self._mindMapModel)
-        
-        mindmap.setTopic(centralTopic)
-        self.assertEqual(mindmap.getTopic().getName(), topicName)
-        
-        
-        mainTopicName = "processRelatedWork"
-        mainTopic = MainTopic(mainTopicName)
-        mainTopic.addToModel(self._mindMapModel)
-        
-        centralTopic.addMainTopic(mainTopic)
-        self.assertEqual(centralTopic.getMainTopics()[0].getName(), mainTopicName)
-        
-        
-        mainTopicName2 = "doTheExperiment"
-        mainTopic2 = MainTopic(mainTopicName2)
-        mainTopic2.addToModel(self._mindMapModel)
-        
-        centralTopic.addMainTopic(mainTopic2)
-        self.assertEqual(centralTopic.getMainTopics()[1].getName(), mainTopicName2)
     '''    
 
 
