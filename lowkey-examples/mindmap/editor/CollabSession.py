@@ -7,10 +7,6 @@ from metamodel.entities.MindMapModel import MindMapModel
 from editor import MindMapPackage
 from lowkey.collabtypes.Clabject import Clabject
 from lowkey.collabtypes.Association import Association
-from metamodel.entities.CentralTopic import CentralTopic
-from metamodel.entities.MainTopic import MainTopic
-from metamodel.entities.MindMap import MindMap
-from metamodel.entities.SubTopic import SubTopic
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

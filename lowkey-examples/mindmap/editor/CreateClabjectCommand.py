@@ -8,11 +8,8 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 from editor import MindMapPackage
 from editor.Command import Command
 from lowkey.collabtypes.Clabject import Clabject
-from metamodel.entities.MindMap import MindMap, MindMapLiterals
-from metamodel.entities.CentralTopic import CentralTopic
-from metamodel.entities.MainTopic import MainTopic
-from metamodel.entities.SubTopic import SubTopic
-from metamodel.entities.Marker import Marker, MarkerLiterals
+from metamodel.entities.MindMap import MindMapLiterals
+from metamodel.entities.Marker import MarkerLiterals
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
