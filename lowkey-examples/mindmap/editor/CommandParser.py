@@ -1,15 +1,11 @@
 #!/usr/bin/env python
 import logging
-import os
-import sys
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
-
-from editor.Command import Command
-from editor.CreateAssociationCommand import CreateAssociationCommand
-from editor.CreateClabjectCommand import CreateClabjectCommand
-from editor.ReadCommand import ReadCommand
-from editor.ReadObjectsCommand import ReadObjectsCommand
+from editor.commands.Command import Command
+from editor.commands.CreateAssociationCommand import CreateAssociationCommand
+from editor.commands.CreateClabjectCommand import CreateClabjectCommand
+from editor.commands.ReadCommand import ReadCommand
+from editor.commands.ReadObjectsCommand import ReadObjectsCommand
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

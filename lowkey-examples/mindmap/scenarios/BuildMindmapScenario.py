@@ -3,16 +3,19 @@
 import os
 import sys
 
+from lowkey.collabtypes.Clock import Clock, ClockMode
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from lowkey.collabtypes.Clock import Clock, ClockMode
+from editor.CollabSession import CollabSession
+from editor.CommandParser import CommandParser
+from facilities import PrintHelper
 from metamodel.entities.CentralTopic import CentralTopic
 from metamodel.entities.MainTopic import MainTopic
 from metamodel.entities.Marker import Marker
 from metamodel.entities.MindMap import MindMap
 from metamodel.entities.MindMapModel import MindMapModel
 from metamodel.entities.SubTopic import SubTopic
-from scenarios import PrintHelper
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -21,66 +24,46 @@ __license__ = "GPL-3.0"
 
 Clock.setUp(ClockMode.DEBUG)
 
-mindMapModel = MindMapModel('mindmapModel')
+parser = CommandParser()
 
-mindmap = MindMap('improvePublicationRecord')
-mindmap.addToModel(mindMapModel)
+session1 = CollabSession()
+session2 = CollabSession()
 
+commandStack = []
 
-# Create CentralTopic and add to the MindMap
-centralTopic = CentralTopic('publishPaper')
-centralTopic.addToModel(mindMapModel)
-mindmap.setTopic(centralTopic)
+commandStack.extend([
+        parser.parseMessage("create mindmap mm1"),
+        # parser.parseMessage("read")
+    ])
 
+for command in commandStack:
+    command.execute(session1)
+'''
+for command in commandStack:
+    command.execute(session2)
+'''
 
-# Create two MainTopics and add them to the CentralTopic
-mt1 = MainTopic('experiment')
-mt1.addToModel(mindMapModel)
-centralTopic.addMainTopic(mt1)
+commandStack = []
+commandStack.extend([
+        parser.parseMessage("create centraltopic c1"),
+        parser.parseMessage("link c1 to mm1.topic"),
+        # parser.parseMessage("objects"),
+        # parser.parseMessage("read")
+    ])
 
-# Create this one with a missing argument
-mt2 = MainTopic()
-mt2.setName('writePaper')
-mt2.addToModel(mindMapModel)
-centralTopic.addMainTopic(mt2)
+for command in commandStack:
+    command.execute(session1)
+    
+commandStack = []
+commandStack.extend([
+        parser.parseMessage("create maintopic m1"),
+        parser.parseMessage("link m1 to c1.maintopics"),
+        parser.parseMessage("create subtopic s1"),
+        parser.parseMessage("link s1 to m1.subtopics"),
+        parser.parseMessage("create marker x"),
+        parser.parseMessage("link x to s1.marker"),
+        parser.parseMessage("read")
+    ])
 
-
-# Create two SubTopics and add them to one of the MainTopics
-s1 = SubTopic('relatedWork')
-s1.addToModel(mindMapModel)
-mt2.addSubTopic(s1)
-s2 = SubTopic('contributions')
-s2.addToModel(mindMapModel)
-mt2.addSubTopic(s2)
-
-
-# Create a Marker
-markerX = Marker('x')
-markerX.addToModel(mindMapModel)
-mindmap.addMarker(markerX)
-s2.setMarker(markerX)
-
-# Print the MindMap
-PrintHelper.printMindmap(mindmap)
-
-
-
-# Create another Marker and add it to the model, but not to the mindmap
-markerPlus = Marker('+')
-mindMapModel.addNode(markerPlus)
-
-print("\n>added new Marker (+) to the model")
-
-# Print model nodes
-PrintHelper.printMindmap(mindmap)
-PrintHelper.printModel(mindMapModel)
-
-# Add Marker to the mindmap
-mindmap.addMarker(markerPlus)
-s1.setMarker(markerPlus)
-
-print("\n>added Marker + to the mindmap")
-
-# Print model nodes
-PrintHelper.printMindmap(mindmap)
-PrintHelper.printModel(mindMapModel)
+for command in commandStack:
+    command.execute(session1)

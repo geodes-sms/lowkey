@@ -11,9 +11,7 @@ from lowkey.collabtypes.Clabject import Clabject
 from lowkey.collabtypes.Entity import Entity
 from lowkey.collabtypes.Association import Association
 from lowkey.collabtypes.Model import Model
-from metamodel.entities.MindMap import MindMapLiterals
-from metamodel.entities.CentralTopic import CentralTopicLiterals
-from mindmap.editor import MindMapPackage
+from metamodel import MindMapPackage
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -34,34 +32,34 @@ class CollabtypesMindmapTests(unittest.TestCase):
         title1 = "improvePublicationRecord"
         
         mindmap = Clabject()
-        mindmap.setType(MindMapPackage.TYPE_MINDMAP)
-        mindmap.setAttribute(MindMapLiterals.TITLE, title1)
+        mindmap.setType(MindMapPackage.TYPES.MINDMAP)
+        mindmap.setAttribute(MindMapPackage.TITLE, title1)
         mindmap.addToModel(self._mindMapModel)
         
-        self.assertTrue(mindmap in self._mindMapModel.getNodesByType(MindMapPackage.TYPE_MINDMAP))
+        self.assertTrue(mindmap in self._mindMapModel.getNodesByType(MindMapPackage.TYPES.MINDMAP))
     
     def testCreateUpdateRoot(self):
         title1 = "improvePublicationRecord"
         
         mindmap = Clabject()
-        mindmap.setType(MindMapPackage.TYPE_MINDMAP)
-        mindmap.setAttribute(MindMapLiterals.TITLE, title1)
+        mindmap.setType(MindMapPackage.TYPES.MINDMAP)
+        mindmap.setAttribute(MindMapPackage.TITLE, title1)
         mindmap.addToModel(self._mindMapModel)
         
-        self.assertEqual(mindmap.getAttribute(MindMapLiterals.TITLE), title1)
+        self.assertEqual(mindmap.getAttribute(MindMapPackage.TITLE), title1)
         
         title2 = "improvePublicationRecord"
-        mindmap.setAttribute(MindMapLiterals.TITLE, title2)
-        self.assertEqual(mindmap.getAttribute(MindMapLiterals.TITLE), title2)
+        mindmap.setAttribute(MindMapPackage.TITLE, title2)
+        self.assertEqual(mindmap.getAttribute(MindMapPackage.TITLE), title2)
     
     def testCreateRemoveNonCompositionReference(self):
         mindmap = Clabject()
-        mindmap.setType(MindMapPackage.TYPE_MINDMAP)
-        mindmap.setAttribute(MindMapLiterals.TITLE, "improvePublicationRecord")
+        mindmap.setType(MindMapPackage.TYPES.MINDMAP)
+        mindmap.setAttribute(MindMapPackage.TITLE, "improvePublicationRecord")
         mindmap.addToModel(self._mindMapModel)
         
         centralTopic = Clabject()
-        centralTopic.setType(MindMapPackage.TYPE_CENTRAL_TOPIC)
+        centralTopic.setType(MindMapPackage.TYPES.CENTRAL_TOPIC)
         centralTopic.setName("publishPaper")
         centralTopic.addToModel(self._mindMapModel)
         
@@ -72,7 +70,7 @@ class CollabtypesMindmapTests(unittest.TestCase):
         topicLink = Association()
         topicLink.setFrom(mindmap)
         topicLink.setTo(centralTopic)
-        topicLink.setName(MindMapLiterals.ASSOCIATION_TOPIC)
+        topicLink.setName(MindMapPackage.ASSOCIATION_MINDMAP_CENTRALTOPIC)
         topicLink.addToModel(self._mindMapModel)
         
         self.assertEqual(len(self._mindMapModel.getNodes()), 3)
@@ -88,20 +86,20 @@ class CollabtypesMindmapTests(unittest.TestCase):
         
     def testCreateUpdateContainedReferenceTarget(self):
         mindmap = Clabject()
-        mindmap.setType(MindMapPackage.TYPE_MINDMAP)
-        mindmap.setAttribute(MindMapLiterals.TITLE, "improvePublicationRecord")
+        mindmap.setType(MindMapPackage.TYPES.MINDMAP)
+        mindmap.setAttribute(MindMapPackage.TITLE, "improvePublicationRecord")
         mindmap.addToModel(self._mindMapModel) 
         
         topicName = "publishPaper"
         centralTopic = Clabject()
-        centralTopic.setType(MindMapPackage.TYPE_CENTRAL_TOPIC)
+        centralTopic.setType(MindMapPackage.TYPES.CENTRAL_TOPIC)
         centralTopic.setName(topicName)
         centralTopic.addToModel(self._mindMapModel)
         
         topicLink = Association()
         topicLink.setFrom(mindmap)
         topicLink.setTo(centralTopic)
-        topicLink.setName(MindMapLiterals.ASSOCIATION_TOPIC)
+        topicLink.setName(MindMapPackage.ASSOCIATION_MINDMAP_CENTRALTOPIC)
         topicLink.addToModel(self._mindMapModel)
         
         mindmapEntity = Entity(mindmap)
@@ -111,7 +109,7 @@ class CollabtypesMindmapTests(unittest.TestCase):
         
         topicName2 = "goToVacation"
         centralTopic2 = Clabject()
-        centralTopic2.setType(MindMapPackage.TYPE_CENTRAL_TOPIC)
+        centralTopic2.setType(MindMapPackage.TYPES.CENTRAL_TOPIC)
         centralTopic2.setName(topicName2)
         centralTopic2.addToModel(self._mindMapModel)
         

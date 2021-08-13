@@ -6,7 +6,6 @@ from metamodel.entities.MindMap import MindMap
 from metamodel.entities.SubTopic import SubTopic
 from metamodel.entities.Topic import Topic
 
-
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
 __credits__ = "Eugene Syriani"

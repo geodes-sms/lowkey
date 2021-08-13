@@ -3,10 +3,11 @@ import logging
 import os
 import sys
 
-from editor.Command import Command
-from scenarios import PrintHelper
+from .Command import Command
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+
+from facilities import PrintHelper
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -17,17 +18,16 @@ __license__ = "GPL-3.0"
 """
 
 
-class ReadObjectsCommand(Command):
+class ReadCommand(Command):
     
     def execute(self, session):
-        logging.debug(" Executing command 'OBJECTS' in session {}.".format(session._id))
+        logging.debug(" Executing command 'READ' in session {}.".format(session._id))
         root = session._mindmapmodel
         
-        nodes = root.getNodes()
+        mindmapClabjects = root.getMindmaps()
         
-        if nodes:
-            for n in nodes:
-                print(n.getName(), n)
+        if mindmapClabjects:
+            for mc in mindmapClabjects:
+                PrintHelper.printMindmap(mc)
         else:
-            print("No objects in the model yet")
-    
+            print("No mindmaps defined yet")

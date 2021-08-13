@@ -1,16 +1,16 @@
 #!/usr/bin/env python
+import logging
 import os
 import sys
-import logging
 import uuid
+
+from lowkey.collabtypes.Association import Association
+from lowkey.collabtypes.Clabject import Clabject
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
+from metamodel import MindMapPackage
 from metamodel.entities.MindMapModel import MindMapModel
-
-from editor import MindMapPackage
-from lowkey.collabtypes.Clabject import Clabject
-from lowkey.collabtypes.Association import Association
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

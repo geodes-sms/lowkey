@@ -1,11 +1,7 @@
-from editor import MindMapPackage
 from lowkey.collabtypes.Model import Model
+from metamodel import MindMapPackage
 
 from .MindMap import MindMap
-
-
-class MindMapModelLiterals():
-    TITLE = "title"
 
 
 class MindMapModel(Model):
@@ -21,10 +17,10 @@ class MindMapModel(Model):
     # ========================
     # Methods: get, set
     def getTitle(self):
-        return self.getAttribute(MindMapModelLiterals.TITLE)
+        return self.getAttribute(MindMapPackage.TITLE)
 
     def setTitle(self, title):
-        self.setAttribute(MindMapModelLiterals.TITLE, title)
+        self.setAttribute(MindMapPackage.TITLE, title)
         
     def getMindmaps(self):
-        return [c for c in self.getClabjects() if c.getType() == MindMapPackage.TYPE_MINDMAP]
+        return [c for c in self.getClabjects() if c.getType() == MindMapPackage.TYPES.MINDMAP]

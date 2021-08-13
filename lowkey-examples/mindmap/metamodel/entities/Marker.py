@@ -1,11 +1,6 @@
-from editor import MindMapPackage
-
 from lowkey.collabtypes.Clabject import Clabject
 from lowkey.collabtypes.Entity import Entity
-
-
-class MarkerLiterals():
-    SYMBOL = "symbol"
+from metamodel import MindMapPackage
 
 
 class Marker(Entity):
@@ -23,7 +18,7 @@ class Marker(Entity):
     # ========================
     # Methods: get, set
     def getSymbol(self):
-        return self.getAttribute(MarkerLiterals.SYMBOL)
+        return self.getAttribute(MindMapPackage.MARKER_SYMBOL)
 
     def setSymbol(self, symbol):
-        self.setAttribute(MarkerLiterals.SYMBOL, symbol)
+        self.setAttribute(MindMapPackage.MARKER_SYMBOL, symbol)

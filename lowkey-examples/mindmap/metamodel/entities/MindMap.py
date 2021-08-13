@@ -1,16 +1,10 @@
-from editor import MindMapPackage
 from lowkey.collabtypes.Association import Association
 from lowkey.collabtypes.Clabject import Clabject
 from lowkey.collabtypes.Entity import Entity
 from lowkey.collabtypes.Model import Model
+from metamodel import MindMapPackage
 
 from .CentralTopic import CentralTopic
-
-
-class MindMapLiterals():
-    TITLE = "title"
-    ASSOCIATION_TOPIC = "topic"
-    ASSOCIATION_MARKER = "markers"
 
 
 class MindMap(Entity):
@@ -28,10 +22,10 @@ class MindMap(Entity):
     # ========================
     # Methods: get, set
     def getTitle(self):
-        return self.getAttribute(MindMapLiterals.TITLE)
+        return self.getAttribute(MindMapPackage.TITLE)
 
     def setTitle(self, title):
-        self.setAttribute(MindMapLiterals.TITLE, title)
+        self.setAttribute(MindMapPackage.TITLE, title)
     
     # topic: Reference
     # ========================
@@ -46,7 +40,7 @@ class MindMap(Entity):
         if not model:
             return None
         
-        topicAssociations = [a for a in model.getAssociationsByName(MindMapLiterals.ASSOCIATION_TOPIC) if a.getFrom() == self._clabject]
+        topicAssociations = [a for a in model.getAssociationsByName(MindMapPackage.ASSOCIATION_MINDMAP_CENTRALTOPIC) if a.getFrom() == self._clabject]
         
         if topicAssociations:
             return topicAssociations[0].getTo()  # safe due to MultiplicityToMax = 1
@@ -57,7 +51,7 @@ class MindMap(Entity):
         if not model:
             return None
         
-        topicAssociations = [a for a in model.getAssociationsByName(MindMapLiterals.ASSOCIATION_TOPIC) if a.getFrom() == self._clabject]
+        topicAssociations = [a for a in model.getAssociationsByName(MindMapPackage.ASSOCIATION_MINDMAP_CENTRALTOPIC) if a.getFrom() == self._clabject]
         
         if topicAssociations:
             # Removes the association to the Marker object but not the object
@@ -65,7 +59,7 @@ class MindMap(Entity):
             model.removeNode(topicAssociations[0])
         
         topicAssociation = Association()
-        topicAssociation.setName(MindMapLiterals.ASSOCIATION_TOPIC)
+        topicAssociation.setName(MindMapPackage.ASSOCIATION_MINDMAP_CENTRALTOPIC)
         topicAssociation.setFrom(self)
         topicAssociation.setTo(topic)
         topicAssociation.setComposition(True)
@@ -77,7 +71,7 @@ class MindMap(Entity):
         if not model:
             return None
         
-        topicAssociations = [a for a in model.getAssociationsByName(MindMapLiterals.ASSOCIATION_TOPIC) if a.getFrom() == self._clabject]
+        topicAssociations = [a for a in model.getAssociationsByName(MindMapPackage.ASSOCIATION_MINDMAP_CENTRALTOPIC) if a.getFrom() == self._clabject]
 
         if topicAssociations:
             model.removeNode(topicAssociations[0])  # safe due to MultiplicityToMax = 1
@@ -95,7 +89,7 @@ class MindMap(Entity):
         if not model:
             return None
         
-        markerAssociations = [a for a in self.getModel().getAssociationsByName(MindMapLiterals.ASSOCIATION_MARKER) if a.getFrom() == self._clabject]
+        markerAssociations = [a for a in self.getModel().getAssociationsByName(MindMapPackage.ASSOCIATION_MINDMAP_MARKER) if a.getFrom() == self._clabject]
         
         markers = []
         for a in markersAssociations:
@@ -104,7 +98,7 @@ class MindMap(Entity):
     
     def addMarker(self, marker):
         markersAssociation = Association()
-        markersAssociation.setName(MindMapLiterals.ASSOCIATION_MARKER)
+        markersAssociation.setName(MindMapPackage.ASSOCIATION_MARKER)
         markersAssociation.setFrom(self)
         markersAssociation.setTo(marker)
         markersAssociation.setComposition(True)
@@ -116,7 +110,7 @@ class MindMap(Entity):
         if not model:
             return None
         
-        markersAssociations = [a for a in model.getAssociationsByName(MindMapLiterals.ASSOCIATION_MARKER) if a.getFrom() == self._clabject]
+        markersAssociations = [a for a in model.getAssociationsByName(MindMapPackage.ASSOCIATION_MINDMAP_MARKER) if a.getFrom() == self._clabject]
             
         for a in markersAssociations:
             if a.getTo() == marker:

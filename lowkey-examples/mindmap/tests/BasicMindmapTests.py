@@ -13,7 +13,7 @@ from metamodel.entities.MainTopic import MainTopic
 from metamodel.entities.Marker import Marker
 from metamodel.entities.MindMap import MindMap
 from metamodel.entities.MindMapModel import MindMapModel
-from mindmap.editor import MindMapPackage
+from metamodel import MindMapPackage
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
@@ -77,7 +77,7 @@ class BasicMindmapTests(unittest.TestCase):
         for command in commands:
             command.execute(self._session)
         
-        centralTopic = CentralTopic(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPE_CENTRAL_TOPIC)[0])
+        centralTopic = CentralTopic(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPES.CENTRAL_TOPIC)[0])
         
         self.assertEqual(Marker(centralTopic.getMarker()).getSymbol(), "x")
         
@@ -99,7 +99,7 @@ class BasicMindmapTests(unittest.TestCase):
         for command in commands:
             command.execute(self._session)
         
-        mindmap = MindMap(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPE_MINDMAP)[0])
+        mindmap = MindMap(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPES.MINDMAP)[0])
         self.assertEqual(mindmap.getTopic().getName(), topic1Name)
         
         commands = []
@@ -133,8 +133,8 @@ class BasicMindmapTests(unittest.TestCase):
         for command in commands:
             command.execute(self._session)
             
-        mindmap = MindMap(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPE_MINDMAP)[0])
-        centralTopic = CentralTopic(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPE_CENTRAL_TOPIC)[0])
+        mindmap = MindMap(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPES.MINDMAP)[0])
+        centralTopic = CentralTopic(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPES.CENTRAL_TOPIC)[0])
         
         self.assertEqual(mindmap.getTopic().getName(), centralTopicName)
         self.assertEqual(centralTopic.getMainTopics()[0].getName(), mainTopic1Name)

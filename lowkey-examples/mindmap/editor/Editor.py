@@ -1,14 +1,10 @@
 #!/usr/bin/env python
 import argparse
 import logging
-import os
-import sys
 import threading
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
-
-from editor.CommandParser import CommandParser
-from editor.CollabSession import CollabSession
+from CollabSession import CollabSession
+from CommandParser import CommandParser
 from lowkey.network.Client import Client
 
 __author__ = "Istvan David"

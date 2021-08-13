@@ -2,11 +2,9 @@ from lowkey.collabtypes.Association import Association
 from lowkey.collabtypes.Clabject import Clabject
 from lowkey.collabtypes.Entity import Entity
 
+from metamodel import MindMapPackage
+
 from .Marker import Marker
-
-
-class TopicLiterals():
-    ASSOCIATION_MARKER = "marker"
 
 
 class Topic(Entity):
@@ -27,7 +25,7 @@ class Topic(Entity):
     # ========================
     # Methods: get, set, remove
     def getMarker(self):
-        markerAssociations = [a for a in self.getModel().getAssociationsByName(TopicLiterals.ASSOCIATION_MARKER) if a.getFrom() == self._clabject]
+        markerAssociations = [a for a in self.getModel().getAssociationsByName(MindMapPackage.ASSOCIATION_TOPIC_MARKER) if a.getFrom() == self._clabject]
         
         if markerAssociations:
             return markerAssociations[0].getTo()  # safe due to MultiplicityToMax = 1
@@ -35,7 +33,7 @@ class Topic(Entity):
     
     def setMarker(self, marker: Marker):  # typing due to Type: Marker
         model = self.getModel()
-        markerAssociations = [a for a in model.getAssociationsByName(TopicLiterals.ASSOCIATION_MARKER) if a.getFrom() == self._clabject]
+        markerAssociations = [a for a in model.getAssociationsByName(MindMapPackage.ASSOCIATION_TOPIC_MARKER) if a.getFrom() == self._clabject]
         
         if markerAssociations:
             # Removes the association to the Marker object but not the object
@@ -43,7 +41,7 @@ class Topic(Entity):
             model.removeNode(markerAssociations[0])
         
         markerAssociation = Association()
-        markerAssociation.setName(TopicLiterals.ASSOCIATION_MARKER)
+        markerAssociation.setName(MindMapPackage.ASSOCIATION_TOPIC_MARKER)
         markerAssociation.setFrom(self)
         markerAssociation.setTo(marker)
         markerAssociation.setComposition(True)
@@ -52,7 +50,7 @@ class Topic(Entity):
         
     def removeMarker(self):  # Removes the association to the Marker object but not the object
         model = self.getModel()
-        markerAssociations = [a for a in model.getAssociationsByName(TopicLiterals.ASSOCIATION_MARKER) if a.getFrom() == self._clabject]
+        markerAssociations = [a for a in model.getAssociationsByName(MindMapPackage.ASSOCIATION_TOPIC_MARKER) if a.getFrom() == self._clabject]
 
         for a in markerAssociations:
             model.removeNode(markerAssociations[0])  # safe due to MultiplicityToMax = 1

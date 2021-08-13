@@ -1,13 +1,8 @@
-from editor import MindMapPackage
-
 from lowkey.collabtypes.Association import Association
 from lowkey.collabtypes.Clabject import Clabject
+from metamodel import MindMapPackage
 
 from .Topic import Topic
-
-
-class SubTopicLiterals():
-    ASSOCIATION_SUBTOPICS = "subtopics"
 
 
 class SubTopic(Topic):
@@ -27,7 +22,7 @@ class SubTopic(Topic):
     # ========================
     # Methods: get, set, remove
     def getSubTopics(self):
-        subTopicsAssociations = [a for a in self.getModel().getAssociationsByName(SubTopicLiterals.ASSOCIATION_SUBTOPICS) if a.getFrom() == self._clabject]
+        subTopicsAssociations = [a for a in self.getModel().getAssociationsByName(SubTopicPackage.ASSOCIATION_SUBTOPIC_SUBTOPIC) if a.getFrom() == self._clabject]
         
         subTopics = []
         for a in subTopicsAssociations:
@@ -36,7 +31,7 @@ class SubTopic(Topic):
     
     def addSubTopic(self, subTopic):
         subTopicAssociation = Association()
-        subTopicAssociation.setName(SubTopicLiterals.ASSOCIATION_SUBTOPICS)
+        subTopicAssociation.setName(SubTopicPackage.ASSOCIATION_SUBTOPIC_SUBTOPIC)
         subTopicAssociation.setFrom(self)
         subTopicAssociation.setTo(subTopic)
         subTopicAssociation.setComposition(True)
@@ -45,7 +40,7 @@ class SubTopic(Topic):
         
     def removeSubTopic(self, subTopic):
         model = self.getModel()
-        subTopicAssociations = [a for a in model.getAssociationsByName(SubTopicLiterals.ASSOCIATION_SUBTOPICS) if a.getFrom() == self._clabject]
+        subTopicAssociations = [a for a in model.getAssociationsByName(SubTopicPackage.ASSOCIATION_SUBTOPIC_SUBTOPIC) if a.getFrom() == self._clabject]
 
         for a in subTopicAssociations:
             if a.getTo() == subTopic:

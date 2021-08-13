@@ -1,15 +1,15 @@
 #!/usr/bin/env python
+import logging
 import os
 import sys
-import logging
+
+from lowkey.collabtypes.Clabject import Clabject
+
+from .Command import Command
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from editor import MindMapPackage
-from editor.Command import Command
-from lowkey.collabtypes.Clabject import Clabject
-from metamodel.entities.MindMap import MindMapLiterals
-from metamodel.entities.Marker import MarkerLiterals
+from metamodel import MindMapPackage
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -27,7 +27,7 @@ class CreateClabjectCommand(Command):
         self._name = tokens[2]
     
     def findType(self, typeString):
-        type = next(t for t in MindMapPackage.TYPES if t.lower() == typeString.lower())
+        type = next(t for t in MindMapPackage.TYPES.TYPES if t.lower() == typeString.lower())
         if not type:
             raise Exception("Unexpected type {}.".format(typeString))
         return type 
@@ -39,12 +39,12 @@ class CreateClabjectCommand(Command):
         clabject.setType(self._type)
         clabject.setName(self._name)
         
-        if self._type == MindMapPackage.TYPE_MINDMAP:
-            logging.debug("Setting attribute {} with value {}".format(MindMapLiterals.TITLE, self._name))
-            clabject.setAttribute(MindMapLiterals.TITLE, self._name)
-        elif self._type == MindMapPackage.TYPE_MARKER:
-            logging.debug("Setting attribute {} with value {}".format(MarkerLiterals.SYMBOL, self._name))
-            clabject.setAttribute(MarkerLiterals.SYMBOL, self._name)
+        if self._type == MindMapPackage.TYPES.MINDMAP:
+            logging.debug("Setting attribute {} with value {}".format(MindMapPackage.TITLE, self._name))
+            clabject.setAttribute(MindMapPackage.TITLE, self._name)
+        elif self._type == MindMapPackage.TYPES.MARKER:
+            logging.debug("Setting attribute {} with value {}".format(MindMapPackage.MARKER_SYMBOL, self._name))
+            clabject.setAttribute(MindMapPackage.MARKER_SYMBOL, self._name)
             
         logging.debug(" {} with name {} has been created. Integrating into session {}.".format(clabject.getType(), clabject.getName(), session._id))
         
