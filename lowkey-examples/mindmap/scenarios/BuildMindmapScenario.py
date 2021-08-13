@@ -7,8 +7,8 @@ from lowkey.collabtypes.Clock import Clock, ClockMode
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from editor.CollabSession import CollabSession
-from editor.CommandParser import CommandParser
+from editor.DSLParser import DSLParser
+from editor.MindmapSession import MindmapSession
 from facilities import PrintHelper
 from metamodel.entities.CentralTopic import CentralTopic
 from metamodel.entities.MainTopic import MainTopic
@@ -24,10 +24,10 @@ __license__ = "GPL-3.0"
 
 Clock.setUp(ClockMode.DEBUG)
 
-parser = CommandParser()
+parser = DSLParser()
 
-session1 = CollabSession()
-session2 = CollabSession()
+session1 = MindmapSession()
+session2 = MindmapSession()
 
 commandStack = []
 

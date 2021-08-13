@@ -1,11 +1,17 @@
 #!/usr/bin/env python
 import argparse
 import logging
+import logging
+import os
+import sys
 import threading
 
-from CollabSession import CollabSession
-from CommandParser import CommandParser
+from MindmapSession import MindmapSession
+from DSLParser import DSLParser
 from lowkey.network.Client import Client
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+from metamodel.entities.MindMapModel import MindMapModel
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -22,8 +28,8 @@ class Editor(Client):
     
     def __init__(self):
         super().__init__()
-        self._session = CollabSession()
-        self.parser = CommandParser()
+        self._session = MindmapSession()
+        self._parser = DSLParser()
     
     def run(self):
         connection_thread = threading.Thread(target=self.subscribe, args=())
@@ -61,7 +67,7 @@ class Editor(Client):
         return rawMessage.decode(self.__encoding).split(' ', 1)
     
     def getCommand(self, message):
-        return self.parser.parseMessage(message)
+        return self._parser.parseMessage(message)
     
     def executeCommand(self, command):
         command.execute(self._session)
@@ -85,9 +91,9 @@ class Editor(Client):
             if not userInput:
                 continue
             
-            if self.parser.validCommandMessage(userInput):
+            if self._parser.validCommandMessage(userInput):
                 self.consumeMessage(userInput)  # Process in current session
-                commandKeyWord = self.parser.tokenize(userInput)[0].upper()
+                commandKeyWord = self._parser.tokenize(userInput)[0].upper()
                 if(self.messageToBeForwarded(commandKeyWord)):
                     message = self.createMessage(userInput)
                     self._publisher.send(message)  # Publish to other client sessions

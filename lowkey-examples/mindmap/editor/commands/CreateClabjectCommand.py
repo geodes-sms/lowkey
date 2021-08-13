@@ -8,7 +8,6 @@ from lowkey.collabtypes.Clabject import Clabject
 from .Command import Command
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
-
 from metamodel import MindMapPackage
 
 __author__ = "Istvan David"

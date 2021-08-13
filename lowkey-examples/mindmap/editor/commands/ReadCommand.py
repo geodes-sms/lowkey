@@ -22,7 +22,7 @@ class ReadCommand(Command):
     
     def execute(self, session):
         logging.debug(" Executing command 'READ' in session {}.".format(session._id))
-        root = session._mindmapmodel
+        root = session.getModels()[0]
         
         mindmapClabjects = root.getMindmaps()
         

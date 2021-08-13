@@ -4,8 +4,8 @@ import sys
 import unittest
 import logging
 
-from mindmap.editor.CollabSession import CollabSession
-from mindmap.editor.CommandParser import CommandParser
+from mindmap.editor.DSLParser import DSLParser
+from mindmap.editor.MindmapSession import MindmapSession
 
 from lowkey.collabtypes.Clock import Clock, ClockMode
 from metamodel.entities.CentralTopic import CentralTopic
@@ -14,6 +14,7 @@ from metamodel.entities.Marker import Marker
 from metamodel.entities.MindMap import MindMap
 from metamodel.entities.MindMapModel import MindMapModel
 from metamodel import MindMapPackage
+
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
@@ -32,12 +33,12 @@ class BasicMindmapTests(unittest.TestCase):
     
     def setUp(self):
         Clock.setUp(ClockMode.DEBUG)
-        self._parser = CommandParser()
-        self._session = CollabSession()
-        self._mindMapModel = self._session._mindmapmodel
+        self._parser = DSLParser()
+        self._session = MindmapSession()
         
     def tearDown(self):
-        del(self._mindMapModel)
+        del(self._session)
+        del(self._parser)
         
     def testCreateModelWithContent(self):
         title1 = "improvePublicationRecord"
@@ -45,8 +46,8 @@ class BasicMindmapTests(unittest.TestCase):
         command = self._parser.parseMessage("create mindmap {}".format(title1))
         command.execute(self._session)
         
-        self.assertEqual(len(self._session._mindmapmodel.getNodes()), 1)
-        mindmap = MindMap(self._session._mindmapmodel.getNodes()[0])
+        self.assertEqual(len(self._session.getMindMapModel().getNodes()), 1)
+        mindmap = MindMap(self._session.getMindMapModel().getNodes()[0])
         self.assertEqual(mindmap.getTitle(), title1)
         
     def testCreateUpdateRoot(self):
@@ -55,8 +56,8 @@ class BasicMindmapTests(unittest.TestCase):
         command = self._parser.parseMessage("create mindmap {}".format(title1))
         command.execute(self._session)
         
-        self.assertEqual(len(self._session._mindmapmodel.getNodes()), 1)
-        mindmap = MindMap(self._session._mindmapmodel.getNodes()[0])
+        self.assertEqual(len(self._session.getMindMapModel().getNodes()), 1)
+        mindmap = MindMap(self._session.getMindMapModel().getNodes()[0])
         self.assertEqual(mindmap.getTitle(), title1)
         
         title2 = "improveTeachingRecord"
@@ -77,7 +78,7 @@ class BasicMindmapTests(unittest.TestCase):
         for command in commands:
             command.execute(self._session)
         
-        centralTopic = CentralTopic(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPES.CENTRAL_TOPIC)[0])
+        centralTopic = CentralTopic(self._session.getMindMapModel().getNodesByType(MindMapPackage.TYPES.CENTRAL_TOPIC)[0])
         
         self.assertEqual(Marker(centralTopic.getMarker()).getSymbol(), "x")
         
@@ -133,8 +134,8 @@ class BasicMindmapTests(unittest.TestCase):
         for command in commands:
             command.execute(self._session)
             
-        mindmap = MindMap(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPES.MINDMAP)[0])
-        centralTopic = CentralTopic(self._session._mindmapmodel.getNodesByType(MindMapPackage.TYPES.CENTRAL_TOPIC)[0])
+        mindmap = MindMap(self._session.getMindMapModel().getNodesByType(MindMapPackage.TYPES.MINDMAP)[0])
+        centralTopic = CentralTopic(self._session.getMindMapModel().getNodesByType(MindMapPackage.TYPES.CENTRAL_TOPIC)[0])
         
         self.assertEqual(mindmap.getTopic().getName(), centralTopicName)
         self.assertEqual(centralTopic.getMainTopics()[0].getName(), mainTopic1Name)

@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 import logging
+import os
+import sys
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
 from editor.commands.Command import Command
 from editor.commands.CreateAssociationCommand import CreateAssociationCommand
@@ -16,7 +20,7 @@ __license__ = "GPL-3.0"
 """
 
 
-class CommandParser():
+class DSLParser():
     
     __commands = ["CREATE", "READ", "OBJECTS", "LINK", "UPDATE", "DELETE"]
     

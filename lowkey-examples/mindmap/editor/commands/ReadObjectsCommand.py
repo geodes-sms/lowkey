@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-
 import logging
 
 from .Command import Command
+
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -17,7 +17,7 @@ class ReadObjectsCommand(Command):
     
     def execute(self, session):
         logging.debug(" Executing command 'OBJECTS' in session {}.".format(session._id))
-        root = session._mindmapmodel
+        root = session.getModels()[0]
         
         nodes = root.getNodes()
         

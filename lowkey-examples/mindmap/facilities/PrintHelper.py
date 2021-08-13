@@ -1,6 +1,4 @@
-import os
-import sys
-
+#!/usr/bin/env python
 from lowkey.collabtypes.Model import Model
 from metamodel.entities.CentralTopic import CentralTopic
 from metamodel.entities.MainTopic import MainTopic
@@ -8,9 +6,6 @@ from metamodel.entities.Marker import Marker
 from metamodel.entities.MindMap import MindMap
 from metamodel.entities.SubTopic import SubTopic
 from metamodel.entities.Topic import Topic
-
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
-
 
 
 def printMindmap(mindmapClabject):
