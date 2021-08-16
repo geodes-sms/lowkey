@@ -26,4 +26,4 @@
 ### Command language v2
 - ```READ``` - Returns the mindmap model in a readable form.
 - ```CREATE [type] [name]``` - Creates an instance with name ```[name]``` of the domain-specific type ```[type]```.
-- ```LINK [name1] TO [name2].[link]``` - Links object ```[name1]``` under object ```[name1]``` via link ```[link]```.
+- ```LINK [source].[port] TO [target]``` - Links object ```[target]``` to object ```[source]``` via port ```[port]```.
