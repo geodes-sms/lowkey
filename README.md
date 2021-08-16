@@ -41,3 +41,7 @@ Source: [ZMQ: Reliable Pub-Sub with Update republishing](https://zguide.zeromq.o
 Further pointers:
 * [Ephemeral values](https://zguide.zeromq.org/docs/chapter5/#Ephemeral-Values)
 * [Reactor](https://zguide.zeromq.org/docs/chapter5/#Using-a-Reactor)
+
+## Command language
+* ```CREATE -name {name} -typedBy {type} [-params VALUES...]*```
+* ```LINK -from {fromClabject}.{associationName} -to {toClabject} [-params VALUES...]*```
