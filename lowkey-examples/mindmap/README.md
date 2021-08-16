@@ -16,14 +16,9 @@
 - Refer to the command language below to start modeling.
 
 ### Command language
-
 - ```READ``` - Returns the mindmap model in a readable form.
-- ```CREATE [type] [name]``` - Creates an instance with name ```[name]``` of the domain-specific type ```[type]```.
-- ```CREATE RELATIONSHIP [name] [sourceName] [targetName]``` - Creates a relationship with name ```[name]``` between the objects named ```[sourceName]``` and ```[targetName]```, respectively.
-- ```UPDATE [name] [property] [value]``` - Updates property ```[property]``` in object ```[name]``` to value ```[value]```.
-- ```DELETE [name]``` - Deletes object ```[name]```.
-
-### Command language v2
-- ```READ``` - Returns the mindmap model in a readable form.
+- ```OBJECTS``` - Lists every object in the local session.
 - ```CREATE [type] [name]``` - Creates an instance with name ```[name]``` of the domain-specific type ```[type]```.
 - ```LINK [source].[port] TO [target]``` - Links object ```[target]``` to object ```[source]``` via port ```[port]```.
+- TODO: ```UPDATE [name] [property] [value]``` - Updates property ```[property]``` in object ```[name]``` to value ```[value]```.
+- TODO: ```DELETE [name]``` - Deletes object ```[name]```
