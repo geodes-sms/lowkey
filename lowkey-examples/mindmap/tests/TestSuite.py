@@ -5,6 +5,8 @@ import unittest
 
 from mindmap.tests.BasicMindmapTests import BasicMindmapTests
 from mindmap.tests.CollabtypesMindmapTests import CollabtypesMindmapTests
+from mindmap.tests.DSLParserTests import DSLParserTests
+from mindmap.tests.NetworkedMindmapTests import NetworkedMindmapTests
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -17,7 +19,7 @@ Full test suite for the Mindmap example.
 
 
 def create_suite():
-    testCases = [BasicMindmapTests, CollabtypesMindmapTests]
+    testCases = [DSLParserTests, BasicMindmapTests, CollabtypesMindmapTests, NetworkedMindmapTests]
     loadedCases = []
     
     for case in testCases:

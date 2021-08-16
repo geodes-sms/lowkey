@@ -4,6 +4,7 @@ import uuid
 
 from lowkey.collabtypes.Association import Association
 from lowkey.collabtypes.Clabject import Clabject
+from .Parser import Parser
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -19,6 +20,7 @@ class Session():
     
     def __init__(self):
         self._id = uuid.uuid1()
+        self._parser = Parser()
         self._models = []
     
     def addModel(self, model):
@@ -30,23 +32,29 @@ class Session():
     def getModelById(self, id):
         return next(m for m in self.getModels() if m.getId() == id)
     
+    def processMessage(self, message):
+        command = self._parser.parseMessage(message)
+        command.execute(self)
+    
     def integrateNode(self, node):
         node.addToModel(self.getModels()[0])
             
-    def integrateAssociation(self, associationName, fromClabjectName, toClabjectName):
-        logging.debug(" Integrating association '{}' between {} and {}.".format(associationName, fromClabjectName, toClabjectName))
-        
-        fromClabject = self.getModels()[0].getNodeByName(fromClabjectName)
-        toClabject = self.getModels()[0].getNodeByName(toClabjectName)
-        
+    def integrateAssociation(self, params):
         association = Association()
         
-        association.setName(associationName)
-        association.setFrom(fromClabject)
-        association.setTo(toClabject)
-        
-        logging.debug(" Integrating association {} from {} to {}."
-                      .format(association.getName(), association.getFrom(), association.getTo()))
+        for param in params:
+            pName = param[0]
+            pValue = param[1]
+            logging.debug("Executing command 'assocation.setFeature({}, {})'.".format(pName, pValue))
+            
+            if pName == 'from':
+                fromClabject = self.getModels()[0].getNodeByName(pValue)
+                association.setFrom(fromClabject)
+            if pName == 'to':
+                toClabject = self.getModels()[0].getNodeByName(pValue)
+                association.setTo(toClabject)
+            if pName == 'name':
+                association.setName(pValue)
         
         self.integrateNode(association)
         

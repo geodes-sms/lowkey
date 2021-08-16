@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 import logging
 
-from .Command import Command
-
+from lowkey.collabapi.commands.Command import Command
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"

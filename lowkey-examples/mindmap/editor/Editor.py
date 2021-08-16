@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 import argparse
 import logging
-import logging
 import os
 import sys
 import threading
 
-from MindmapSession import MindmapSession
 from DSLParser import DSLParser
+from MindmapSession import MindmapSession
 from lowkey.network.Client import Client
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+
 from metamodel.entities.MindMapModel import MindMapModel
 
 __author__ = "Istvan David"
@@ -46,7 +46,7 @@ class Editor(Client):
                 receviedMessage = self._snapshot.recv()
                 logging.debug("Received message {}".format(receviedMessage))
                 _, message = self.getMessage(receviedMessage)
-                self.consumeMessage(message)
+                self.processMessage(message)
             except:
                 return  # Interrupted
             if message == b"finished_snapshot":
@@ -61,24 +61,38 @@ class Editor(Client):
             logging.debug("Throwing message {}".format(message))
         else:
             logging.debug("Processing message {}".format(message))
-            self.consumeMessage(message)
+            self.processMessage(message)
     
+    '''
+    Remote message processing
+    '''
+
     def getMessage(self, rawMessage):
         return rawMessage.decode(self.__encoding).split(' ', 1)
-    
-    def getCommand(self, message):
-        return self._parser.parseMessage(message)
-    
-    def executeCommand(self, command):
-        command.execute(self._session)
         
-    def consumeMessage(self, message):
-        command = self.getCommand(message)
-        self.executeCommand(command)
-   
     def throwawayMessage(self, senderId):
         return senderId.replace('[', '').replace(']', '') == str(self._id)
+
+    def processMessage(self, message):
+        self._session.processMessage(message)
+            
+    '''
+    Remote message production
+    '''
     
+    def messageToBeForwarded(self, command):
+        return command != "READ" and command != "OBJECTS"
+    
+    def getCollabAPICommand(self, message):
+        return self._parser.translateMessageIntoCollabAPICommand(message)
+    
+    def createMessage(self, body):
+        return bytes('[{}] {}'.format(self._id, body), self.__encoding)    
+    
+    '''
+    Timeout action
+    '''
+
     def timeoutAction(self):
         pass
 
@@ -92,20 +106,21 @@ class Editor(Client):
                 continue
             
             if self._parser.validCommandMessage(userInput):
-                self.consumeMessage(userInput)  # Process in current session
                 commandKeyWord = self._parser.tokenize(userInput)[0].upper()
-                if(self.messageToBeForwarded(commandKeyWord)):
-                    message = self.createMessage(userInput)
-                    self._publisher.send(message)  # Publish to other client sessions
+                if not self.messageToBeForwarded(commandKeyWord):
+                    command = self._parser.parseMessage(userInput)
+                    command.execute(self._session)
+                else:
+                    collabAPICommand = self.getCollabAPICommand(userInput)
+                    # process locally
+                    self._session.processMessage(collabAPICommand)
+                    # produce remote message and publish
+                    body = collabAPICommand
+                    message = self.createMessage(body)
+                    self._publisher.send(message)
             else:
                 print("Invalid command")
                 continue
-            
-    def messageToBeForwarded(self, command):
-        return command != "READ" and command != "OBJECTS"
-
-    def createMessage(self, body):
-        return bytes('[{}] {}'.format(self._id, body), self.__encoding)
 
 
 if __name__ == "__main__":

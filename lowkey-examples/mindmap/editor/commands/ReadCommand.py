@@ -3,7 +3,7 @@ import logging
 import os
 import sys
 
-from .Command import Command
+from lowkey.collabapi.commands.Command import Command
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 

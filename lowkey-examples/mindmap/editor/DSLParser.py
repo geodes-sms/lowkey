@@ -3,13 +3,14 @@ import logging
 import os
 import sys
 
+from lowkey.collabapi.commands.CreateClabjectCommand import CreateClabjectCommand
+
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-from editor.commands.Command import Command
-from editor.commands.CreateAssociationCommand import CreateAssociationCommand
-from editor.commands.CreateClabjectCommand import CreateClabjectCommand
 from editor.commands.ReadCommand import ReadCommand
 from editor.commands.ReadObjectsCommand import ReadObjectsCommand
+
+from metamodel import MindMapPackage
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -44,7 +45,7 @@ class DSLParser():
             self.isDeleteCommand(tokens)
         )
     
-    def parseMessage(self, message) -> Command:
+    def parseMessage(self, message):
         tokens = self.tokenize(message)
         if self.validCommand(tokens):
             logging.debug("Command is valid")
@@ -59,11 +60,31 @@ class DSLParser():
         else:
             logging.debug("Command is invalid")
     
+    def translateMessageIntoCollabAPICommand(self, message):
+        tokens = self.tokenize(message)
+        
+        command = ''
+        
+        if tokens[0].upper() == 'CREATE':
+            userCommand, type, name = tokens 
+            command += '{} -typedBy {} -name {}'.format(userCommand, type, name)
+            
+            if type == MindMapPackage.TYPES.MINDMAP:
+                command += ' -title {}'.format(name)
+            elif type == MindMapPackage.TYPES.MARKER:
+                command += ' -symbol {}'.format(name)
+        elif tokens[0].upper() == 'LINK':
+            userCommand, sourceAndPort, _toKeyWord, target = tokens
+            source, name = sourceAndPort.split('.') 
+            command += '{} -from {} -to {} -name {}'.format(userCommand, source, target, name)
+        
+        return command
+    
     def isCreateClabjectCommand(self, tokens):
-        return tokens[0].upper() == "CREATE" and len(tokens) == 3
+        return tokens[0].upper() == "CREATE"
     
     def isLinkCommand(self, tokens):
-        return tokens[0].upper() == "LINK" and tokens[2].upper() == "TO" and len(tokens) == 4
+        return tokens[0].upper() == "LINK"
     
     def isReadCommand(self, tokens):
         return tokens[0].upper() == "READ" and len(tokens) == 1
@@ -72,7 +93,7 @@ class DSLParser():
         return tokens[0].upper() == "OBJECTS" and len(tokens) == 1
     
     def isUpdateCommand(self, tokens):
-        return tokens[0].upper() == "UPDATE" and len(tokens) == 4
+        return tokens[0].upper() == "UPDATE"
     
     def isDeleteCommand(self, tokens):
-        return tokens[0].upper() == "DELETE" and len(tokens) == 2
+        return tokens[0].upper() == "DELETE"

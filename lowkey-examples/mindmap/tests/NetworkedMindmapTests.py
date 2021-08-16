@@ -14,6 +14,7 @@ from metamodel.entities.Marker import Marker
 from metamodel.entities.MindMap import MindMap
 from metamodel.entities.MindMapModel import MindMapModel
 from metamodel import MindMapPackage
+from mindmap.tests.NetworkStub import NetworkStub
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
@@ -23,39 +24,54 @@ __credits__ = "Eugene Syriani"
 __license__ = "GPL-3.0"
 
 
-class BasicMindmapTests(unittest.TestCase):
+class NetworkedMindmapTests(unittest.TestCase):
     
     @classmethod
     def setUpClass(cls):
-        super(BasicMindmapTests, cls).setUpClass()
+        super(NetworkedMindmapTests, cls).setUpClass()
         logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.ERROR)
     
     def setUp(self):
         Clock.setUp(ClockMode.DEBUG)
-        self._parser = DSLParser()
-        self._session = MindmapSession()
+        self._dslParser = DSLParser()
+        self._localSession = MindmapSession()
+        self._remoteSession = MindmapSession()
+        self._network = NetworkStub(self._localSession, self._remoteSession)
+        self._sessions = [self._localSession, self._remoteSession]
         
     def tearDown(self):
-        del(self._session)
-        del(self._parser)
+        del(self._localSession)
+        del(self._remoteSession)
+        del(self._dslParser)
+        del(self._network)
         
     def testCreateModelWithContent(self):
         title1 = "improvePublicationRecord"
+        
         message = "create MindMap {}".format(title1)
         
-        command = self._parser.translateMessageIntoCollabAPICommand(message)
-        self._session.processMessage(command)
+        #localCommand = self._dslParser.parseMessage(message)
+        collabCommand = self._dslParser.translateMessageIntoCollabAPICommand(message)
         
-        self.assertEqual(len(self._session.getMindMapModel().getNodes()), 1)
-        mindmap = MindMap(self._session.getMindMapModel().getNodes()[0])
-        self.assertEqual(mindmap.getTitle(), title1)
+        self._localSession.processMessage(collabCommand)
+        #localCommand.execute(self._localSession)
+        
+        self._network.forward(collabCommand)
     
+        self.assertEqual(len(self._localSession.getMindMapModel().getNodes()), 1)
+        mindmap = MindMap(self._localSession.getMindMapModel().getNodes()[0])
+        self.assertEqual(mindmap.getTitle(), title1)
+        
+        self.assertEqual(len(self._remoteSession.getMindMapModel().getNodes()), 1)
+        mindmap = MindMap(self._remoteSession.getMindMapModel().getNodes()[0])
+        self.assertEqual(mindmap.getTitle(), title1)
+            
+    '''
     def testCreateUpdateRoot(self):
         title1 = "improvePublicationRecord"
-        message = "create MindMap {}".format(title1)
         
-        command = self._parser.translateMessageIntoCollabAPICommand(message)
-        self._session.processMessage(command)
+        command = self._parser.parseMessage("create mindmap {}".format(title1))
+        command.execute(self._session)
         
         self.assertEqual(len(self._session.getMindMapModel().getNodes()), 1)
         mindmap = MindMap(self._session.getMindMapModel().getNodes()[0])
@@ -66,19 +82,18 @@ class BasicMindmapTests(unittest.TestCase):
         self.assertEqual(mindmap.getTitle(), title2)
     
     def testCreateRemoveNonCompositionReference(self):
-        messages = []
+        commands = []
         
-        messages.extend([
-            "create MindMap improvePublicationRecord",
-            "create CentralTopic publishPaper",
-            "link improvePublicationRecord.topic to publishPaper",
-            "create Marker x",
-            "link publishPaper.marker to x",
+        commands.extend([
+            self._parser.parseMessage("create mindmap improvePublicationRecord"),
+            self._parser.parseMessage("create centraltopic publishPaper"),
+            self._parser.parseMessage("link publishPaper to improvePublicationRecord.topic"),
+            self._parser.parseMessage("create marker x"),
+            self._parser.parseMessage("link x to publishPaper.marker"),
             ])
         
-        for message in messages:
-            command = self._parser.translateMessageIntoCollabAPICommand(message)
-            self._session.processMessage(command)
+        for command in commands:
+            command.execute(self._session)
         
         centralTopic = CentralTopic(self._session.getMindMapModel().getNodesByType(MindMapPackage.TYPES.CENTRAL_TOPIC)[0])
         
@@ -117,25 +132,24 @@ class BasicMindmapTests(unittest.TestCase):
         self.assertEqual(mindmap.getTopic().getName(), topic2Name)
     
     def testCreateMainTopic(self):
-        messages = []
+        commands = []
         
         centralTopicName = "publishPaper"
         mainTopic1Name = "processRelatedWork"
         mainTopic2Name = "doTheExperiment"
         
-        messages.extend([
-            "create MindMap improvePublicationRecord",
-            "create CentralTopic {}".format(centralTopicName),
-            "link improvePublicationRecord.topic to {}".format(centralTopicName),
-            "create MainTopic {}".format(mainTopic1Name),
-            "create MainTopic {}".format(mainTopic2Name),
-            "link {}.maintopics to {}".format(centralTopicName, mainTopic1Name),
-            "link {}.maintopics to {}".format(centralTopicName, mainTopic2Name),
+        commands.extend([
+            self._parser.parseMessage("create mindmap improvePublicationRecord"),
+            self._parser.parseMessage("create centraltopic {}".format(centralTopicName)),
+            self._parser.parseMessage("link {} to improvePublicationRecord.topic".format(centralTopicName)),
+            self._parser.parseMessage("create maintopic {}".format(mainTopic1Name)),
+            self._parser.parseMessage("create maintopic {}".format(mainTopic2Name)),
+            self._parser.parseMessage("link {} to {}.maintopics".format(mainTopic1Name, centralTopicName)),
+            self._parser.parseMessage("link {} to {}.maintopics".format(mainTopic2Name, centralTopicName)),
             ])
         
-        for message in messages:
-            command = self._parser.translateMessageIntoCollabAPICommand(message)
-            self._session.processMessage(command)
+        for command in commands:
+            command.execute(self._session)
             
         mindmap = MindMap(self._session.getMindMapModel().getNodesByType(MindMapPackage.TYPES.MINDMAP)[0])
         centralTopic = CentralTopic(self._session.getMindMapModel().getNodesByType(MindMapPackage.TYPES.CENTRAL_TOPIC)[0])
@@ -143,6 +157,8 @@ class BasicMindmapTests(unittest.TestCase):
         self.assertEqual(mindmap.getTopic().getName(), centralTopicName)
         self.assertEqual(centralTopic.getMainTopics()[0].getName(), mainTopic1Name)
         self.assertEqual(centralTopic.getMainTopics()[1].getName(), mainTopic2Name)
+        
+    '''    
 
 
 if __name__ == "__main__":
