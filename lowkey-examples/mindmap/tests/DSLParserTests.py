@@ -25,6 +25,11 @@ __license__ = "GPL-3.0"
 
 class DSLParserTests(unittest.TestCase):
     
+    @classmethod
+    def setUpClass(cls):
+        super(DSLParserTests, cls).setUpClass()
+        logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.ERROR)
+    
     def setUp(self):
         Clock.setUp(ClockMode.DEBUG)
         self._dslParser = DSLParser()

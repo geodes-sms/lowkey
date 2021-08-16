@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import unittest
+import logging
 
 import os
 import sys
@@ -20,6 +21,11 @@ __license__ = "GPL-3.0"
 
 
 class CollabtypesMindmapTests(unittest.TestCase):
+    
+    @classmethod
+    def setUpClass(cls):
+        super(CollabtypesMindmapTests, cls).setUpClass()
+        logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.ERROR)
     
     def setUp(self):
         Clock.setUp(ClockMode.DEBUG)

@@ -2,6 +2,7 @@
 import logging
 import uuid
 
+from lowkey.collabtypes import Literals
 from lowkey.collabtypes.Association import Association
 from lowkey.collabtypes.Clabject import Clabject
 from .Parser import Parser
@@ -42,18 +43,22 @@ class Session():
     def integrateAssociation(self, params):
         association = Association()
         
+        assert next(p for p in params if p[0] == Literals.ASSOCIATION_FROM)
+        assert next(p for p in params if p[0] == Literals.ASSOCIATION_TO)
+        assert next(p for p in params if p[0] == Literals.NAME)
+        
         for param in params:
             pName = param[0]
             pValue = param[1]
             logging.debug("Executing command 'assocation.setFeature({}, {})'.".format(pName, pValue))
             
-            if pName == 'from':
+            if pName == Literals.ASSOCIATION_FROM:
                 fromClabject = self.getModels()[0].getNodeByName(pValue)
                 association.setFrom(fromClabject)
-            if pName == 'to':
+            if pName == Literals.ASSOCIATION_TO:
                 toClabject = self.getModels()[0].getNodeByName(pValue)
                 association.setTo(toClabject)
-            if pName == 'name':
+            if pName == Literals.NAME:
                 association.setName(pValue)
         
         self.integrateNode(association)

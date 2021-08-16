@@ -4,6 +4,7 @@ import os
 import sys
 
 from lowkey.collabapi.commands.CreateClabjectCommand import CreateClabjectCommand
+from lowkey.collabtypes import Literals
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
@@ -67,16 +68,16 @@ class DSLParser():
         
         if tokens[0].upper() == 'CREATE':
             userCommand, type, name = tokens 
-            command += '{} -typedBy {} -name {}'.format(userCommand, type, name)
+            command += '{} -{} {} -{} {}'.format(userCommand, Literals.TYPED_BY, type, Literals.NAME, name)
             
             if type == MindMapPackage.TYPES.MINDMAP:
-                command += ' -title {}'.format(name)
+                command += ' -{} {}'.format(MindMapPackage.TITLE, name)
             elif type == MindMapPackage.TYPES.MARKER:
-                command += ' -symbol {}'.format(name)
+                command += ' -{} {}'.format(MindMapPackage.MARKER_SYMBOL, name)
         elif tokens[0].upper() == 'LINK':
             userCommand, sourceAndPort, _toKeyWord, target = tokens
             source, name = sourceAndPort.split('.') 
-            command += '{} -from {} -to {} -name {}'.format(userCommand, source, target, name)
+            command += '{} -from {} -to {} -{} {}'.format(userCommand, source, target, Literals.NAME, name)
         
         return command
     
