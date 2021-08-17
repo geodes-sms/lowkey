@@ -46,3 +46,4 @@ Further pointers:
 * ```CREATE -name {name} -typedBy {type} [-attributeName {value}]*```
 * ```LINK -from {fromClabject}.{associationName} -to {toClabject} [-attributeName {value}]*```
 * ```UPDATE (-name {name} | -id {id}) [-attributeName {newValue}]*```
+* ```DELETE (-name {name} | -id {id})```

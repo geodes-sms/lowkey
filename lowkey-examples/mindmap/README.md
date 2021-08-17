@@ -21,4 +21,4 @@
 - ```CREATE [type] [name]``` - Creates an instance with name ```[name]``` of the domain-specific type ```[type]```.
 - ```LINK [source].[port] TO [target]``` - Links object ```[target]``` to object ```[source]``` via port ```[port]```.
 - ```UPDATE [name] [attribute] [newValue]``` - Updates attribute ```[attribute]``` in object with ```[name]``` to value ```[newValue]```.
-- TODO: ```DELETE [name]``` - Deletes object ```[name]```
+- ```DELETE [name]``` - Deletes object ```[name]```
