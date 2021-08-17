@@ -26,10 +26,12 @@ class CollabAPIParserTests(unittest.TestCase):
     def testCommandValidity(self):
         messages = ["CREATE Clabject", "UPDATE Clabject", "DELETE Clabject"]
         for message in messages:
-            self.assertTrue(self._parser.validCommandMessage(message))
+            tokens = self._parser.tokenize(message)
+            self.assertTrue(self._parser.validCommand(tokens[0].upper()))
             
         message = "CREAT Clabject"
-        self.assertFalse(self._parser.validCommandMessage(message))
+        tokens = self._parser.tokenize(message)
+        self.assertFalse(self._parser.validCommand(tokens[0].upper()))
         
     def testParams(self):
         param1Name = "name"

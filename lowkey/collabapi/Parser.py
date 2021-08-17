@@ -53,7 +53,7 @@ class Parser():
         rawParameters = re.findall(pattern, message)
         for p in rawParameters:
             name, value = p.split()
-            name = re.sub("\-", "", name)
+            name = name.replace("-", "")
             parameters.append([name, value])
         
         return parameters
