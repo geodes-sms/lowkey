@@ -20,5 +20,5 @@
 - ```OBJECTS``` - Lists every object in the local session.
 - ```CREATE [type] [name]``` - Creates an instance with name ```[name]``` of the domain-specific type ```[type]```.
 - ```LINK [source].[port] TO [target]``` - Links object ```[target]``` to object ```[source]``` via port ```[port]```.
-- TODO: ```UPDATE [name] [property] [value]``` - Updates property ```[property]``` in object ```[name]``` to value ```[value]```.
+- ```UPDATE [name] [attribute] [newValue]``` - Updates attribute ```[attribute]``` in object with ```[name]``` to value ```[newValue]```.
 - TODO: ```DELETE [name]``` - Deletes object ```[name]```

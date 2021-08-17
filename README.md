@@ -43,5 +43,6 @@ Further pointers:
 * [Reactor](https://zguide.zeromq.org/docs/chapter5/#Using-a-Reactor)
 
 ## Command language
-* ```CREATE -name {name} -typedBy {type} [-params VALUES...]*```
-* ```LINK -from {fromClabject}.{associationName} -to {toClabject} [-params VALUES...]*```
+* ```CREATE -name {name} -typedBy {type} [-attributeName {value}]*```
+* ```LINK -from {fromClabject}.{associationName} -to {toClabject} [-attributeName {value}]*```
+* ```UPDATE (-name {name} | -id {id}) [-attributeName {newValue}]*```
