@@ -9,6 +9,7 @@ __license__ = "GPL-3.0"
 Literals for modeling features.
 """
 
+ID = "id"
 NAME = "name"
 TYPED_BY = "typedBy"
 INHERITS_FROM = "inheritsFrom"

@@ -29,34 +29,29 @@ class NetworkedMindmapTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         super(NetworkedMindmapTests, cls).setUpClass()
-        logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.ERROR)
+        logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.DEBUG)
     
     def setUp(self):
         Clock.setUp(ClockMode.DEBUG)
         self._dslParser = DSLParser()
         self._localSession = MindmapSession()
         self._remoteSession = MindmapSession()
-        self._network = NetworkStub(self._localSession, self._remoteSession)
+        self._networkStub = NetworkStub(self._localSession, self._remoteSession)
         self._sessions = [self._localSession, self._remoteSession]
         
     def tearDown(self):
         del(self._localSession)
         del(self._remoteSession)
         del(self._dslParser)
-        del(self._network)
+        del(self._networkStub)
         
     def testCreateModelWithContent(self):
         title1 = "improvePublicationRecord"
+        userInput = "create MindMap {}".format(title1)
         
-        message = "create MindMap {}".format(title1)
-        
-        #localCommand = self._dslParser.parseMessage(message)
-        collabCommand = self._dslParser.translateIntoCollabAPICommand(message)
-        
-        self._localSession.processMessage(collabCommand)
-        #localCommand.execute(self._localSession)
-        
-        self._network.forward(collabCommand)
+        command = self._dslParser.translateIntoCollabAPICommand(userInput)
+        self._localSession.processMessage(command)
+        self._networkStub.forward(command)
     
         self.assertEqual(len(self._localSession.getMindMapModel().getNodes()), 1)
         mindmap = MindMap(self._localSession.getMindMapModel().getNodes()[0])
@@ -65,22 +60,39 @@ class NetworkedMindmapTests(unittest.TestCase):
         self.assertEqual(len(self._remoteSession.getMindMapModel().getNodes()), 1)
         mindmap = MindMap(self._remoteSession.getMindMapModel().getNodes()[0])
         self.assertEqual(mindmap.getTitle(), title1)
-            
-    '''
+    
     def testCreateUpdateRoot(self):
         title1 = "improvePublicationRecord"
+        userInput = "create MindMap {}".format(title1)
         
-        command = self._parser.parseMessage("create mindmap {}".format(title1))
-        command.execute(self._session)
+        command = self._dslParser.translateIntoCollabAPICommand(userInput)
+        self._localSession.processMessage(command)
+        self._networkStub.forward(command)
         
-        self.assertEqual(len(self._session.getMindMapModel().getNodes()), 1)
-        mindmap = MindMap(self._session.getMindMapModel().getNodes()[0])
-        self.assertEqual(mindmap.getTitle(), title1)
+        self.assertEqual(len(self._localSession.getMindMapModel().getNodes()), 1)
+        localMindmap = MindMap(self._localSession.getMindMapModel().getNodes()[0])
+        self.assertEqual(localMindmap.getTitle(), title1)
+        
+        self.assertEqual(len(self._remoteSession.getMindMapModel().getNodes()), 1)
+        remoteMindmap = MindMap(self._remoteSession.getMindMapModel().getNodes()[0])
+        self.assertEqual(remoteMindmap.getTitle(), title1)
         
         title2 = "improveTeachingRecord"
-        mindmap.setTitle(title2)
-        self.assertEqual(mindmap.getTitle(), title2)
-    
+        userInput = "update improvePublicationRecord title {}".format(title2)
+        
+        command = self._dslParser.translateIntoCollabAPICommand(userInput)
+        self._localSession.processMessage(command)
+        self._networkStub.forward(command)
+        
+        self.assertEqual(len(self._localSession.getMindMapModel().getNodes()), 1)
+        localMindmap2 = MindMap(self._localSession.getMindMapModel().getNodes()[0])
+        self.assertEqual(localMindmap2.getTitle(), title2)
+        
+        self.assertEqual(len(self._remoteSession.getMindMapModel().getNodes()), 1)
+        remoteMindmap2 = MindMap(self._remoteSession.getMindMapModel().getNodes()[0])
+        self.assertEqual(remoteMindmap2.getTitle(), title2)
+
+    '''
     def testCreateRemoveNonCompositionReference(self):
         commands = []
         

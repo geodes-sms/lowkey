@@ -59,7 +59,12 @@ class DSLParser():
                 command += ' -{} {}'.format(MindMapPackage.MARKER_SYMBOL, name)
         elif tokens[0].upper() == 'LINK':
             userCommand, sourceAndPort, _toKeyWord, target = tokens
-            source, name = sourceAndPort.split('.') 
+            source, name = sourceAndPort.split('.')
             command += '{} -from {} -to {} -{} {}'.format(userCommand, source, target, Literals.NAME, name)
+        elif tokens[0].upper() == 'UPDATE':
+            userCommand, clabjectName, attributeName, newValue = tokens
+            command += '{} -{} {} -{} {}'.format(userCommand, Literals.NAME, clabjectName, attributeName, newValue)
+        else:
+            raise Error("Unexpected mindmap command.")
         
         return command

@@ -7,6 +7,7 @@ from lowkey.collabtypes import Literals
 
 from lowkey.collabapi.commands.CreateClabjectCommand import CreateClabjectCommand
 from lowkey.collabapi.commands.CreateAssociationCommand import CreateAssociationCommand
+from lowkey.collabapi.commands.UpdateCommand import UpdateCommand
 
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
@@ -66,5 +67,7 @@ class Parser():
             return CreateClabjectCommand(self.getParams(message))
         elif commandKeyWord == "LINK":
             return CreateAssociationCommand(self.getParams(message))
+        elif commandKeyWord == "UPDATE":
+            return UpdateCommand(self.getParams(message))
         else:
-            logging.debug("Command is unsupported or invalid")
+            raise Error("Command is unsupported or invalid")
