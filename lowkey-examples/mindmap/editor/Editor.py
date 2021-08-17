@@ -39,6 +39,7 @@ class Editor(Client):
         logging.debug("Starting editor")
         self.editorThread()
     
+    # Join a server and receive the updates
     def join(self):
         self._snapshot.send(b"request_snapshot")
         while True:
@@ -53,6 +54,7 @@ class Editor(Client):
                 logging.debug("Received snapshot")
                 break  # Done
     
+    # The behavior that will be executed in the polling loop
     def subscriberAction(self):
         receviedMessage = self._subscriber.recv()
         senderId, message = self.getMessage(receviedMessage)
@@ -63,8 +65,43 @@ class Editor(Client):
             logging.debug("Processing message {}".format(message))
             self.processMessage(message)
     
+    # Editor thread for interacting with the local user
+    def editorThread(self):
+        print("Reading user input")
+        while True:
+            userInput = str(input())
+            if not userInput:
+                continue
+            
+            tokens = self._parser.tokenize(userInput)
+            commandKeyWord = tokens[0].upper()
+            if self._parser.isLocalCommand(commandKeyWord):
+                commandObject = self._parser.processLocalMessage(commandKeyWord)
+                commandObject.execute(self._session)
+            elif self._parser.isGlobalCommand(commandKeyWord):
+                collabAPICommand = self._parser.translateIntoCollabAPICommand(message)
+                # process locally
+                self._session.processMessage(collabAPICommand)
+                # produce remote message and publish
+                body = collabAPICommand
+                message = self.createMessage(body)
+                self._publisher.send(message)
+            else:
+                print("Invalid command")
+                continue
+    
     '''
-    Remote message processing
+    Message production
+    '''
+    
+    def messageToBeForwarded(self, command):
+        return command in ["READ", "OBJECTS"]
+    
+    def createMessage(self, body):
+        return bytes('[{}] {}'.format(self._id, body), self.__encoding)
+    
+    '''
+    Message processing
     '''
 
     def getMessage(self, rawMessage):
@@ -75,19 +112,6 @@ class Editor(Client):
 
     def processMessage(self, message):
         self._session.processMessage(message)
-            
-    '''
-    Remote message production
-    '''
-    
-    def messageToBeForwarded(self, command):
-        return command != "READ" and command != "OBJECTS"
-    
-    def getCollabAPICommand(self, message):
-        return self._parser.translateMessageIntoCollabAPICommand(message)
-    
-    def createMessage(self, body):
-        return bytes('[{}] {}'.format(self._id, body), self.__encoding)    
     
     '''
     Timeout action
@@ -95,32 +119,6 @@ class Editor(Client):
 
     def timeoutAction(self):
         pass
-
-    ###################### Editor behavior ######################
-    
-    def editorThread(self):
-        print("Reading user input")
-        while True:
-            userInput = str(input())
-            if not userInput:
-                continue
-            
-            if self._parser.validCommandMessage(userInput):
-                commandKeyWord = self._parser.tokenize(userInput)[0].upper()
-                if not self.messageToBeForwarded(commandKeyWord):
-                    command = self._parser.parseMessage(userInput)
-                    command.execute(self._session)
-                else:
-                    collabAPICommand = self.getCollabAPICommand(userInput)
-                    # process locally
-                    self._session.processMessage(collabAPICommand)
-                    # produce remote message and publish
-                    body = collabAPICommand
-                    message = self.createMessage(body)
-                    self._publisher.send(message)
-            else:
-                print("Invalid command")
-                continue
 
 
 if __name__ == "__main__":

@@ -24,44 +24,27 @@ __license__ = "GPL-3.0"
 
 class DSLParser():
     
-    __commands = ["CREATE", "READ", "OBJECTS", "LINK", "UPDATE", "DELETE"]
+    _globalCommands = ["CREATE", "LINK", "UPDATE", "DELETE"]
+    _localCommands = ["READ", "OBJECTS"]
     
     def tokenize(self, message):
         return message.split()
     
-    def valid(self, command):
-        return command.upper() in self.__commands
+    def isGlobalCommand(self, command):
+        return command.upper() in self._globalCommands
     
-    def validCommandMessage(self, message):
-        tokens = self.tokenize(message)
-        return tokens[0].upper() in self.__commands
+    def isLocalCommand(self, command):
+        return command.upper() in self._localCommands
     
-    def validCommand(self, tokens):
-        return (
-            self.isCreateClabjectCommand(tokens) or
-            self.isLinkCommand(tokens) or
-            self.isReadCommand(tokens) or
-            self.isUpdateCommand(tokens) or
-            self.isObjectsCommand(tokens) or
-            self.isDeleteCommand(tokens)
-        )
-    
-    def parseMessage(self, message):
-        tokens = self.tokenize(message)
-        if self.validCommand(tokens):
-            logging.debug("Command is valid")
-            if self.isReadCommand(tokens):
-                return ReadCommand()
-            if self.isObjectsCommand(tokens):
-                return ReadObjectsCommand()
-            if self.isCreateClabjectCommand(tokens):
-                return CreateClabjectCommand(tokens)
-            if self.isLinkCommand(tokens):
-                return CreateAssociationCommand(tokens)
+    def processLocalMessage(self, commandKeyWord):
+        if commandKeyWord == "READ":
+            return ReadCommand()
+        elif commandKeyWord == "OBJECTS":
+            return ReadObjectsCommand()
         else:
-            logging.debug("Command is invalid")
+            logging.error("Unexpected command keyword.")
     
-    def translateMessageIntoCollabAPICommand(self, message):
+    def translateIntoCollabAPICommand(self, message):
         tokens = self.tokenize(message)
         
         command = ''
@@ -80,21 +63,3 @@ class DSLParser():
             command += '{} -from {} -to {} -{} {}'.format(userCommand, source, target, Literals.NAME, name)
         
         return command
-    
-    def isCreateClabjectCommand(self, tokens):
-        return tokens[0].upper() == "CREATE"
-    
-    def isLinkCommand(self, tokens):
-        return tokens[0].upper() == "LINK"
-    
-    def isReadCommand(self, tokens):
-        return tokens[0].upper() == "READ" and len(tokens) == 1
-    
-    def isObjectsCommand(self, tokens):
-        return tokens[0].upper() == "OBJECTS" and len(tokens) == 1
-    
-    def isUpdateCommand(self, tokens):
-        return tokens[0].upper() == "UPDATE"
-    
-    def isDeleteCommand(self, tokens):
-        return tokens[0].upper() == "DELETE"

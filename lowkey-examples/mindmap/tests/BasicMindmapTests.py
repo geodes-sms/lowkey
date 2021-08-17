@@ -43,7 +43,7 @@ class BasicMindmapTests(unittest.TestCase):
         title1 = "improvePublicationRecord"
         message = "create MindMap {}".format(title1)
         
-        command = self._parser.translateMessageIntoCollabAPICommand(message)
+        command = self._parser.translateIntoCollabAPICommand(message)
         self._session.processMessage(command)
         
         self.assertEqual(len(self._session.getMindMapModel().getNodes()), 1)
@@ -54,7 +54,7 @@ class BasicMindmapTests(unittest.TestCase):
         title1 = "improvePublicationRecord"
         message = "create MindMap {}".format(title1)
         
-        command = self._parser.translateMessageIntoCollabAPICommand(message)
+        command = self._parser.translateIntoCollabAPICommand(message)
         self._session.processMessage(command)
         
         self.assertEqual(len(self._session.getMindMapModel().getNodes()), 1)
@@ -77,7 +77,7 @@ class BasicMindmapTests(unittest.TestCase):
             ])
         
         for message in messages:
-            command = self._parser.translateMessageIntoCollabAPICommand(message)
+            command = self._parser.translateIntoCollabAPICommand(message)
             self._session.processMessage(command)
         
         centralTopic = CentralTopic(self._session.getMindMapModel().getNodesByType(MindMapPackage.TYPES.CENTRAL_TOPIC)[0])
@@ -134,7 +134,7 @@ class BasicMindmapTests(unittest.TestCase):
             ])
         
         for message in messages:
-            command = self._parser.translateMessageIntoCollabAPICommand(message)
+            command = self._parser.translateIntoCollabAPICommand(message)
             self._session.processMessage(command)
             
         mindmap = MindMap(self._session.getMindMapModel().getNodesByType(MindMapPackage.TYPES.MINDMAP)[0])

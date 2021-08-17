@@ -34,23 +34,16 @@ association.setFeature(Literals.ASSOCIATION_TO, {toClabject})
 
 class Parser():
     
-    __commands = ["CREATE", "LINK", "UPDATE", "DELETE"]
+    _commands = ["CREATE", "LINK", "UPDATE", "DELETE"]
     
     def __init__(self):
         logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.DEBUG)
     
-    def __tokenize(self, message):
+    def tokenize(self, message):
         return message.split()
     
-    def __valid(self, command):
-        return command.upper() in self.__commands
-    
-    def validCommandMessage(self, message):
-        tokens = self.__tokenize(message)
-        return self.__valid(tokens[0])
-    
-    def getNodeType(self, message):
-        return self.__tokenize(message)[1]
+    def validCommand(self, command):
+        return command in self._commands
     
     def getParams(self, message):
         pattern = "[\-][a-zA-Z0-9]*\s[a-zA-Z0-9]*"
@@ -66,24 +59,12 @@ class Parser():
         return parameters
     
     def parseMessage(self, message):
-        if self.validCommandMessage(message):
-            logging.debug("Command is valid")
-            tokens = self.__tokenize(message)
-            if self.isCreateClabjectCommand(tokens):
-                return CreateClabjectCommand(self.getParams(message))
-            if self.isLinkCommand(tokens):
-                return CreateAssociationCommand(self.getParams(message))
+        tokens = self.tokenize(message)
+        commandKeyWord = tokens[0].upper()
+        
+        if commandKeyWord == "CREATE":
+            return CreateClabjectCommand(self.getParams(message))
+        elif commandKeyWord == "LINK":
+            return CreateAssociationCommand(self.getParams(message))
         else:
-            logging.debug("Command is invalid")
-            
-    def isCreateClabjectCommand(self, tokens):
-        return tokens[0].upper() == "CREATE"
-    
-    def isLinkCommand(self, tokens):
-        return tokens[0].upper() == "LINK"
-    
-    def isUpdateCommand(self, tokens):
-        return tokens[0].upper() == "UPDATE"
-    
-    def isDeleteCommand(self, tokens):
-        return tokens[0].upper() == "DELETE"
+            logging.debug("Command is unsupported or invalid")

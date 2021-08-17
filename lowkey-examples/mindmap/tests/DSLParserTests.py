@@ -16,7 +16,6 @@ from metamodel.entities.Marker import Marker
 from metamodel.entities.MindMap import MindMap
 from metamodel.entities.MindMapModel import MindMapModel
 
-
 __author__ = "Istvan David"
 __copyright__ = "Copyright 2021, GEODES"
 __credits__ = "Eugene Syriani"
@@ -42,11 +41,13 @@ class DSLParserTests(unittest.TestCase):
     def testCommandTranslation(self):
         message = "CREATE mindmap mm1"
         
-        collabCommand = self._dslParser.translateMessageIntoCollabAPICommand(message)
+        collabCommand = self._dslParser.translateIntoCollabAPICommand(message)
         
         # print(collabCommand)
         
-        self.assertTrue(self._collabParser.validCommandMessage(collabCommand))
+        tokens = self._dslParser.tokenize(collabCommand)
+        
+        self.assertTrue(self._collabParser.validCommand(tokens[0].upper()))
 
 
 if __name__ == "__main__":

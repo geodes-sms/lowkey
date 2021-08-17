@@ -51,7 +51,7 @@ class NetworkedMindmapTests(unittest.TestCase):
         message = "create MindMap {}".format(title1)
         
         #localCommand = self._dslParser.parseMessage(message)
-        collabCommand = self._dslParser.translateMessageIntoCollabAPICommand(message)
+        collabCommand = self._dslParser.translateIntoCollabAPICommand(message)
         
         self._localSession.processMessage(collabCommand)
         #localCommand.execute(self._localSession)
