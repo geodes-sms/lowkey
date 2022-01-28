@@ -26,7 +26,7 @@ jobs:
           pip install -r requirements.txt
           pip install pytest
           pip install -e $GITHUB_WORKSPACE
-      - name: Run tests with pytest
+      - name: Unit tests
         run: |
           pytest ./lowkey/lww/tests/TestSuite.py
           pytest ./lowkey/collabtypes/tests/TestSuite.py
