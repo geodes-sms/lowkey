@@ -25,4 +25,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run tests with pytest
-        run: pytest 
+        run: |
+          pytest ./lowkey/lww/tests/TestSuite.py
+          pytest ./lowkey/collabtypes/tests/TestSuite.py
+          pytest ./lowkey/collabapi/tests/TestSuite.py
+          pytest ./lowkey-examples/mindmap/tests/TestSuite.py
