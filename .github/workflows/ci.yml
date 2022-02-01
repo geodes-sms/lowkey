@@ -33,6 +33,6 @@ jobs:
           pytest ./lowkey/collabapi/tests/TestSuite.py
           pytest ./lowkey-examples/mindmap/tests/TestSuite.py
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action
+        uses: sonarsource/sonarcloud-github-action@master
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
