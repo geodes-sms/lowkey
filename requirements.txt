@@ -1,2 +1,1 @@
-websockets==8.1
-wheel==0.36.2
+pyzmq==24.0.1
