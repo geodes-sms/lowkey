@@ -6,6 +6,9 @@ A low-level and transparent framework for collaborative modeling.
 [![Unit tests](https://github.com/geodes-sms/lowkey/actions/workflows/ci.yml/badge.svg)](https://github.com/geodes-sms/lowkey/actions/workflows/ci.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=david-istvan_lowkey&metric=alert_status)](https://sonarcloud.io/dashboard?id=david-istvan_lowkey)
 
+# Recent publication
+I. David and E. Syriani. "Real-time Collaborative Multi-Level Modeling by Conflict-Free Replicated Data Types". In: Soft. Syst. Model. 2022. [10.1007/s10270-022-01054-5](http://doi.org/10.1007/s10270-022-01054-5)
+
 # Repository structure
 
 - [/lowkey](https://github.com/david-istvan/lowkey/tree/main/lowkey) - Main project.
